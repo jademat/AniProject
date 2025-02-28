@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="shortcut icon" size="32x32" src="./animal.ico" type="image/x-icon">
+    <title>Animal Foot</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="content-wrapper mx-auto">
+        <div th:replace="~{fragments/user/header::header}"></div>
+        <div th:replace="~{fragments/user/nav::nav}"></div>
+        <th:block layout:fragment="content"></th:block>
+        <div th:replace="~{fragments/user/footer::footer}"></div>
+    </div>
+</div>
+
+<th:block layout:fragment="script"></th:block>
+</body>
+</html>

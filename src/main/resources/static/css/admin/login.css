@@ -1,0 +1,25 @@
+body {
+    background: linear-gradient(to right, #6a11cb, #2575fc); /* 배경 그라데이션 */
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login-container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+}
+.btn-primary {
+    background-color: #2575fc;
+    border-color: #2575fc;
+}
+.btn-primary:hover {
+    background-color: #1a5ccf;
+}
+.form-control {
+    height: calc(2.5rem + 2px);
+}

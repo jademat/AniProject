@@ -12,9 +12,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 public class AdminController {
 
-    @GetMapping("login")
+    @GetMapping("/login")
     public String login() {
         return "views/admin/login";
     }
 
+    @GetMapping("/home")
+    public String home() {
+        return "views/admin/home";
+    }
+
+    @GetMapping("/userlist")
+    public String list() {
+        return "views/admin/userlist";
+    }
+
+    @GetMapping("/setting")
+    public String setting() {
+        return "views/admin/setting";
+    }
 }

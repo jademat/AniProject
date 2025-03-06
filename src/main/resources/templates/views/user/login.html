@@ -18,13 +18,22 @@
                 margin-top: 50px; /* h2 위쪽 간격 추가 */
                 margin-bottom: 20px; /* h2와 카드 사이 간격 조정 */
             }
+            .btn-kakao {
+                background-color: #fee500;
+                color: #3c1e1e;
+                font-weight: bold;
+                border: none;
+            }
+            .btn-kakao:hover {
+                background-color: #ffeb00;
+            }
         </style>
     </head>
 
     <th:block layout:fragment="content">
       <main id="content">
         <h2 class="text-center mb-4">로그인</h2>
-        <form name="loginfrm" id="loginfrm" method="post">
+        <form name="loginfrm" id="loginfrm" method="post" novalidate>
           <div class="form-floating py-2">
             <input type="text" name="userid" id="userid"
                    class="form-control" required placeholder="아이디">
@@ -38,17 +47,27 @@
           </div>
 
           <div class="d-flex justify-content-center py-2 gap-2">
-            <button type="submit" class="btn btn-primary">
-              <i class="fa-solid fa-right-to-bracket"></i> 로그인</button>
             <button type="button" class="btn btn-danger">
               <i class="fa-solid fa-key"></i> 비밀번호찾기</button>
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-solid fa-right-to-bracket"></i> 로그인</button>
           </div>
+
+            <!-- ✅ 카카오 로그인 버튼 추가 -->
+            <div class="d-flex justify-content-center py-2 gap-2">
+                <a href="https://kauth.kakao.com/oauth/authorize?client_id=f41d66937a155dd0f5cbf3d4d0b765fa&redirect_uri=http://localhost:8080/login/kakao&response_type=code"
+                   class="btn btn-kakao w-100 text-center">
+                    <i class="fa-solid fa-comment"></i> 카카오 로그인
+                </a>
+            </div>
         </form>
+
+
       </main>
     </th:block>
 
     <th:block layout:fragment="script">
-      <script src="/js/user.js"></script>
+        <script src="/static/js/user.js"></script>
       <script>
         const loginfrm = document.querySelector('#loginfrm');
 

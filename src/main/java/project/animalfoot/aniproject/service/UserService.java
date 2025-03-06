@@ -1,10 +1,17 @@
 package project.animalfoot.aniproject.service;
 
+import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import project.animalfoot.aniproject.domain.User;
 import project.animalfoot.aniproject.domain.UserDTO;
 import project.animalfoot.aniproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -37,4 +44,8 @@ public class UserService {
         }
         return findUser;
     }
+
+
+
+
 }

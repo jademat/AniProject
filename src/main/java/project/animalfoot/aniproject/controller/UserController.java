@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import project.animalfoot.aniproject.domain.User;
 import project.animalfoot.aniproject.domain.UserDTO;
 import project.animalfoot.aniproject.service.UserService;
@@ -84,22 +85,36 @@ public class UserController {
 
     }
 
-    @GetMapping("/myinfo")
-    public String myinfo(HttpSession session) {
-        String returnUrl = "views/member/login";
 
-        // 세션변수가 생성되어 있다면 myinfo로 이동가능
-        if (session.getAttribute("loginUser") != null) {
-            returnUrl = "views/member/myinfo";
-        }
 
-        return returnUrl;
-    }
+
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // 세션 제거
         return "redirect:/";
     }
+
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "views/user/hello";
+    }
+
+    @GetMapping("/location")
+    public String location() {
+        return "views/user/location";
+    }
+
+    @GetMapping("/burget")
+    public String burget() {
+        return "views/user/burget";
+    }
+
+    @GetMapping("/adoptionProgress")
+    public String adoption() {
+        return "views/user/adoptionProgress";
+    }
+
 
 }

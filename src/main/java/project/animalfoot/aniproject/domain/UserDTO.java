@@ -11,5 +11,5 @@ public class UserDTO {        // DB전송 객체
     private String userpwd;
     private String name;
     private String email;
-
+    private String kakaoId;
 }

@@ -15,17 +15,14 @@ public class SecurityConfig {
         http
                 .authorizeRequests()
                 .antMatchers("/static/**", "/css/**", "/images/**", "/js/**").permitAll()  // static 파일은 인증 없이 접근 허용
-                .antMatchers("/user/login", "/user/join").permitAll()  // 로그인, 회원가입 페이지는 누구나 접근 가능
-                .antMatchers("/").permitAll()  // index 페이지도 누구나 접근 가능
-                .anyRequest().authenticated() // 그 외에는 인증 필요
                 .and()
                 .formLogin(form -> form
-                        .loginPage("/user/login")  // 로그인 페이지 경로 설정
+                        .loginPage("/user/user/login")  // 로그인 페이지 경로 설정
                         .defaultSuccessUrl("/", true)  // 로그인 성공 시 리디렉션 경로
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/user/logout")  // 로그아웃 URL 설정
+                        .logoutUrl("/user/user/logout")  // 로그아웃 URL 설정
                         .logoutSuccessUrl("/")  // 로그아웃 후 리디렉션 경로
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")  // 세션과 쿠키 삭제

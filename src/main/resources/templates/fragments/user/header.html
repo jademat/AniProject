@@ -28,10 +28,10 @@
 
             <div class="col-lg-2 d-none d-lg-block ms-auto text-end">
                 <div class="d-flex justify-content-end gap-2">
-                    <a href="/user/login">
+                    <a href="/user/user/login">
                         <button type="button" id="loginbtn" class="btn btn-outline-primary" style="padding: 6px 12px;">Login</button>
                     </a>
-                    <a href="/user/join">
+                    <a href="/user/user/join">
                         <button type="button" id="joinbtn" class="btn btn-outline-primary" style="padding: 6px 12px;">Join</button>
                     </a>
                 </div>
@@ -83,10 +83,10 @@
                             <a class="nav-link dropdown-toggle" role="button" id="pages" data-bs-toggle="dropdown"
                                aria-expanded="false">About Us</a>
                             <ul class="dropdown-menu" aria-labelledby="pages">
-                                <li><a href="user/hello" class="dropdown-item">Hello</a></li>
-                                <li><a href="user/location" class="dropdown-item">location</a></li> <!--보호소 위치 -->
-                                <li><a href="user/burget" class="dropdown-item">burget state</a></li> <!--유기동물 현황 -->
-                                <li><a href="user/error404" class="dropdown-item">Error 404</a></li>
+                                <li><a href="/user/aboutus/hello" class="dropdown-item">Hello</a></li>
+                                <li><a href="/user/aboutus/location" class="dropdown-item">location</a></li> <!--보호소 위치 -->
+                                <li><a href="/user/aboutus/burget" class="dropdown-item">burget state</a></li> <!--유기동물 현황 -->
+                                <li><a href="/user/aboutus/error404" class="dropdown-item">Error 404</a></li>
                             </ul>
                         </li>
 
@@ -95,9 +95,8 @@
                             <a class="nav-link dropdown-toggle" role="button" id="adoptMenu" data-bs-toggle="dropdown"
                                aria-expanded="false">Adoption</a>
                             <ul class="dropdown-menu" aria-labelledby="pages">
-                                <li><a href="user/adoptionProgress" class="dropdown-item">Adoption Process</a></li><!--입양절차-->
-                                <li><a href="index.html" class="dropdown-item">Meet Our Animals</a></li><!--동물소개-->
-                                <li><a href="index.html" class="dropdown-item">Admission</a></li><!--입소신청-->
+                                <li><a href="/adoptionProgress" class="dropdown-item">Adoption Process</a></li><!--입양절차-->
+                                <li><a href="/adoption/list" class="dropdown-item">Meet Our Animals</a></li><!--동물소개(petlist)-->
                             </ul>
                         </li>
 
@@ -106,8 +105,8 @@
                             <a class="nav-link dropdown-toggle" role="button" id="donationMenu" data-bs-toggle="dropdown"
                                aria-expanded="false">Donation</a>
                             <ul class="dropdown-menu" aria-labelledby="pages">
-                                <li><a href="index.html" class="dropdown-item">Donation</a></li><!--후원하기-->
-                                <li><a href="index.html" class="dropdown-item">Donation Report</a></li><!--재정 현황-->
+                                <li><a href="/support/donate" class="dropdown-item">Donation</a></li><!--후원하기-->
+                                <li><a href="/support/financial" class="dropdown-item">Donation Report</a></li><!--재정 현황-->
                             </ul>
                         </li>
 
@@ -116,9 +115,9 @@
                             <a class="nav-link dropdown-toggle" role="button" id="communityMenu" data-bs-toggle="dropdown"
                                aria-expanded="false">Community</a>
                             <ul class="dropdown-menu" aria-labelledby="pages">
-                                <li><a href="index.html" class="dropdown-item">Notice</a></li>
-                                <li><a href="index.html" class="dropdown-item">FAQs</a></li>
-                                <li><a href="index.html" class="dropdown-item">Adopt Review</a></li><!--입양 후기-->
+                                <li><a href="/board/faq/list" class="dropdown-item">FAQs</a></li>
+                                <li><a href="/board/review/write" class="dropdown-item">Adopt Review</a></li><!--입양 후기에서 글쓰기-->
+                                <li><a href="/board/admission/write" class="dropdown-item">Admission</a></li><!--입소신청에서 글쓰기-->
                             </ul>
                         </li>
                     </ul>

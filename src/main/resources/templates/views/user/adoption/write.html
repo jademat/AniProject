@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/user/layout.html}">
+<head>
+  <meta charset="UTF-8">
+  <title>입양 신청서</title>
+  <style>
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+    form {
+      width: 60%;
+      max-width: 600px;
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    label, h2, h3 {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .radio-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .radio-group input {
+      width: 16px;
+      height: 16px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .inline-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .inline-group label {
+      flex-basis: 30%;
+    }
+  </style>
+</head>
+
+<th:block layout:fragment="content">
+  <main>
+    <h2>입양공고 제목: 점잖지만, 애교 넘치는 나리</h2>
+    <form action="/adoption/submit" method="post">
+      <label>1. 신청인 성명: <input type="text" name="applicantName" required></label>
+      <label>2. 성별:</label>
+      <div class="radio-group">
+        <input type="radio" name="gender" value="남" required> 남
+        <input type="radio" name="gender" value="여" required> 여
+      </div>
+      <label>3. 연령: <input type="number" name="age" required></label>
+      <label>4. 전화번호: <input type="text" name="phoneNumber" required></label>
+      <label>5. 이메일: <input type="email" name="email" required></label>
+      <label>6. 통화하기 편한 시간: <input type="text" name="preferredCallTime"></label>
+      <label>7. 사시는 지역: <input type="text" name="region" required></label>
+      <label>8. 결혼여부:</label>
+      <div class="radio-group">
+        <input type="radio" name="maritalStatus" value="기혼" required> 기혼
+        <input type="radio" name="maritalStatus" value="미혼" required> 미혼
+      </div>
+      <label>9. 신청인 직업: <input type="text" name="job"></label>
+      <hr>
+      <h3>설문 시작</h3>
+
+      <label>1. 예전에 반려동물을 키우신 적이 있으신가요?</label>
+      <div class="radio-group">
+        <input type="radio" name="hadPets" value="예" required> 예
+        <input type="radio" name="hadPets" value="아니오" required> 아니오
+      </div>
+      <textarea name="previousPetsDetails" placeholder="어떤 동물이었는지, 기간, 현재 상태"></textarea>
+
+      <label>2. 현재 집에서 다른 동물을 키우고 계십니까?</label>
+      <div class="radio-group">
+        <input type="radio" name="hasCurrentPets" value="예" required> 예
+        <input type="radio" name="hasCurrentPets" value="아니오" required> 아니오
+      </div>
+      <div class="inline-group">
+        <label>종류: <input type="text" name="currentPetType"></label>
+        <label>나이: <input type="number" name="currentPetAge"></label>
+        <label>성별: <input type="text" name="currentPetGender"></label>
+      </div>
+      <label>중성화 여부:</label>
+      <div class="radio-group">
+        <input type="radio" name="currentPetNeutered" value="예"> 예
+        <input type="radio" name="currentPetNeutered" value="아니오"> 아니오
+      </div>
+
+      <label>3. 가족 구성원:</label>
+      <div class="inline-group">
+        <label>성인: <input type="number" name="adultCount" required></label>
+        <label>미성년자: <input type="number" name="minorCount" required></label>
+        <label>미성년자 나이:<input type="number" name="minorAges" required></label>
+      </div>
+
+
+      <label>4. 입양을 하는 이유:</label>
+      <textarea name="adoptionReason" placeholder="입양을 하는 이유를 작성해주세요" required></textarea>
+
+      <button type="submit">신청하기</button>
+    </form>
+  </main>
+</th:block>
+
+</html>

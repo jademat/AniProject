@@ -1,4 +1,4 @@
-package project.animalfoot.aniproject.controller;
+package project.animalfoot.aniproject.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import project.animalfoot.aniproject.domain.User;
 import project.animalfoot.aniproject.domain.UserDTO;
 import project.animalfoot.aniproject.service.UserService;
@@ -22,12 +21,12 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/join")
+    @GetMapping("/user/join")
     public String join() {
-        return "views/user/join";
+        return "views/user/user/join";
     }
 
-    @PostMapping("/join")
+    @PostMapping("/user/join")
     public ResponseEntity<?> joinok(UserDTO user) {
         // 회원 가입 처리시 기타오류 발생에 대한 응답코드 설정
         ResponseEntity<?> response = ResponseEntity.internalServerError().build();
@@ -52,9 +51,9 @@ public class UserController {
 
     }
 
-    @GetMapping("/login")
+    @GetMapping("/user/login")
     public String login() {
-        return "views/user/login";
+        return "views/user/user/login";
     }
 
     @PostMapping("/login")
@@ -89,31 +88,31 @@ public class UserController {
 
 
 
-    @GetMapping("/logout")
+    @GetMapping("/user/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // 세션 제거
         return "redirect:/";
     }
 
 
-    @GetMapping("/hello")
+    @GetMapping("/aboutus/hello")
     public String hello() {
-        return "views/user/hello";
+        return "views/user/aboutus/hello";
     }
 
-    @GetMapping("/location")
+    @GetMapping("/aboutus/location")
     public String location() {
-        return "views/user/location";
+        return "views/user/aboutus/location";
     }
 
-    @GetMapping("/burget")
+    @GetMapping("/aboutus/burget")
     public String burget() {
-        return "views/user/burget";
+        return "views/user/aboutus/burget";
     }
 
-    @GetMapping("/adoptionProgress")
+    @GetMapping("/aboutus/adoptionProgress")
     public String adoption() {
-        return "views/user/adoptionProgress";
+        return "views/user/aboutus/adoptionProgress";
     }
 
 

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/user/layout.html}">
+<head>
+    <title>카카오페이 후원</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <div class="card">
+            <div class="card-header">/user/
+                <h4>카카오페이 후원하기</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="text-center mb-4">후원금을 입력하세요</h5>
+
+                <div class="donation-amount">
+                    <input type="number" id="donationAmount" placeholder="후원금액 입력" min="1000">
+                    <button id="payButton">후원하기</button>
+                </div>
+
+                <!-- 카카오페이 결제 버튼 -->
+                <div id="kakaoPayButton"></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 카카오페이 SDK 초기화
+    Kakao.init('YOUR_KAKAO_APP_KEY');  // 여기에 실제 카카오 앱 키를 넣어야 합니다.
+
+    // 후원 버튼 클릭 시 결제 요청
+    document.getElementById('payButton').addEventListener('click', function() {
+        var donationAmount = document.getElementById('donationAmount').value;
+
+        if (!donationAmount || donationAmount < 1000) {
+            alert("최소 후원 금액은 1000원입니다.");
+            return;
+        }
+
+        // 카카오페이 결제 API 호출 (여기서 실제 API 연동이 필요함)
+        Kakao.Pay.request({
+            pay_method: '카카오페이',
+            total_amount: donationAmount,
+            item_name: '후원금',
+            item_code: '12345', // 고유 아이템 코드
+            quantity: 1,
+            approval_url: 'https://your-domain.com/success',  // 결제 성공 후 리다이렉트될 URL
+            fail_url: 'https://your-domain.com/fail'           // 결제 실패 시 리다이렉트될 URL
+        });
+    });
+</script>
+</body>
+</html>

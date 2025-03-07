@@ -1,18 +1,35 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<nav role="navigation" class="navbar navbar-light bg-light" th:fragment="nav">
-    <ul class="nav space-between">
-        <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+<nav th:fragment="nav" class="sidebar">
+    <h2>관리자</h2>
+    <div class="menu-item" onclick="toggleMenu('dashboard-menu')">
+        <a href="/admin/home" class="nav-link">대시보드</a></div>
 
-        <li class="nav-item" th:if="${session.loginUser == null}">
-            <a href="/member/login" class="nav-link">로그인</a>
-        </li>
+    <div class="menu-item" onclick="toggleMenu('user-menu')">
+        <a href="/admin/userlist" class="nav-link">회원 리스트</a></div>
 
-        <li class="nav-item" th:if="${session.loginUser != null}">
-            <a href="/member/logout" class="nav-link">로그아웃</a>
-        </li>
+    <div class="menu-item" onclick="toggleMenu('donate-menu')">후원</div>
+    <ul id="donate-menu" class="submenu">
+        <li>후원 내역 확인</li>
+        <li>후원금 재정 현황 공개</li>
 
-        <li class="nav-item"><a href="/member/myinfo" class="nav-link">회원정보</a></li>
+    </ul>
+    <div class="menu-item" onclick="toggleMenu('post-menu')">게시글 관리</div>
+    <ul id="post-menu" class="submenu">
+        <li>입양후기</li>
+        <li>신고된 게시글</li>
+        <li>공지사항 작성/관리</li>
+    </ul>
+
+    <div class="menu-item" onclick="toggleMenu('settings-menu')">입양/입소</div>
+    <ul id="settings-menu" class="submenu">
+        <li>입양동물현황</li>
+        <li>입양신청</li>
+        <li>입소신청</li>
+    </ul>
+    <div class="menu-item" onclick="toggleMenu('admin-menu')">설정</div>
+    <ul id="admin-menu" class="submenu">
+        <a href="/admin/setting" class="nav-link"><li>개인정보수정</li></a>
     </ul>
 </nav>
 </html>

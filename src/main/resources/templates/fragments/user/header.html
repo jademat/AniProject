@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko"  xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <header th:fragment="header">
     <div class="container py-2">
@@ -7,7 +7,7 @@
 
             <div class="col-sm-4 col-lg-3 text-center text-sm-start">
                 <div class="main-logo">
-                    <a href="index.html">
+                    <a href="/">
                         <img src="/static/images/logo.png" alt="logo" class="img-fluid">
                     </a>
                 </div>
@@ -17,7 +17,7 @@
                 <div class="search-bar border rounded-2 px-3 border-dark-subtle">
                     <form id="search-form" class="text-center d-flex align-items-center" action="" method="">
                         <input type="text" class="form-control border-0 bg-transparent"
-                               placeholder="Search for more than 10,000 products" />
+                               placeholder="Search for Pet Names!" />
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path fill="currentColor"
                                   d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
@@ -26,10 +26,18 @@
                 </div>
             </div>
 
-
+            <div class="col-lg-2 d-none d-lg-block ms-auto text-end">
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="/user/user/login">
+                        <button type="button" id="loginbtn" class="btn btn-outline-primary" style="padding: 6px 12px;">Login</button>
+                    </a>
+                    <a href="/user/user/join">
+                        <button type="button" id="joinbtn" class="btn btn-outline-primary" style="padding: 6px 12px;">Join</button>
+                    </a>
+                </div>
+            </div>
 
         </div>
-    </div>
     </div>
 
     <div class="container-fluid">
@@ -41,36 +49,15 @@
 
             <div class="d-flex d-lg-none align-items-end mt-3">
                 <ul class="d-flex justify-content-end list-unstyled m-0">
-                    <li>
-                        <a href="account.html" class="mx-3">
-                            <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="wishlist.html" class="mx-3">
-                            <iconify-icon icon="mdi:heart" class="fs-4"></iconify-icon>
-                        </a>
-                    </li>
 
-                    <li>
-                        <a href="#" class="mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
-                           aria-controls="offcanvasCart">
-                            <iconify-icon icon="mdi:cart" class="fs-4 position-relative"></iconify-icon>
-                            <span class="position-absolute translate-middle badge rounded-circle bg-primary pt-2">
-                  03
-                </span>
-                        </a>
-                    </li>
 
                     <li>
                         <a href="#" class="mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch"
                            aria-controls="offcanvasSearch">
                             <iconify-icon icon="tabler:search" class="fs-4"></iconify-icon>
-                            </span>
                         </a>
                     </li>
                 </ul>
-
             </div>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
@@ -85,86 +72,70 @@
                 </div>
 
                 <div class="offcanvas-body justify-content-between">
-                    <select class="filter-categories border-0 mb-0 me-5">
-                        <option>Shop by Category</option>
-                        <option>Clothes</option>
-                        <option>Food</option>
-                        <option>Food</option>
-                        <option>Toy</option>
-                    </select>
 
-                    <ul class="navbar-nav menu-list list-unstyled d-flex gap-md-3 mb-0">
+                    <ul class="navbar-nav menu-list list-unstyled d-flex gap-md-3 mb-0 align-center">
                         <li class="nav-item">
-                            <a href="index.html" class="nav-link active">Home</a>
+                            <a href="/" class="nav-link active">Home</a>
                         </li>
+
+                        <!-- 소개 -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" role="button" id="pages" data-bs-toggle="dropdown"
-                               aria-expanded="false">Pages</a>
+                               aria-expanded="false">About Us</a>
                             <ul class="dropdown-menu" aria-labelledby="pages">
-                                <li><a href="index.html" class="dropdown-item">About Us</a></li>
-                                <li><a href="index.html" class="dropdown-item">Shop</a></li>
-                                <li><a href="index.html" class="dropdown-item">Single Product</a></li>
-                                <li><a href="index.html" class="dropdown-item">Cart</a></li>
-                                <li><a href="index.html" class="dropdown-item">Wishlist</a></li>
-                                <li><a href="index.html" class="dropdown-item">Checkout</a></li>
-                                <li><a href="index.html" class="dropdown-item">Blog</a></li>
-                                <li><a href="index.html" class="dropdown-item">Single Post</a></li>
-                                <li><a href="index.html" class="dropdown-item">Contact</a></li>
-                                <li><a href="index.html" class="dropdown-item">FAQs</a></li>
-                                <li><a href="index.html" class="dropdown-item">Account</a></li>
-                                <li><a href="index.html" class="dropdown-item">Thankyou</a></li>
-                                <li><a href="index.html" class="dropdown-item">Error 404</a></li>
-                                <li><a href="index.html" class="dropdown-item">Styles</a></li>
+                                <li><a href="/user/aboutus/hello" class="dropdown-item">Hello</a></li>
+                                <li><a href="/user/aboutus/location" class="dropdown-item">location</a></li> <!--보호소 위치 -->
+                                <li><a href="/user/aboutus/burget" class="dropdown-item">burget state</a></li> <!--유기동물 현황 -->
+                                <li><a href="/user/aboutus/error404" class="dropdown-item">Error 404</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="index.html" class="nav-link">Shop</a>
+
+                        <!-- 입양 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" role="button" id="adoptMenu" data-bs-toggle="dropdown"
+                               aria-expanded="false">Adoption</a>
+                            <ul class="dropdown-menu" aria-labelledby="pages">
+                                <li><a href="/adoptionProgress" class="dropdown-item">Adoption Process</a></li><!--입양절차-->
+                                <li><a href="/adoption/list" class="dropdown-item">Meet Our Animals</a></li><!--동물소개(petlist)-->
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="index.html" class="nav-link">Blog</a>
+
+                        <!-- 후원 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" role="button" id="donationMenu" data-bs-toggle="dropdown"
+                               aria-expanded="false">Donation</a>
+                            <ul class="dropdown-menu" aria-labelledby="pages">
+                                <li><a href="/support/donate" class="dropdown-item">Donation</a></li><!--후원하기-->
+                                <li><a href="/support/financial" class="dropdown-item">Donation Report</a></li><!--재정 현황-->
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="index.html" class="nav-link">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="index.html" class="nav-link">Others</a>
+
+                        <!-- 게시판 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" role="button" id="communityMenu" data-bs-toggle="dropdown"
+                               aria-expanded="false">Community</a>
+                            <ul class="dropdown-menu" aria-labelledby="pages">
+                                <li><a href="/board/faq/list" class="dropdown-item">FAQs</a></li>
+                                <li><a href="/board/review/write" class="dropdown-item">Adopt Review</a></li><!--입양 후기에서 글쓰기-->
+                                <li><a href="/board/admission/write" class="dropdown-item">Admission</a></li><!--입소신청에서 글쓰기-->
+                            </ul>
                         </li>
                     </ul>
 
                     <div class="d-none d-lg-flex align-items-end">
                         <ul class="d-flex justify-content-end list-unstyled m-0">
                             <li>
-                                <a href="index.html" class="mx-3">
-                                    <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html" class="mx-3">
-                                    <iconify-icon icon="mdi:heart" class="fs-4"></iconify-icon>
-                                </a>
-                            </li>
-
-                            <li class="">
-                                <a href="index.html" class="mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
-                                   aria-controls="offcanvasCart">
-                                    <iconify-icon icon="mdi:cart" class="fs-4 position-relative"></iconify-icon>
-                                    <span class="position-absolute translate-middle badge rounded-circle bg-primary pt-2">
-                      03
-                    </span>
+                                <a href="myinfo" class="mx-3">
+                                    <iconify-icon icon="healthicons:person" class="fs-4" style="color: #dead6f;"></iconify-icon>
                                 </a>
                             </li>
                         </ul>
-
                     </div>
-
                 </div>
-
             </div>
-
         </nav>
-
-
 
     </div>
 </header>
+
 </html>

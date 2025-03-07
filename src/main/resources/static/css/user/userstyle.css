@@ -365,7 +365,7 @@ a {
 
 /* nav bar style  */
 .navbar-nav .nav-link.active,
-.navbar-nav .nav-link.show,
+.navbar-nav .nav-link.show
 .nav-link:focus,
 .nav-link:hover {
   color: var(--accent-color);

@@ -1,4 +1,4 @@
-package project.animalfoot.aniproject.controller;
+package project.animalfoot.aniproject.controller.admin;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

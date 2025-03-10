@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Controller
@@ -35,6 +36,10 @@ public class KakaoLoginController {
         session.setAttribute("loginUser", kakaoUser);
         session.setMaxInactiveInterval(600);   // 세션 유지 : 10분
 
+        log.info("카카오 로그인 후 세션에 저장된 사용자 정보: {}", kakaoUser);
+
+        System.out.println(kakaoUser);
+
         return "redirect:/";  // 로그인 후 메인 페이지로 리다이렉트
     }
 
@@ -50,12 +55,18 @@ public class KakaoLoginController {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.postForEntity(uriBuilder.toUriString(), null, String.class);
 
-        // 카카오 API 응답 로그 출력
         log.info("카카오 API 응답: {}", response.getBody());
 
-        String accessToken = response.getBody(); // 여기서는 그냥 String으로 처리
-        return accessToken; // 실제로는 JSON 파싱 후 access_token 추출
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(response.getBody());
+            return jsonNode.get("access_token").asText();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("카카오 API에서 access_token을 가져오는 데 실패했습니다.");
+        }
     }
+
 
     private UserDTO getKakaoUserInfo(String accessToken) {
         String userInfoUrl = "https://kapi.kakao.com/v2/user/me";
@@ -73,13 +84,20 @@ public class KakaoLoginController {
 
             // 카카오 사용자 정보에서 필요한 값 추출
             String kakaoId = jsonNode.get("id").asText();
-            String name = jsonNode.get("properties").get("nickname").asText();
-            String email = jsonNode.get("kakao_account").get("email").asText();
+            String regdate = jsonNode.get("connected_at").asText();
+
+            // kakao_account 정보 추출
+            JsonNode accountNode = jsonNode.get("kakao_account");
+            String name = accountNode.get("name").asText();
+            String email = accountNode.get("email").asText();
+            String phoneNumber = accountNode.get("phone_number").asText();
 
             // UserDTO에 값 설정
             userDTO.setKakaoId(kakaoId);
+            userDTO.setRegdate(LocalDateTime.parse(regdate));
             userDTO.setName(name);
             userDTO.setEmail(email);
+            userDTO.setPhone(phoneNumber);
 
         } catch (Exception e) {
             e.printStackTrace();

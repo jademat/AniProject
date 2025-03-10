@@ -1,7 +1,9 @@
-package project.animalfoot.aniproject.service.user;
+package project.animalfoot.aniproject.service;
 
-import project.animalfoot.aniproject.domain.user.User;
-import project.animalfoot.aniproject.domain.user.UserDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+import project.animalfoot.aniproject.domain.UserDTO;
 import project.animalfoot.aniproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,22 +30,33 @@ public class UserService {
         return result == 1; // 회원정보가 테이블 저장되었는지 여부에 따라 true/false 반환
     }
 
-    public User loginUser(UserDTO user) {
-        User findUser = userMapper.findByUserid(user.getUserid());
+    @Transactional
+    public UserDTO loginUser(UserDTO user) {
+        // DB에서 아이디로 사용자 조회
+        UserDTO findUser = userMapper.findByUserid(user.getUserid());
 
-        if (findUser == null || !findUser.getUserpwd().equals(user.getUserpwd())) {
-            throw new IllegalStateException("아이디나 비밀번호가 일치하지 않습니다!!");
-
+        if (findUser == null) {
+            // 아이디가 없다면 예외 처리
+            throw new IllegalStateException("아이디가 존재하지 않습니다.");
         }
+
+        // 비밀번호 체크
+        if (!findUser.getUserpwd().equals(user.getUserpwd())) {
+            // 비밀번호가 일치하지 않으면 예외 처리
+            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+        }
+
         return findUser;
     }
 
     // 카카오 로그인 처리
-    public User kakaoLogin(UserDTO user) {
+    @Transactional
+    public UserDTO kakaoLogin(UserDTO user) {
         // 카카오 아이디로 사용자 조회
-        User findUser = userMapper.findByKakaoId(user.getKakaoId());
+        UserDTO findUser = userMapper.findByKakaoId(user.getKakaoId());
 
         if (findUser == null) {
+            System.out.println("DB에서 찾은 사용자: " + findUser);
             // 만약 카카오 아이디로 등록된 사용자가 없으면, 새로운 사용자로 등록
             boolean isNewUser = newUser(user);  // 카카오 로그인 시에는 이메일과 카카오 아이디로 회원가입 처리
             if (isNewUser) {

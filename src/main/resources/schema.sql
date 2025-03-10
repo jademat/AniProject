@@ -85,11 +85,7 @@ create table if not exists animal_status (
     returned_cats int not null,                             -- 반환된 고양이 수
     adopted_cats int not null,                              -- 입양된 고양이 수
     euthanized_cats int not null,                           -- 안락사된 고양이 수
-    transferred_cats int not null,                          -- 다른 곳으로 이송된 고양이 수
-    report_date date not null,                              -- 보고 날짜 (데이터 기록일)
-    animal_no int not null,                                 -- 동물 번호 (연관 추가)
-    primary key (district),                                 -- 구역별로 날짜 기준으로 유니크하게 설정
-    foreign key (animal_no) references animal(animal_no)    -- 동물 테이블과 연관
+    transferred_cats int not null                          -- 다른 곳으로 이송된 고양이 수
 );
 
 -- 입양

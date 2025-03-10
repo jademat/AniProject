@@ -28,12 +28,22 @@
 
             <div class="col-lg-2 d-none d-lg-block ms-auto text-end">
                 <div class="d-flex justify-content-end gap-2">
-                    <a href="/user/user/login">
-                        <button type="button" id="loginbtn" class="btn btn-outline-primary" style="padding: 6px 12px;">Login</button>
-                    </a>
-                    <a href="/user/user/join">
-                        <button type="button" id="joinbtn" class="btn btn-outline-primary" style="padding: 6px 12px;">Join</button>
-                    </a>
+                    <!-- 로그인 상태일 때 -->
+                    <th:block th:if="${session.loginUser}">
+                        <a href="/user/user/logout">
+                            <button type="button" class="btn btn-outline-primary" style="padding: 6px 12px;">Logout</button>
+                        </a>
+                    </th:block>
+
+                    <!-- 비로그인 상태일 때 -->
+                    <th:block th:unless="${session.loginUser}">
+                        <a href="/user/user/login">
+                            <button type="button" id="loginbtn" class="btn btn-outline-primary" style="padding: 6px 12px;">Login</button>
+                        </a>
+                        <a href="/user/user/join">
+                            <button type="button" id="joinbtn" class="btn btn-outline-primary" style="padding: 6px 12px;">Join</button>
+                        </a>
+                    </th:block>
                 </div>
             </div>
 
@@ -95,7 +105,7 @@
                             <a class="nav-link dropdown-toggle" role="button" id="adoptMenu" data-bs-toggle="dropdown"
                                aria-expanded="false">Adoption</a>
                             <ul class="dropdown-menu" aria-labelledby="pages">
-                                <li><a href="/adoptionProgress" class="dropdown-item">Adoption Process</a></li><!--입양절차-->
+                                <li><a href="/adoption/process" class="dropdown-item">Adoption Process</a></li><!--입양절차-->
                                 <li><a href="/adoption/list" class="dropdown-item">Meet Our Animals</a></li><!--동물소개(petlist)-->
                             </ul>
                         </li>
@@ -125,7 +135,7 @@
                     <div class="d-none d-lg-flex align-items-end">
                         <ul class="d-flex justify-content-end list-unstyled m-0">
                             <li>
-                                <a href="myinfo" class="mx-3">
+                                <a href="/user/user/myinfo" class="mx-3">
                                     <iconify-icon icon="healthicons:person" class="fs-4" style="color: #dead6f;"></iconify-icon>
                                 </a>
                             </li>

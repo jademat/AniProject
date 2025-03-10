@@ -21,8 +21,14 @@ public class AdoptionController {
     public String list() {
         return "views/user/adoption/list";
     }
+
     @GetMapping("/view")
     public String view() {
         return "views/user/adoption/view";
+    }
+
+    @GetMapping("/process")
+    public String process() {
+        return "views/user/adoption/process";
     }
 }

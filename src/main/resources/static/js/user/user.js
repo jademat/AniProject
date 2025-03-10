@@ -1,20 +1,25 @@
 const errorMessages = [
-    '아이디는 소문자로 시작하고, 영문자와 숫자만 사용 가능합니다 (최소 6자 ~ 최대 18자)',
-    '비밀번호는 영문 대소문자, 숫자, 특수문자를 포함해야 합니다 (최소 6자 ~ 최대 18자)',
-    '비밀번호가 일치하지 않습니다',
-    '이름은 한글 또는 영문자만 사용 가능합니다',
-    '올바른 이메일 형식이 아닙니다',
-    '자동가입방지를 확인하세요'];
+    '※ 아이디는 소문자로 시작하고, 영문자와 숫자만 사용 가능합니다 (최소 6자 ~ 최대 18자)',
+    '※ 비밀번호는 영문 대소문자, 숫자, 특수문자를 포함해야 합니다 (최소 6자 ~ 최대 18자)',
+    '※ 비밀번호가 일치하지 않습니다',
+    '※ 이름은 한글 또는 영문자만 사용 가능합니다',
+    '※ 전화번호를 입력해주세요(예: 010-1234-5678)',
+    '※ 주소 검색을 해주세요',
+    '※ 상세 주소를 입력해주세요',
+    '※ 올바른 이메일 형식이 아닙니다',
+    '※ 자동가입방지를 확인하세요'];
 
 const loginMessages = [
-    '아이디를 올바르게 입력하세요',
-    '비밀번호를 올바르게 입력하세요',
+    '※ 아이디를 올바르게 입력하세요',
+    '※ 비밀번호를 올바르게 입력하세요',
 ];
 const patterns = [
     /^[a-z][a-z0-9]{5,17}$/,
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,18}$/,
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,18}$/,
     /^[가-힣]{2,5}|[a-zA-Z]{2,10}$/,
+    /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}$/,
+    /^[\w\s,.-]{5,150}$/,
     /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
 ];
 
@@ -30,6 +35,9 @@ function clearErrorsMessages() {
 const validInputs = (form) => {
     let isValid = true;
 
+    // 먼저 기존의 에러 메시지를 모두 초기화
+    clearErrorsMessages();
+
     // 회원가입 폼안의 모든 input 요소 수집
     const inputs = form.querySelectorAll('input');
     inputs.forEach((input, idx) => {    // input 요소에 인덱스를 줘서 하나씩 검사
@@ -43,6 +51,20 @@ const validInputs = (form) => {
         displayErrorMessages(inputs[2], errorMessages[2]);
         isValid = false;
     }
+    // 전화번호 유효성 검사 추가
+    const phone = inputs[4].value;  // 전화번호 입력칸
+    if (!/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/.test(phone)) {
+        displayErrorMessages(inputs[4], errorMessages[4]);  // 전화번호 형식이 맞지 않으면 에러 메시지 표시
+        isValid = false;
+    }
+
+    // 주소 입력 여부 검사 추가
+    const addr = inputs[5].value;  // 주소 입력칸
+    if (!addr) {
+        displayErrorMessages(inputs[5], errorMessages[5]);  // 주소 입력이 없으면 에러 메시지 표시
+        isValid = false;
+    }
+
 
     return isValid;
 }
@@ -53,6 +75,15 @@ const displayErrorMessages = (input, message) => {
     error.className='error-message';
     error.textContent = message;
     input.parentElement.appendChild(error);
+
+    // 부모 요소에 에러 메시지를 추가
+    if (input.id === 'addr') {
+        // 주소 입력 필드의 경우, 주소 입력란 바로 아래에 메시지를 표시
+        input.parentElement.parentElement.appendChild(error);  // 부모의 부모에 추가 (주소 검색 버튼이 있는 부모의 부모)
+    } else {
+        // 나머지 필드들은 그냥 부모 요소에 추가
+        input.parentElement.appendChild(error);
+    }
 }
 
 // 비밀번호 해싱
@@ -95,13 +126,13 @@ const submitJoinFrm = async (frm) => {
     // 폼에 입력된 데이터를 formData 객체로 초기화
     const formData = new FormData(frm);
 
-    fetch('/user/join', {
+    fetch('/user/user/join', {
         method: 'POST',
         body: formData
     }).then(async response => {
         if (response.ok) {  // 회원가입이 정상적으로 처리되었다면
             alert('회원가입이 완료되었습니다!!');
-            location.href = '/user/login';
+            location.href = 'login';
         } else if (response.status === 400) {
             alert(await response.text());
         }else {     // 회원가입이 실패했다면
@@ -130,27 +161,25 @@ const validLogin = (form) => {
     return isValid;
 }
 
-// 로그인 폼 제출
 const submitLoginFrm = async (frm) => {
-
     frm.userpwd.value = await hashPassword(frm.userpwd.value);
     const formData = new FormData(frm);
 
-    fetch('/user/login', {
+    fetch('/user/user/login', {
         method: 'POST',
         body: formData
     }).then(async response => {
-        if (response.ok) {  // 로그인이 성공했다면
+        if (response.ok) {
             alert('로그인이 성공했습니다!!');
-            location.href = '/user/myinfo';
-        } else if (response.status === 400) {
-            alert(await response.text());
-        }else {     // 로그인이 실패했다면
-            alert('로그인 실패했습니다!! 다시 시도 해주세요!');
+            location.href = '/';
+        } else {
+            // 로그인 실패 시 서버에서 전달된 오류 메시지 출력
+            const errorText = await response.text();
+            alert(errorText);  // "아이디가 존재하지 않습니다." 또는 "비밀번호가 일치하지 않습니다."
+            location.href = '/user/user/login';
         }
-
-    }) .catch(error => {
+    }).catch(error => {
         console.error('login error:', error);
         alert('서버와 통신중 오류가 발생했습니다!! 관리자에게 문의하세요!');
     });
-} // submitLoginFrm
+}

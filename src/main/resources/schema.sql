@@ -21,8 +21,8 @@ create table if not exists admin (
 
 -- 게시판 테이블 (입양 후기)
 create table if not exists board (
-    bd_no int auto_increment,                           -- 게시글 번호
-    user_id varchar(18) not null,                       -- 게시글 작성자
+    bd_no int auto_increment primary key,                           -- 게시글 번호
+    uno int not null,                       -- 게시글 작성자
     bd_title varchar(128) not null,                     -- 게시글 제목
     bd_contents text not null ,                         -- 게시글 내용
     bd_regdate datetime default current_timestamp,      -- 게시글 작성일
@@ -30,21 +30,19 @@ create table if not exists board (
     bd_thumbs int default 0,                            -- 게시글 추천수
     bd_views int default 0,                             -- 게시글 조회수
     bd_report int default 0,                            -- 게시글 신고상태
-    primary key(bd_no),
-    foreign key (uno) references user (uno)
+    foreign key (uno) references users (uno)
 );
 
 -- 댓글 테이블
-create table if not exists replys (
-    re_no int auto_increment,                           -- 댓글 번호
-    ref_no int not null ,                               -- 대댓글 번호
-    user_id varchar(18) not null,                       -- 댓글 작성자
+create table if not exists reply (
+    re_no int auto_increment  primary key,              -- 댓글 번호
+    ref_no int,                                         -- 대댓글 번호
+    uno int not null,                                   -- 댓글 작성자
     bd_no int not null,                                 -- 게시글 번호
     re_con text not null ,                              -- 댓글 내용
     re_regdate datetime default current_timestamp,      -- 댓글 작성일
     re_update datetime,                                 -- 댓글 수정일
-    primary key(re_no),
-    foreign key (uno) references user (uno),
+    foreign key (uno) references users (uno),
     foreign key (bd_no) references board (bd_no)
 );
 
@@ -106,9 +104,9 @@ CREATE TABLE IF NOT EXISTS adopt (
     ado_reason TEXT NOT NULL,                                -- 입양 이유
     ado_cost VARCHAR(100) NOT NULL,                          -- 1년 양육비
     ado_source VARCHAR(100) NOT NULL,                        -- 경로 유입
-    ado_date datetime default current_timestamp              -- 신청일
-    foreign key (animal_no) references animal(animal_no),
-    foreign key (uno) references user (uno)
+    ado_date datetime default current_timestamp,              -- 신청일
+    foreign key (uno) references users (uno),
+    foreign key (animal_no) references animal (animal_no)
 );
 
 -- 입소
@@ -122,13 +120,13 @@ CREATE TABLE IF NOT EXISTS intake (
     ta_vaccinated VARCHAR(10) NOT NULL,                        -- 접종 여부
     ta_neutered VARCHAR(10) NOT NULL,                          -- 중성화 여부
     ta_history VARCHAR(10) NOT NULL,                           -- 질병 이력
-    ta_notes VARCHAR(300) NOT NULL,                            -- 특이 사항
-    ta_date DATE NOT NULL,                                     -- 입소 희망일
+    ta_notes text NOT NULL,                                    -- 특이 사항
+    ta_Hope VARCHAR(20) NOT NULL,                              -- 입소 희망일
     ta_ph VARCHAR(50) NOT NULL,                                -- 신청자 연락처
-    ta_ VARCHAR(20) NOT NULL,                                  -- 방문 or 픽업
+    ta_vp VARCHAR(20) NOT NULL,                                -- 방문 or 픽업
     ta_photo TEXT not null,                                    -- 동물 사진
     ta_date datetime default current_timestamp,                -- 신청일
-    foreign key (uno) references user (uno)
+    foreign key (uno) references users (uno)
 );
 
 -- 게시글 신고 0-일반/1-신고//2-삭제(사용자한테 삭제된 댓글 표시)
@@ -138,8 +136,8 @@ CREATE TABLE IF NOT EXISTS board_report (
     br_id VARCHAR(50) NOT NULL,                                -- 신고자 아이디
     br_category VARCHAR(20) NOT NULL,                          -- 신고 분류
     br_content TEXT NOT NULL,                                  -- 신고 내용
-    br_date DATE NOT NULL,                                     -- 신고일
-    br_status INT NOT NULL DEFAULT 0                           -- 신고 상태
+    br_date datetime default current_timestamp,                -- 신고일
+    br_status INT NOT NULL DEFAULT 0,                           -- 신고 상태
     foreign key (bd_no) references board (bd_no)
 );
 
@@ -147,12 +145,10 @@ CREATE TABLE IF NOT EXISTS board_report (
 CREATE TABLE IF NOT EXISTS reply_report (
     rr_no INT AUTO_INCREMENT PRIMARY KEY,                      -- 댓글 신고 번호
     re_no INT NOT NULL,                                        -- 댓글 번호
-    ref_no int not null,                                       -- 대댓글 번호
     reporter_id VARCHAR(50) NOT NULL,                          -- 신고자 아이디
     report_category VARCHAR(20) NOT NULL,                      -- 신고 분류
     report_content TEXT NOT NULL,                              -- 신고 내용
-    report_date DATE NOT NULL,                                 -- 신고일
-    report_status INT NOT NULL DEFAULT 0                       -- 신고 상태
-    foreign key (re_no) references replys (re_no),
-    foreign key (ref_no) references replys (ref_no)
+    report_date datetime default current_timestamp,            -- 신고일
+    report_status INT NOT NULL DEFAULT 0 ,                      -- 신고 상태
+    foreign key (re_no) references reply (re_no)
 );

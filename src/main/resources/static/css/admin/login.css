@@ -23,3 +23,9 @@ body {
 .form-control {
     height: calc(2.5rem + 2px);
 }
+.error-message {
+    color: #dc3545;
+    font-size: 0.95em;
+    margin: 10px 0;
+    /*display: none;*/
+}

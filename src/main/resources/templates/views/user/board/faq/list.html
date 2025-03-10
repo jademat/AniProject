@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/user/layout.html}">
+
+<th:block layout:fragment="content">
+
+    <div class="container">
+        <h2 class="my-4">자주 묻는 질문 (FAQ)</h2>
+        <div class="accordion" id="faqAccordion">
+
+            <!-- 질문 1 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        입양 절차는 어떻게 되나요?
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        입양을 원하시면 회원가입 후 마이페이지에서 입양 신청을 해주세요. 심사 후 연락을 드립니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 질문 2 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        입양 비용이 있나요?
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        기본적으로 입양 비용은 무료이며, 예방 접종 및 건강 검진 비용이 포함될 수 있습니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 질문 3 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        반려동물 입양 후 지원이 있나요?
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        네, 입양 후에도 건강 상담 및 사료 지원 프로그램이 제공됩니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 질문 4 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        반려동물 입양 시 필요한 서류는 무엇인가요?
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        입양 시 신분증 사본, 주소 증명 서류 및 입양 신청서를 제출하셔야 합니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 질문 5 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        입양 후 반려동물의 건강 관리는 어떻게 하나요?
+                    </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        입양 후 반려동물의 건강은 정기적인 건강 검진과 예방 접종을 통해 관리됩니다. 입양 후 1년 간의 건강 관리가 지원됩니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 질문 6 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSix">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                        입양 대기 시간은 얼마나 걸리나요?
+                    </button>
+                </h2>
+                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        입양 대기 시간은 신청서 제출 후 심사 과정에 따라 달라지며, 평균적으로 1주일에서 2주일 정도 소요됩니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 질문 7 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSeven">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                        입양 후 반려동물을 반환할 수 있나요?
+                    </button>
+                </h2>
+                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        입양 후 상황이 바뀌어 반려동물을 반환해야 하는 경우, 사전 협의 후 진행할 수 있습니다. 단, 반환 사유와 상황에 따라 다를 수 있습니다.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</th:block>
+
+<!-- 부모 템플릿에서 헤드 내용을 정의하므로, 이곳에서 추가적인 head는 필요하지 않음 -->
+
+</html>

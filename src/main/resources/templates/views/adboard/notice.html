@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layouts/admin/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block layout:fragment="content">
+    <main class="p-4">
+        <div class="container my-5">
+            <h2 class="text-center mb-4">공지사항 리스트</h2>
+
+            <!-- 공지사항 테이블 -->
+            <div class="table-container">
+                <div class="container text-end ">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#notModal">
+                        글작성
+                    </button>
+                </div>
+                <br>
+                <table class="table table-bordered table-hover text-center">
+                    <colgroup>
+                        <col style="width:7%">
+                        <col class="truncate" style="">
+                        <col style="width:12%">
+                        <col style="width:12%">
+                        <col style="width:15%">
+
+                    </colgroup>
+                    <thead class="table-dark">
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>관리</th>
+                    </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                    <tr>
+                        <td ></td>
+                        <td >hong@example.com</td>
+                        <td >관리자</td>
+                        <td >1</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" data-bs-target="#modifyModal" data-bs-toggle="modal"
+                                    type="button">수정
+                            </button>
+                            <button class="btn btn-sm btn-danger btn-action" id="delbtn">삭제</button>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- The Modal -->
+        <div class="modal" id="noticeModal">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Modal Heading</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        Modal body..
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- The Modal -->
+        <div class="modal" id="notModal">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Modal Heading</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        Modal body..
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">작성</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+    <th:block layout:fragment="script">
+
+    </th:block>
+</th:block>
+</html>

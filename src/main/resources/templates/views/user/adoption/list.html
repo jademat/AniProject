@@ -2,65 +2,32 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/user/layout.html}">
-
 <th:block layout:fragment="content">
     <main id="content">
-        <h2><i class="fa-solid fa-image"></i> 이미지 갤러리</h2>
-
-        <div class="row mt-5 mb-3">
-            <!-- 검색 영역 -->
-            <div class="row offset-1 col-7">
-                <div class="col-3">
-                    <select class="form-select" id="findtype">
-                        <option value="title">제목</option>
-                        <option value="userid">아이디</option>
-                        <option value="name">글쓴이</option>
-                        <option value="contents">내용</option>
-                        <option value="titcont">제목+내용</option>
-                    </select>
-                </div>
-                <div class="col-4">
-                    <input type="text" class="form-control col-2" id="findkey">
-                </div>
-                <div class="col-3">
-                    <button type="button" class="btn btn-light" id="findbtn">
-                        <i class="fa-solid fa-magnifying-glass"></i> 검색하기
-                    </button>
-                </div>
-            </div>
-
-            <!-- 새글쓰기 버튼 -->
-            <div class="col-3 text-end">
-                <button type="button" class="btn btn-light" id="newgalbtn">
-                    <i class="fa fa-plus-circle"></i> 새글쓰기
-                </button>
-            </div>
-        </div><!-- 검색 및 새글쓰기 -->
-
-        <div class="row justify-content-center mb-4">
-            <!-- 갤러리 이미지 리스트 -->
-            <div class="col-10 card" style="width: 18rem"
-                 th:each="gal : ${gals}">
-                <a href="#" th:href="@{/gallery/{id}(id=${gal.id})}">
-                    <img src="http://localhost/cdn/small/cowmeat01_small.jpg" class="card-img-top" alt="...">
-                </a>
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${gal.title}">갤러리 제목</h5>
-                    <p>
-                        <span th:text="${gal.userid}">작성자</span>
-                        <span style="float: right" th:text="${#strings.substring(gal.regdate,0,10)}">2023-07-20</span>
-                    </p>
-                    <p>
-                        <span><i class="fa-regular fa-thumbs-up"></i> <span th:text="${gal.thumbs}">0</span></span>
-                        <span style="float: right">
-                            <i class="fa-regular fa-eye"></i> <span th:text="${gal.views}">0</span>
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </div><!-- 갤러리 이미지 리스트 -->
-
+        <h2>입양 게시판</h2>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>동물 이름</th>
+                <th>종</th>
+                <th>입소 날짜</th>
+                <th>입양 상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="adoption : ${adoptions}">
+                <td th:text="${adoption.animalNo}">1</td>
+                <td>
+                    <a th:href="@{/adoption/view(animalNo=${adoption.animalNo})}"
+                       th:text="${adoption.nm}">동물 이름</a>
+                </td>
+                <td th:text="${adoption.spcs}">종</td>
+                <td th:text="${#dates.format(adoption.entrncDate, 'yyyy-MM-dd')}">입소 날짜</td>
+                <td th:text="${adoption.adpSttus}">입양 상태</td>
+            </tr>
+            </tbody>
+        </table>
     </main>
 </th:block>
-
 </html>

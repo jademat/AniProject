@@ -1,4 +1,4 @@
-package project.animalfoot.aniproject.domain;
+package project.animalfoot.aniproject.domain.user;
 
 import lombok.Builder;
 import lombok.Data;

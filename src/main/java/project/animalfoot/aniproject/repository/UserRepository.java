@@ -1,7 +1,7 @@
 package project.animalfoot.aniproject.repository;
 
-import project.animalfoot.aniproject.domain.User;
-import project.animalfoot.aniproject.domain.UserDTO;
+import project.animalfoot.aniproject.domain.user.User;
+import project.animalfoot.aniproject.domain.user.UserDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

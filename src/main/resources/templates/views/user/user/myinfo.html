@@ -3,43 +3,161 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/user/layout}">
 
-        <th:block layout:fragment="css">
-            <link href="/css/user.css" rel="stylesheet">
-        </th:block>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fb;
+            margin: 0;
+            padding: 0;
+            font-weight: bold;
+        }
 
-        <th:block layout:fragment="content">
-            <main id="content">
-                <h2>회원정보</h2>
-                <div id="myinfo">
-                    <table class="table table-bordered mb-0">
-                        <!-- 테이블의 컬럼 너비, 스타일 지정 -->
-                        <colgroup>
-                            <col style="width: 30%">
-                            <col>
-                        </colgroup>
-                        <tbody>
-                            <tr>
-                                <td>아이디</td>
-                                <td><span th:text="${session.loginUser.userid}"></span></td>
-                            </tr>
+        #myinfo {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(234, 0, 0, 0.1);
+        }
 
-                            <tr>
-                                <td>이름</td>
-                                <td><span th:text="${session.loginUser.name}"></span></td>
-                            </tr>
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
 
-                            <tr>
-                                <td>이메일</td>
-                                <td><span th:text="${session.loginUser.email}"></span></td>
-                            </tr>
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
 
-                            <tr>
-                                <td>가입일</td>
-                                <td><span th:text="${#temporals.format(session.loginUser.regdate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+        .card-header {
+            background-color: #f4f4f4;
+            padding: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 2px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 1rem;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-edit:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="content">
+    <main id="content">
+        <h2 class="text-center mb-4">회원정보</h2>
+
+        <!-- 카드 형식으로 회원정보 감싸기 -->
+        <div class="card" id="myinfo">
+            <div class="card-header">
+                회원 정보
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered mb-0">
+                    <colgroup>
+                        <col style="width: 30%">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <td>아이디</td>
+                        <td>
+                            <!-- 카카오 로그인 사용자일 경우 kakaoId 표시, 아니면 userid 표시 -->
+                            <span th:text="${session.loginUser.kakaoId != null ? session.loginUser.kakaoId : session.loginUser.userid}"></span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>이름</td>
+                        <td>
+                            <span th:text="${session.loginUser.name != null ? session.loginUser.name : '이름 없음'}"></span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>전화번호</td>
+                        <td>
+                            <span th:text="${session.loginUser.phone != null ? session.loginUser.phone : '전화번호 없음'}"></span>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>이메일</td>
+                        <td>
+                            <span th:text="${session.loginUser.email != null ? session.loginUser.email : '이메일 없음'}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>주소</td>
+                        <td>
+                            <span th:text="${session.loginUser.addr != null ? session.loginUser.addr : '주소 없음'}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>상세주소</td>
+                        <td>
+                            <span th:text="${session.loginUser.detailaddr != null ? session.loginUser.detailaddr : '상세주소 없음'}"></span>
+                        </td>
+                    </tr>
+
+
+
+
+                    <tr>
+                        <td>가입일</td>
+                        <td>
+                            <span th:text="${session.loginUser.regdate != null ? #temporals.format(session.loginUser.regdate, 'yyyy-MM-dd HH:mm:ss') : '가입일 없음'}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- 회원정보 수정 버튼 -->
+                <div class="d-flex justify-content-center py-3">
+                    <a href="/user/user/edit" class="btn-edit">
+                        <i class="fa-solid fa-user-edit"></i> 회원정보 수정
+                    </a>
                 </div>
-            </main>
-        </th:block>
+            </div>
+        </div>
+    </main>
+</th:block>
+
 </html>

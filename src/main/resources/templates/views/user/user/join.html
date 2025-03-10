@@ -3,98 +3,292 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/user/layout}">
 
-        <head> <!-- layout.html의 head - styles 태그에 자동 삽입-->
-            <style>
-                .error-message {
-                    color: #dc3545;
-                    font-size: 0.95em;
-                    margin: 10px;
-                    /*display: none;*/
-                }
-                #joinfrm {
-                    max-width: 450px;
-                    width: 100%;
-                    margin: 20px auto;
-                    padding: 20px;
-                    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-                    border-radius: 8px;
-                }
-                h2 {
-                    margin-top: 50px; /* h2 위쪽 간격 추가 */
-                    margin-bottom: 20px; /* h2와 카드 사이 간격 조정 */
-                }
-            </style>
-        </head>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fb;
+            margin: 0;
+            padding: 0;
+        }
 
-        <th:block layout:fragment="content">
-            <main id="content">
-                <h2 class="text-center mb-4">회원가입</h2>
-                <form name="joinfrm" id="joinfrm" method="post" novalidate>
+        #joinfrm {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(234, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 40px;
+            box-sizing: border-box;
+        }
 
-                    <!-- db의 컬럼명과 id는 같아야함 (schema.sql 참고) -->
-                    <div class="form-floating my-2">
-                        <input type="text" name="userid" id="userid" class="form-control"
-                               placeholder="아이디" required minlength="6" maxlength="18">
-                        <label for="userid" class="form-label">아이디</label>
-                    </div>
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
 
-                    <div class="form-floating my-2">
-                        <input type="password" name="userpwd" id="userpwd" class="form-control"
-                               placeholder="비밀번호" required minlength="6" maxlength="18">
-                        <label for="userpwd" class="form-label">비밀번호</label>
-                    </div>
+        .input-container {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
-                    <div class="form-floating my-2">
-                        <input type="password" name="reuserpwd" id="reuserpwd" class="form-control"
-                               placeholder="비밀번호 확인" required minlength="6" maxlength="18">
-                        <label for="reuserpwd" class="form-label">비밀번호 확인</label>
-                    </div>
+        .input-container label {
+            font-size: 1rem;
+            font-weight: bold !important;
+            color: #050505 !important;
+            display: block;
+            margin-bottom: 5px;
+        }
 
-                    <div class="form-floating my-2">
-                        <input type="text" name="name" id="name" class="form-control"
-                               placeholder="이름" required>
-                        <label for="name" class="form-label">이름</label>
-                    </div>
+        .form-control {
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s ease;
+            height: 50px;
+        }
 
-                    <div class="form-floating my-2">
-                        <input type="email" name="email" id="email" class="form-control"
-                               placeholder="이메일" required>
-                        <label for="email" class="form-label">이메일</label>
+        .form-control:focus {
+            border-color: #5c6bc0;
+            outline: none;
+        }
 
-                    </div>
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+            height: 50px;
+        }
 
-                    <div class="my-2 d-flex justify-content-center">
-                        <img src="/image/captcha.png">
-                    </div>
+        .btn-primary {
+            background-color: #5c6bc0;
+            color: white;
+        }
 
-                    <div class="my-2 d-flex justify-content-between">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-solid fa-file-signature"></i> 입력완료</button>
-                        <button type="reset" class="btn btn-danger">
-                            <i class="fa-sharp fa-solid fa-eraser"></i> 다시입력</button>
-                    </div>
-                </form>
-            </main>
-        </th:block>
+        .btn-primary:hover {
+            background-color: #3f4fa4;
+        }
 
-        <!-- 자바스크립트 코드는 끝단에 작성 -->
-        <th:block layout:fragment="script">
-            <script src="/js/user.js"></script>
-            <script>
-                const joinfrm = document.querySelector('#joinfrm'); /* # : id가 joinfrm인것 찾아오는 선택자 */
+        .btn-danger {
+            background-color: #e57373;
+            color: white;
+        }
 
-                joinfrm.addEventListener("submit", (e) => {
-                    e.preventDefault(); // submit 버튼 기능 중지
+        .btn-danger:hover {
+            background-color: #e04d47;
+        }
 
-                    clearErrorsMessages();  // 에러메세지 초기화
+        .btn-secondary {
+            background-color: #b0bec5;
+            color: white;
+            font-weight: 600;
+        }
 
-                    // 입력 요소 유효성 검사
-                    let isValid = validInputs(joinfrm);
+        .btn-secondary:hover {
+            background-color: #90a4ae;
+        }
 
-                    if (isValid)  submitJoinFrm(joinfrm); // 회원정보를 정삭적으로 작성했다면
+        .addr-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
+        #addr {
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            height: 50px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #addrSerBtn {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 6px;
+            background-color: #000000;
+            color: white;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .detail-address-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .my-2 {
+            margin: 20px 0;
+        }
+
+        .captcha-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            font-weight: bold;
+            margin-top: 40px;
+        }
+
+        .error-message {
+            color: #e57373;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            padding-left: 10px;
+            font-weight: 600;
+        }
+
+        .input-container.email-container {
+            margin-bottom: 70px;
+        }
+
+        /* 입양 신청 여부 체크박스를 한 줄로 */
+        .adoption-container {
+            display: flex;
+            align-items: center;
+            gap: 50px; /* 간격을 약간 띄워서 한 줄로 배치 */
+            margin-top: 20px;
+            margin-bottom: 70px;
+            font-size: 1rem;
+        }
+
+        .adoption-container label {
+            margin: 0; /* 라벨 사이에 간격 */
+        }
+
+    </style>
+
+</head>
+
+<th:block layout:fragment="content">
+    <main id="content">
+        <h2 class="text-center mb-4">회원가입</h2>
+        <form name="joinfrm" id="joinfrm" method="post" novalidate>
+
+            <div class="input-container">
+                <label class="input-label" for="userid">아이디</label>
+                <input type="text" name="userid" id="userid" class="form-control"
+                       required minlength="6" maxlength="18">
+            </div>
+
+            <div class="input-container">
+                <label class="input-label" for="userpwd">비밀번호</label>
+                <input type="password" name="userpwd" id="userpwd" class="form-control"
+                       required minlength="6" maxlength="18">
+            </div>
+
+            <div class="input-container">
+                <label class="input-label" for="reuserpwd">비밀번호 확인</label>
+                <input type="password" name="reuserpwd" id="reuserpwd" class="form-control"
+                       required minlength="6" maxlength="18">
+            </div>
+
+            <div class="input-container">
+                <label class="input-label" for="name">이름</label>
+                <input type="text" name="name" id="name" class="form-control"
+                       required>
+            </div>
+
+            <div class="input-container">
+                <label class="input-label" for="phone">전화번호</label>
+                <input type="text" name="phone" id="phone" class="form-control">
+            </div>
+
+            <div class="input-container">
+                <label class="input-label" for="addr">주소</label>
+                <div class="addr-container">
+                    <input type="text" name="addr" id="addr" class="form-control" required readonly>
+                    <button type="button" id="addrSerBtn" class="btn btn-secondary">주소 검색</button>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <label class="input-label" for="detailAddr">상세 주소</label>
+                <input type="text" name="detailaddr" id="detailaddr" class="form-control" required>
+            </div>
+
+            <div class="input-container email-container">
+                <label class="input-label" for="email">이메일</label>
+                <input type="email" name="email" id="email" class="form-control"
+                       required>
+            </div>
+
+            <!-- 입양 신청 여부 -->
+            <!--<div class="input-container adoption-container">
+                <label>입양 신청 여부:</label>
+                <label>
+                    <input type="radio" name="adopt" id="adoptYes" value="yes" required>
+                    예
+
+                    <input type="radio" name="adopt" id="adoptNo" value="no" required>
+                    아니오
+                </label>
+            </div>-->
+
+            <div class="my-2 d-flex justify-content-between">
+                <button type="reset" class="btn btn-danger">다시 입력</button>
+                <button type="submit" class="btn btn-primary">회원가입</button>
+            </div>
+        </form>
+    </main>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script src="/static/js/user/user.js"></script>
+    <script>
+        function initializeKakao() {
+            if (typeof Kakao !== 'undefined') {
+                Kakao.init('1a152773c6d089e9e33ccb3d22718fce');
+                document.querySelector('#addrSerBtn').addEventListener('click', function() {
+                    new daum.Postcode({
+                        oncomplete: function(data) {
+                            document.querySelector('#addr').value = data.address;
+                            document.querySelector('#addr').removeAttribute('readonly');
+                        }
+                    }).open();
                 });
+            } else {
+                console.error("카카오 SDK가 로드되지 않았습니다.");
+            }
+        }
 
-            </script>
-        </th:block>
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeKakao();
+        });
+
+        const joinfrm = document.querySelector('#joinfrm');
+        joinfrm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            clearErrorsMessages();
+            let isValid = validInputs(joinfrm);
+            if (isValid) submitJoinFrm(joinfrm);
+        });
+    </script>
+</th:block>
 </html>

@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import project.animalfoot.aniproject.domain.User;
 import project.animalfoot.aniproject.domain.UserDTO;
 import project.animalfoot.aniproject.service.UserService;
 
@@ -34,21 +34,22 @@ public class UserController {
         log.info("submit된 회원 정보 : {}", user);
 
         try {
-            // 정상 처리 시 상태코드 200으로 응답
+            // 정상 처리 시 상태 코드 200으로 응답
             userService.newUser(user);
-            response = ResponseEntity.ok().build();
-        }catch (IllegalStateException e) {
-            // 비정상 처리 시 상태코드 400으로 응답. - 클라이언트 잘못.
+            // 성공 후 메인 페이지로 리디렉션
+            return ResponseEntity.ok().body("redirect:/");  // 메인 페이지로 리디렉션
+        } catch (IllegalStateException e) {
+            // 비정상 처리 시 상태 코드 400으로 응답 - 클라이언트 잘못.
             // 중복 아이디나 중복 이메일 사용 시
             response = ResponseEntity.badRequest().body(e.getMessage());
             e.printStackTrace();
-        }catch (Exception e) {
-            // 비정상 처리 시 상태코드 500으로 응답 - 서버 잘못
+        } catch (Exception e) {
+            // 비정상 처리 시 상태 코드 500으로 응답 - 서버 잘못
+            log.error("회원가입 중 예외 발생", e);
             e.printStackTrace();
         }
 
         return response;
-
     }
 
     @GetMapping("/user/login")
@@ -56,42 +57,56 @@ public class UserController {
         return "views/user/user/login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     public ResponseEntity<?> loginok(UserDTO user, HttpSession session) {
-        // 로그인 처리시 기타오류 발생에 대한 응답코드 설정
         ResponseEntity<?> response = ResponseEntity.internalServerError().build();
-
         log.info("submit된 로그인 정보 : {}", user);
 
         try {
-            // 정상 처리 시 상태코드 200으로 응답
-            User loginUser = userService.loginUser(user);
-            session.setAttribute("loginUser", loginUser);
-            session.setMaxInactiveInterval(600);   // 세션 유지 : 10분
+            // 로그인 처리
+            UserDTO loginUser = userService.loginUser(user); // 로그인 처리
+            if (loginUser != null) {
+                // 로그인 성공
+                session.setAttribute("loginUser", loginUser); // 로그인 세션 설정
+                session.setMaxInactiveInterval(600); // 세션 유지 시간 설정: 10분
 
-            response = ResponseEntity.ok().build();
-        }catch (IllegalStateException e) {
-            // 비정상 처리 시 상태코드 400으로 응답. - 클라이언트 잘못.
-            // 아이디나 비밀번호 잘못 입력 시
+                response = ResponseEntity.ok().build();
+            }
+        } catch (IllegalStateException e) {
             response = ResponseEntity.badRequest().body(e.getMessage());
             e.printStackTrace();
-        }catch (Exception e) {
-            // 비정상 처리 시 상태코드 500으로 응답 - 서버 잘못
+
+        } catch (Exception e) {
             e.printStackTrace();
+
         }
 
         return response;
-
     }
 
+    @GetMapping("/user/myinfo")
+    public String getMyInfo(Model model, HttpSession session) {
+        UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
 
+        if (loginUser == null) {
+            return "redirect:login";  // 로그인되지 않았다면 로그인 페이지로 리다이렉트
+        }
+
+        try {
+            model.addAttribute("user", loginUser);
+            return "views/user/user/myinfo";  // myinfo.html로 사용자 정보 전달
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";  // 오류 발생 시 error.html로 리다이렉트
+        }
+    }
 
 
 
     @GetMapping("/user/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // 세션 제거
-        return "redirect:/";
+        session.invalidate();  // 세션 삭제 (로그아웃)
+        return "redirect:/";  // 로그아웃 후 메인 페이지로 이동
     }
 
 
@@ -110,10 +125,6 @@ public class UserController {
         return "views/user/aboutus/burget";
     }
 
-    @GetMapping("/aboutus/adoptionProgress")
-    public String adoption() {
-        return "views/user/aboutus/adoptionProgress";
-    }
 
 
 }

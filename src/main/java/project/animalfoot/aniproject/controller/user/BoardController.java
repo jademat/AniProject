@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import project.animalfoot.aniproject.service.BoardService;
+import project.animalfoot.aniproject.service.user.BoardService;
 
 @Slf4j
 @Controller
@@ -19,6 +19,8 @@ public class BoardController {
     public String adoptionList() {
         return "views/user/board/review/list";
     }
+
+
 
     @GetMapping("/review/view")
     public String adoptionView() {

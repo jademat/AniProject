@@ -1,7 +1,7 @@
-package project.animalfoot.aniproject.service;
+package project.animalfoot.aniproject.service.user;
 
-import project.animalfoot.aniproject.domain.User;
-import project.animalfoot.aniproject.domain.UserDTO;
+import project.animalfoot.aniproject.domain.user.User;
+import project.animalfoot.aniproject.domain.user.UserDTO;
 import project.animalfoot.aniproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

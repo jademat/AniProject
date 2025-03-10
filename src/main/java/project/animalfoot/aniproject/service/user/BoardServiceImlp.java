@@ -1,4 +1,4 @@
-package project.animalfoot.aniproject.service;
+package project.animalfoot.aniproject.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

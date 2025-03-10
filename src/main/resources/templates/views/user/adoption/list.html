@@ -5,61 +5,29 @@
 
 <th:block layout:fragment="content">
     <main id="content">
-        <h2><i class="fa-solid fa-image"></i> 이미지 갤러리</h2>
+        <h2><i class="fa-solid fa-paw"></i> 입양 가능한 동물 리스트</h2>
 
-        <div class="row mt-5 mb-3">
-            <!-- 검색 영역 -->
-            <div class="row offset-1 col-7">
-                <div class="col-3">
-                    <select class="form-select" id="findtype">
-                        <option value="title">제목</option>
-                        <option value="userid">아이디</option>
-                        <option value="name">글쓴이</option>
-                        <option value="contents">내용</option>
-                        <option value="titcont">제목+내용</option>
-                    </select>
-                </div>
-                <div class="col-4">
-                    <input type="text" class="form-control col-2" id="findkey">
-                </div>
-                <div class="col-3">
-                    <button type="button" class="btn btn-light" id="findbtn">
-                        <i class="fa-solid fa-magnifying-glass"></i> 검색하기
-                    </button>
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card-deck">
+                    <div class="card" style="width: 18rem" th:each="animal : ${animals}">
+                        <a href="#" th:href="@{/adoption/view(id=${animal.animalNo})}">
+                            <img th:src="${animalPics[animal.animalNo]}" class="card-img-top" alt="동물 이미지">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${animal.name}">동물 이름</h5>
+                            <p th:text="${animal.species}">종</p>
+                            <p th:text="${animal.entryDate}">입소일</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- 새글쓰기 버튼 -->
-            <div class="col-3 text-end">
-                <button type="button" class="btn btn-light" id="newgalbtn">
-                    <i class="fa fa-plus-circle"></i> 새글쓰기
-                </button>
-            </div>
-        </div><!-- 검색 및 새글쓰기 -->
-
-        <div class="row justify-content-center mb-4">
-            <!-- 갤러리 이미지 리스트 -->
-            <div class="col-10 card" style="width: 18rem"
-                 th:each="gal : ${gals}">
-                <a href="#" th:href="@{/gallery/{id}(id=${gal.id})}">
-                    <img src="http://localhost/cdn/small/cowmeat01_small.jpg" class="card-img-top" alt="...">
-                </a>
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${gal.title}">갤러리 제목</h5>
-                    <p>
-                        <span th:text="${gal.userid}">작성자</span>
-                        <span style="float: right" th:text="${#strings.substring(gal.regdate,0,10)}">2023-07-20</span>
-                    </p>
-                    <p>
-                        <span><i class="fa-regular fa-thumbs-up"></i> <span th:text="${gal.thumbs}">0</span></span>
-                        <span style="float: right">
-                            <i class="fa-regular fa-eye"></i> <span th:text="${gal.views}">0</span>
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </div><!-- 갤러리 이미지 리스트 -->
-
+        <h3>동물 상태</h3>
+        <div th:each="status : ${animalStatusList}">
+            <p th:text="'지역: ' + ${status.district} + ', 개 수: ' + ${status.totalDogs} + ', 입양된 개: ' + ${status.adoptedDogs} + ', 안락사된 개: ' + ${status.euthanizedDogs}">상태 정보</p>
+        </div>
     </main>
 </th:block>
 

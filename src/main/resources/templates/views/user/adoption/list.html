@@ -2,32 +2,33 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/user/layout.html}">
+
 <th:block layout:fragment="content">
     <main id="content">
-        <h2>입양 게시판</h2>
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>번호</th>
-                <th>동물 이름</th>
-                <th>종</th>
-                <th>입소 날짜</th>
-                <th>입양 상태</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="adoption : ${adoptions}">
-                <td th:text="${adoption.animalNo}">1</td>
-                <td>
-                    <a th:href="@{/adoption/view(animalNo=${adoption.animalNo})}"
-                       th:text="${adoption.nm}">동물 이름</a>
-                </td>
-                <td th:text="${adoption.spcs}">종</td>
-                <td th:text="${#dates.format(adoption.entrncDate, 'yyyy-MM-dd')}">입소 날짜</td>
-                <td th:text="${adoption.adpSttus}">입양 상태</td>
-            </tr>
-            </tbody>
-        </table>
+        <h2><i class="fa-solid fa-paw"></i> 입양 가능한 동물 리스트</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card-deck">
+                    <div class="card" style="width: 18rem" th:each="animal : ${animals}">
+                        <a href="#" th:href="@{/adoption/view(id=${animal.animalNo})}">
+                            <img th:src="${animalPics[animal.animalNo]}" class="card-img-top" alt="동물 이미지">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${animal.name}">동물 이름</h5>
+                            <p th:text="${animal.species}">종</p>
+                            <p th:text="${animal.entryDate}">입소일</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>동물 상태</h3>
+        <div th:each="status : ${animalStatusList}">
+            <p th:text="'지역: ' + ${status.district} + ', 개 수: ' + ${status.totalDogs} + ', 입양된 개: ' + ${status.adoptedDogs} + ', 안락사된 개: ' + ${status.euthanizedDogs}">상태 정보</p>
+        </div>
     </main>
 </th:block>
+
 </html>

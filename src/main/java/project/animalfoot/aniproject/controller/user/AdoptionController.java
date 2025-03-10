@@ -1,4 +1,3 @@
-
 package project.animalfoot.aniproject.controller.user;
 
 import lombok.RequiredArgsConstructor;
@@ -6,13 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
-import project.animalfoot.aniproject.domain.user.AdoptionDTO;
-import project.animalfoot.aniproject.domain.user.AdoptionPicDTO;
-import project.animalfoot.aniproject.domain.user.AdoptionStatusDTO;
-import project.animalfoot.aniproject.service.user.AdoptionService;
+import project.animalfoot.aniproject.service.user.AnimalServiceImpl;
+
 
 import java.util.List;
 
@@ -22,32 +17,23 @@ import java.util.List;
 @Slf4j
 public class AdoptionController {
 
-    private final AdoptionService adoptionService;
+    private final AnimalServiceImpl animalService;
 
-
-    // 리스트 페이지: 모든 입양 동물 리스트 조회
+    // 입양 리스트 페이지
     @GetMapping("/list")
     public String list(Model model) {
-        List<AdoptionDTO> adoptionList = adoptionService.getAllAdoptions();
-        model.addAttribute("adoptions", adoptionList);
-        return "views/user/adoption/list";  // Thymeleaf 뷰
+        // 동물 목록을 서비스에서 가져와서 모델에 추가
+        List<AnimalDTO> animalList = animalService.getAnimalListForAdoption();
+        model.addAttribute("animals", animalList);  // animals라는 이름으로 동물 목록 전달
+        return "views/user/adoption/list";  // 입양 리스트 화면
     }
 
-    // 상세 보기 페이지: 선택된 입양 동물 상세 정보 조회
+    @GetMapping("/write")
+    public String write() {
+        return "views/user/adoption/write";
+    }
     @GetMapping("/view")
-    public String view(int animalNo, Model model) {
-        AdoptionDTO adoption = adoptionService.getAdoptionByAnimalNo(animalNo);
-        List<AdoptionPicDTO> pics = adoptionService.getPicsByAnimalNo(animalNo);
-        model.addAttribute("adoption", adoption);
-        model.addAttribute("pics", pics);
-        return "views/user/adoption/view";  // 상세 정보 뷰
+    public String view() {
+        return "views/user/adoption/view";
     }
-    // 입양 신청 페이지로 이동
-    @GetMapping("/write/{animalNo}")
-    public String apply(@PathVariable("animalNo") int animalNo, Model model) {
-        AdoptionDTO adoption = adoptionService.getAdoptionByAnimalNo(animalNo);
-        model.addAttribute("adoption", adoption);
-        return "views/user/adoption/write";  // 입양 신청 페이지 뷰
-    }
-
 }

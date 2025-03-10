@@ -6,7 +6,7 @@
             <h2>관리자 페이지</h2>
             <div class="header-buttons d-flex">
                 <button class="btn btn-primary" id = "homebtn">홈으로</button>
-                <button class="btn btn-primary">로그아웃</button>
+                <button class="btn btn-primary" id = "outbtn">로그아웃</button>
             </div>
         </div>
     </div>
@@ -14,9 +14,13 @@
     <th:block layout:fragment="script">
         <script>
             let homebtn = document.querySelector("#homebtn")
-
+            let outbtn = document.querySelector("#outbtn")
             homebtn.addEventListener('click', (e) =>{
                 location.href=`/`;
+            });
+
+            outbtn.addEventListener('click', (e)=>{
+               location.href=`/admin/login`;
             });
         </script>
     </th:block>

@@ -148,3 +148,13 @@ CREATE TABLE IF NOT EXISTS reply_report (
     report_status INT NOT NULL DEFAULT 0 ,                      -- 신고 상태
     foreign key (re_no) references reply (re_no)
 );
+
+-- 공지사항 게시판
+CREATE TABLE IF NOT EXISTS not_board (
+    not_no int auto_increment primary key,                     -- 공지사항 번호
+    ad_id varchar(15) not null,                                -- 공지사항 작성자
+    not_title varchar(30) not null,                            -- 공지사항 제목
+    not_cont text not null,                                    -- 공지사항 내용
+    not_date datetime default current_timestamp,              -- 공지사항 작성일
+    foreign key (ad_id) references admin(ad_id)
+);

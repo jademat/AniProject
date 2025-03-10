@@ -1,14 +1,13 @@
 package project.animalfoot.aniproject.service.user;
 
-import project.animalfoot.aniproject.domain.user.AdoptionDTO;
-import project.animalfoot.aniproject.domain.user.AdoptionPicDTO;
-import project.animalfoot.aniproject.domain.user.AdoptionStatusDTO;
+import project.animalfoot.aniproject.domain.user.AnimalDTO;
+import project.animalfoot.aniproject.domain.user.AnimalPicDTO;
 
 import java.util.List;
 
 public interface AdoptionService {
-    List<AdoptionDTO> getAllAdoptions();
-    AdoptionDTO getAdoptionByAnimalNo(int animalNo);
-    List<AdoptionPicDTO> getPicsByAnimalNo(int animalNo);
+    List<AnimalDTO> getAllAdoptions();
+    AnimalDTO getAdoptionByAnimalNo(int animalNo);
+    List<AnimalPicDTO> getPicsByAnimalNo(int animalNo);
 
 }

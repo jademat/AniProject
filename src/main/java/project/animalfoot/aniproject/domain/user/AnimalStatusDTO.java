@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class AdoptionStatusDTO {
+public class AnimalStatusDTO {
     private String district;         // 지역 구분
     private int total;               // 전체 동물 수
     private int totalDogs;           // 전체 개 수

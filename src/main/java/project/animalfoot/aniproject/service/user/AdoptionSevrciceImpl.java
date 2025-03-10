@@ -2,12 +2,10 @@
 package project.animalfoot.aniproject.service.user;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import project.animalfoot.aniproject.domain.user.AdoptionDTO;
-import project.animalfoot.aniproject.domain.user.AdoptionPicDTO;
-import project.animalfoot.aniproject.domain.user.AdoptionStatusDTO;
-import project.animalfoot.aniproject.repository.AdoptionRepository;
+import project.animalfoot.aniproject.domain.user.AnimalDTO;
+import project.animalfoot.aniproject.domain.user.AnimalPicDTO;
+import project.animalfoot.aniproject.repository.AnimalRepository;
 
 import java.util.List;
 
@@ -15,20 +13,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdoptionSevrciceImpl implements AdoptionService {
 
-    private final AdoptionRepository adoptionRepository;
+    private final AnimalRepository adoptionRepository;
 
     @Override
-    public List<AdoptionDTO> getAllAdoptions() {
+    public List<AnimalDTO> getAllAdoptions() {
         return adoptionRepository.findAllAdoptions();
     }
 
     @Override
-    public AdoptionDTO getAdoptionByAnimalNo(int animalNo) {
+    public AnimalDTO getAdoptionByAnimalNo(int animalNo) {
         return adoptionRepository.findAdoptionByAnimalNo(animalNo);
     }
 
     @Override
-    public List<AdoptionPicDTO> getPicsByAnimalNo(int animalNo) {
+    public List<AnimalPicDTO> getPicsByAnimalNo(int animalNo) {
         return adoptionRepository.findPicsByAnimalNo(animalNo);
     }
 }

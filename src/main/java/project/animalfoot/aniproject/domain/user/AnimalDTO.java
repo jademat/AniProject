@@ -2,13 +2,13 @@ package project.animalfoot.aniproject.domain.user;
 
 import lombok.Builder;
 import lombok.Data;
-import java.beans.Transient;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Builder
 @Data
-public class AdoptionDTO {
+public class AnimalDTO {
     private int animalNo;           // 동물 번호
     private String nm;              // 동물 이름
     private Date entrncDate;        // 입소 날짜

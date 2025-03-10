@@ -5,7 +5,7 @@
 
 <th:block layout:fragment="content">
     <main id="content">
-        <h2>입소 신청</h2>
+        <h2>입소 신청 게시판</h2>
         <table class="table table-striped">
             <colgroup>
                 <col style="width:7%">
@@ -84,4 +84,20 @@
     </main>
 </th:block>
 <!--javascript 코드 제거, 게시물 목록/페이지 네이션-->
+
+
+<th:block layout:fragment="script">
+    <script>
+        let newbdtn = document.querySelector("#newbdbtn");
+
+        newbdtn?.addEventListener('click',(e) => {
+
+            location.href='/board/admission/write';
+        });
+
+
+    </script>
+
+
+</th:block>
 </html>

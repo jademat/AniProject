@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="project.animalfoot.aniproject.repository.AnimalRepository">
+
+    <!-- 입양 동물 목록 가져오기 -->
+    <select id="getAdoptionList" resultType="project.animalfoot.aniproject.domain.user.AnimalDTO">
+        SELECT * FROM adoption
+    </select>
+
+    <!-- 입양 동물 상세보기 -->
+    <select id="getAdoptionById" resultType="project.animalfoot.aniproject.domain.user.AnimalDTO">
+        SELECT * FROM adoption WHERE animal_no = #{animalNo}
+    </select>
+</mapper>

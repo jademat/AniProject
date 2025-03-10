@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import project.animalfoot.aniproject.domain.UserDTO;
-import project.animalfoot.aniproject.service.UserService;
+import project.animalfoot.aniproject.domain.user.UserDTO;
+import project.animalfoot.aniproject.service.user.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

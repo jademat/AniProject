@@ -13,12 +13,18 @@ const loginMessages = [
     '※ 아이디를 올바르게 입력하세요',
     '※ 비밀번호를 올바르게 입력하세요',
 ];
+
+const editMessages = [
+    '※ 비밀번호는 영문 대소문자, 숫자, 특수문자를 포함해야 합니다 (최소 6자 ~ 최대 18자)',
+    '※ 비밀번호가 일치하지 않습니다',
+]
+
 const patterns = [
     /^[a-z][a-z0-9]{5,17}$/,
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,18}$/,
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,18}$/,
     /^[가-힣]{2,5}|[a-zA-Z]{2,10}$/,
-    /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}$/,
+    /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/,
     /^[\w\s,.-]{5,150}$/,
     /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
 ];
@@ -123,6 +129,8 @@ const submitJoinFrm = async (frm) => {
     frm.userpwd.value = await hashPassword(frm.userpwd.value);
     console.log(frm.userpwd.value);
 
+
+
     // 폼에 입력된 데이터를 formData 객체로 초기화
     const formData = new FormData(frm);
 
@@ -144,6 +152,101 @@ const submitJoinFrm = async (frm) => {
         alert('서버와 통신중 오류가 발생했습니다!! 관리자에게 문의하세요!');
     });
 } // submitJoinFrm
+
+const submitEditFrm = async (frm) => {
+    // Web Crypto API로 비밀번호 암호화
+    frm.userpwd.value = await hashPassword(frm.userpwd.value);
+
+    // 폼에 입력된 데이터를 formData 객체로 초기화
+    const formData = new FormData(frm);
+
+    fetch('/user/user/edit', {
+        method: 'POST',
+        body: formData
+    }).then(async response => {
+        if (response.ok) {  // 회원정보 수정 정상적으로 처리되었다면
+            alert('변경이 완료되었습니다!!');
+            location.href = 'myinfo';
+        } else if (response.status === 400) {
+            alert(await response.text());
+        }else {     // 회원정보 수정이 실패했다면
+            alert('회원가입에 실패했습니다!! 다시 시도 해주세요!');
+        }
+
+    }) .catch(error => {
+        console.error('edit error:', error);
+        alert('서버와 통신중 오류가 발생했습니다!! 관리자에게 문의하세요!');
+    });
+} // submiteditFrm
+
+// 비밀번호 변경 시 유효성 검사
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const newPasswordField = form.querySelector('input[name="userpwd"]');
+    const confirmPasswordField = form.querySelector('input[name="confirmUserpwd"]');
+
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        let isValid = true;
+
+        // 비밀번호가 변경된 경우에만 검사
+        if (newPasswordField.value.trim() !== "") {
+            // 비밀번호와 비밀번호 확인이 일치하는지 검사
+            if (newPasswordField.value !== confirmPasswordField.value) {
+                displayErrorMessages(confirmPasswordField, editMessages[1]); // 비밀번호 불일치 메시지
+                isValid = false;
+            }
+
+            // 비밀번호의 유효성 검사 (6자 이상, 영문 대소문자, 숫자, 특수문자 포함)
+            console.log('newPasswordField:', newPasswordField);
+            console.log('정규 표현식 검사:', patterns[1].test(newPasswordField.value));
+            console.log('비밀번호 입력값:', newPasswordField.value);
+
+            if (!patterns[1].test(newPasswordField.value)) {
+                displayErrorMessages(newPasswordField, editMessages[0]); // 비밀번호 형식 오류 메시지
+                isValid = false;
+            }
+        }
+
+        // 유효성 검사를 통과하지 못하면 종료
+        if (!isValid) return;
+
+        // 비밀번호를 해싱한 후 폼을 제출해야 함
+        const hashedPassword = await hashPassword(newPasswordField.value);
+        newPasswordField.value = hashedPassword;
+        confirmPasswordField.value = hashedPassword; // 두 개 동일하게 맞추기
+
+        form.submit(); // 비밀번호 해싱이 끝난 후 폼 제출
+    });
+});
+
+
+// 입력 요소 유효성 검사
+const validEditInputs = (form) => {
+    let isValid = true;
+
+    // 먼저 기존의 에러 메시지를 모두 초기화
+    clearErrorsMessages();
+
+    // 회원가입 폼안의 모든 input 요소 수집
+    const inputs = form.querySelectorAll('input');
+    inputs.forEach((input, idx) => {    // input 요소에 인덱스를 줘서 하나씩 검사
+        if (!input.checkValidity()) {   // html5 태그를 이용한 유효성 검사
+            displayErrorMessages(input, errorMessages[idx]);
+            isValid = false;
+        }
+    });
+    // 비밀번호 일치 여부 검사
+    if (inputs[2].value !== inputs[3].value) {
+        displayErrorMessages(inputs[2], errorMessages[2]);
+        isValid = false;
+    }
+
+
+    return isValid;
+}
+
 
 // 로그인 폼 유효성 검사
 const validLogin = (form) => {

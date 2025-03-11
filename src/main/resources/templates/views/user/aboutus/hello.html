@@ -4,65 +4,107 @@
       layout:decorate="~{layouts/user/layout}">
 <head>
     <style>
+        /* 배경과 여백 설정 */
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h2, p {
+            font-family: 'Poppins', sans-serif;
+        }
+        main {
+            padding: 50px;
+        }
+
         /* 캐러셀 이미지 크기와 배경 정리 */
         .carousel-inner img {
             width: 100%;
             height: 500px; /* 캐러셀 높이 */
             object-fit: cover;
+            border-radius: 10px; /* 이미지 모서리 둥글게 */
         }
 
         /* 캐러셀 컨테이너 정렬 */
         #carouselExampleCaptions {
-            max-width: 800px; /* 원하는 너비 조정 */
+            max-width: 1200px; /* 원하는 너비 조정 */
             margin: 0 auto;   /* 중앙 정렬 */
+            border-radius: 10px; /* 캐러셀 모서리 둥글게 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
         }
 
         /* 텍스트 색상 */
         .carousel-caption h5 {
+            font-size: 2rem;
             color: #ff9900;
+            text-shadow: 2px 2px 4px rgba(255, 252, 252, 0.6);
         }
 
-        .carousel-caption p {
-            color: #ffffff;
-        }
+
 
         /* 이전/다음 버튼 색상 */
         .carousel-control-prev-icon,
         .carousel-control-next-icon {
             background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+        }
+
+        /* 인사말 섹션 스타일링 */
+        h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-top: 40px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.8;  /* 줄 간격을 늘려서 읽기 쉽게 */
+            text-align: justify; /* 양쪽 정렬 */
+            margin-top: 20px;
+            color: #555;
+            background-color: #ffffff;  /* 배경 색상 추가 */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* 부드러운 그림자 */
+        }
+
+
+        .active:hover {
+            background-color: #e68900;
         }
     </style>
 </head>
 
 <th:block layout:fragment="content">
     <main id="content">
+        <!-- Carousel -->
         <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" class="active" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" class="active" aria-label="Slide 3"></button>
             </div>
 
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img src="http://localhost/cdn/dogs.jpg" class="d-block w-100" alt="First Slide">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>첫 번째 슬라이드 설명입니다.</p>
+                        <h5>사지말고 입양해주세요!</h5>
+
                     </div>
                 </div>
                 <div class="carousel-item">
                     <img src="http://localhost/cdn/puppy.jpg" class="d-block w-100" alt="Second Slide">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>Second slide label</h5>
-                        <p>두 번째 슬라이드 설명입니다.</p>
-                    </div>
                 </div>
                 <div class="carousel-item">
                     <img src="http://localhost/cdn/cat.jpeg" class="d-block w-100" alt="Third Slide">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Third slide label</h5>
-                        <p>세 번째 슬라이드 설명입니다.</p>
+                        <h5>저의 가족이 되어주세요!</h5>
                     </div>
                 </div>
             </div>
@@ -77,25 +119,48 @@
             </button>
         </div>
 
-
+        <!-- 인사말 섹션 -->
         <h2>인사말</h2>
-        <p>인간과 동물의 관계를 떠나, 자연의 법칙에 의해 탄생된 모든 생명은
-            생명자체로서 보호받고 존중받을 권리가 있습니다.
-            한 생명의 태어남과 죽음에는 숭고함과 엄숙함이 존재합니다.
-            동물자유연대는 동물운동에 대한 사회 인식과 기반이 전혀 마련되어 있지 않던 2000년에 자원봉사를 구성해 활동을 해 나가던 중, 그 한계를 넘어서기를 바라는 회원들의 마음을 모아 2001년에 동물운동단체로서는 처음 서울에 사무실을 마련하였고 상근활동가를 구성하는 등 동물운동의 체계화를 구축하기 시작했습니다.
-
+        <p>인간과 동물의 관계를 떠나, 자연의 법칙에 의해 탄생된 모든 생명은 생명자체로서 보호받고 존중받을 권리가 있습니다.
+            한 생명의 태어남과 죽음에는 숭고함과 엄숙함이 존재합니다. 동물자유연대는 동물운동에 대한 사회 인식과 기반이 전혀 마련되어 있지 않던 2000년에 자원봉사를 구성해 활동을 해 나가던 중, 그 한계를 넘어서기를 바라는 회원들의 마음을 모아 2001년에 동물운동단체로서는 처음 서울에 사무실을 마련하였고 상근활동가를 구성하는 등 동물운동의 체계화를 구축하기 시작했습니다.
+        </p>
+        <p>
             우리 발바닥은 우리 사회에 ‘유기동물 입양 문화’를 선도해 나갔고, 동물보호 관련법 개정 및 제정, 농장동물복지 활동, 화장품 동물실험 중단을 위한 활동, 제돌이를 비롯해 공연장 돌고래 3마리를 바다로 돌려보내는 등 다양한 영역에서 활발한 활동을 하고 있습니다. 이 모든 것은 동물들이 보다 더 나은 삶을 살기를 바라는 따뜻한 마음들이 모여져 가능할 수 있었습니다.
+        </p>
 
-            오늘날 전 세계적으로 700억여 마리의 동물들이 인간에 의해 태어나고 죽음에 이르고 있습니다.
-
-            그 과정에서 동물이 고통과 감성을 느끼는 존재라는 것은 고려되지 않아, 동물들은 태어나는 순간부터 본연의 습성이 차단된 채 비좁은 우리에서 갇혀 살다가 고통스러운 과정을 거쳐 생을 마감하게 됩니다.
-
+        <p>
+            오늘날 전 세계적으로 700억여 마리의 동물들이 인간에 의해 태어나고 죽음에 이르고 있습니다. 그 과정에서 동물이 고통과 감성을 느끼는 존재라는 것은 고려되지 않아, 동물들은 태어나는 순간부터 본연의 습성이 차단된 채 비좁은 우리에서 갇혀 살다가 고통스러운 과정을 거쳐 생을 마감하게 됩니다.
             산업화된 동물이용은 서구사회로부터 시작됐습니다. 하지만 그로 인해 생명체에 대한 존중감은 점차 둔해지고, 환경 폐해, 식품 안전 문제 등 다양한 부작용이 생겼으며, 이는 자성의 소리로 이어져 정책 변화로 이어지고 있습니다. 국제사회는 동물복지를 중요한 가치로 논의하고 있으며 동물 쇼처럼 인간 유희를 위한 동물 이용을 금지하는 나라들이 늘어가고 있습니다.
+        </p>
 
+        <p>
             우리 사회도 이에 눈을 돌릴 차례입니다. 한국에서도 연간 8억 마리 이상의 동물들이 인위적으로 태어나고 죽습니다. 그들이 어떻게 살다가 죽는지 우리는 관심을 가지며 개선해야 할 필요가 있고, 동물 희생을 최소화하는 노력을 해야 합니다. 이것은 생명체를 대하는 인간의 도덕성의 문제와도 관계됩니다.
+            우리 미래 세대에게 진정한 가치 사회를 이어주고 동물들이 웃을 수 있는 사회가 되기 위해 발바닥이 최선의 노력을 하겠습니다. 발바닥에 지속적인 관심과 격려로 함께 해주세요.
+        </p>
 
-            우리 미래 세대에게 진정한 가치 사회를 이어주고 동물들이 웃을 수 있는 사회가 되기 위해 발바닥이 최선의 노력을 하겠습니다. 발바닥에 지속적인 관심과 격려로 함께 해주세요.</p>
+        <p>
+            2021년 현재 전 세계는 Covid-19 펜데믹으로 혼란과 격변의 시기를 보내고 있습니다. 세계 곳곳에서 가뭄 홍수 이상기온 대규모 산불 등 인간의 힘으로 대응 불가능한 무서운 기후 변화의 위험에 직면하기도 합니다. 자연이 보내는 경고는 이제 실존적이고 급박한 위험으로 우리 앞에 있습니다. Covid-19도 무서운 기후 변화도 비인간동물에 대한 인간동물들의 몰이해와 부당한 착취와 깊이 연관되어 있습니다.
+            야생동물과의 관계의 파탄은 무서운 인간전염병으로 돌아왔고 농장동물에 대한 잔인한 착취는 구제역 조류독감은 물론 아프리카 돼지 열병과 같은 동물전염병의 전 지구적 만연을 야기함은 물론 탄소나 메탄가스로 인한 기후변화를 재촉했습니다. 그럼에도 우리 인간 동물들은 여전히 먹고 누리고 소비하며 순간의 향락에 몰두하여 스스로와 미래 세대, 그리고 자연에 끝없이 상환 불가능한 빚을 쌓고 있습니다.
+        </p>
 
+        <p>
+            우리나라의 상황은 더욱 심각합니다. 세계적으로도 손꼽힐 밀집 공장식축산과 대규모 살처분, 엽기적인 개·고양이 식용·약용 도살 행위는 물론 세계 유일의 소위 ‘식용 개’ 공장식 사육과 음식쓰레기 급여는 부끄럽기 그지없는 일입니다. 시대착오적 반려동물 취식 행위가 어떤 파국을 불러올지 아무도 예측할 수 없는데 책임 주체인 국가는 뒷짐만 지고 있습니다.
+            법적 보호기제도 미약하기만 합니다. 우리 헌법은 동물을 산업의 도구로 간주할 뿐, 동물들의 보호를 국가의 의무로 부과하지 않습니다. 민법상 동물은 여전히 ‘물건’에 불과합니다. 동물보호법은 반려동물 도살행위도 방역을 명목으로 한 생매장 살처분도 막아내지 못합니다.
+        </p>
+
+        <p>
+            지금은 그 어느 때보다도 동물권 단체의 역할이 중요한 시기입니다. 2022년이면 동물권행동 카라가 동물단체로서 우리 사회에 첫 발을 내디딘 지 20주년이 되는 해입니다. 그간 동물권행동 카라는 전임 임순례 대표님의 헌신적 기여와 이에 발맞춘 활동가들의 연구와 노력에 힘입어 발전과 혁신을 거듭해 왔습니다.
+            ‘아름품’시절 유기동물과 개식용문제에 집중하던 카라는 2014년 마포 더불어숨 센터를 개관하며 본격적인 동물권 인식 증진 캠페인과 길고양이 보호활동, 공장식축산 폐기를 위한 동물권 소송 등으로 활동 영역을 거침없이 확장해 왔습니다. 재개발지역의 외로운 동물들의 곁, 쓰레기와 오물 가득한 애니멀 호딩의 현장,
+            기업화된 개농장, 비극적인 살처분 현장에 카라가 있었습니다. 반려동물로부터 시작한 동물권 활동은 동심원을 확장하며 그 깊이를 더해 왔습니다.
+        </p>
+
+        <p>
+            이제 더봄센터를 활동의 장으로 대규모 번식장과 경매장과의 본격적인 싸움을 진행하겠습니다. 다른 한편 더불어숨 센터에서의 다양하고 근본적인 동물권 정책 및 교육 활동 동물권 영화제 등의 적극적 전개로 모든 동물 학대 없는 세상으로 더 힘차게 나아가려 합니다.
+            2002년 창립 당시 대한민국의 작고 힘없는 동물단체에서 이제 명실공히 비인간동물과 인간동물의 바람직한 공존의 표준을 제시하는 철학과 신념으로 무장된 단체, 기후 변화를 야기하는 공장식축산 철폐와 농장동물 해방을 위한 사회 담론을 이끌어 내는 실질적인 힘을 갖춘 단체로 커나가는데 작은 밑거름이나마 될 수 있도록 진심을 다해 노력하겠습니다.
+            눈을 크게 뜨고 꿈꾸겠습니다. 동물학대 없는 세상을 향한 우리의 꿈은 동물들을 위해 기꺼이 연대해 주신 1만 2000분 후원자님들의 따뜻하고 강한 연대에 힘입어 반드시 현실화될 것입니다.
+        </p>
+
+        <!-- 추가 내용 생략 -->
     </main>
 </th:block>
 

@@ -102,13 +102,40 @@ public class UserController {
         }
     }
 
+    @GetMapping("/user/edit")
+    public String edit() {
+        return "views/user/user/edit";
+    }
 
+    // 사용자 정보 수정 처리
+    @PostMapping("/user/edit")
+    public String editOk(UserDTO user, String confirmUserpwd, HttpSession session) {
+        log.info(" controller editok {}",user);
+
+        UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+
+        if (loginUser == null) {
+            return "redirect:/user/login";  // 로그인되지 않았다면 로그인 페이지로 리다이렉트
+        }
+
+        try {
+            // 수정된 정보 업데이트
+            userService.updateUser(user);
+
+            return "redirect:/user/myinfo";  // 수정 완료 후 사용자 정보 페이지로 리다이렉트
+        } catch (Exception e) {
+            log.error("회원정보 수정 중 오류 발생", e);
+            return "error";  // 오류 발생 시 error 페이지로 리다이렉트
+        }
+    }
 
     @GetMapping("/user/logout")
     public String logout(HttpSession session) {
         session.invalidate();  // 세션 삭제 (로그아웃)
         return "redirect:/";  // 로그아웃 후 메인 페이지로 이동
     }
+
+
 
 
     @GetMapping("/aboutus/hello")

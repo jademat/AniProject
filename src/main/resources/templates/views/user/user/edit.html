@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/user/layout}">
+
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fb;
+            margin: 0;
+            padding: 0;
+            font-weight: bold;
+        }
+
+        #myinfo {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(234, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-top: 50px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #ffffff;
+            padding: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .card-body {
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 3px solid #ddd;
+            border-left: 3px solid #cacaca;
+        }
+
+        th {
+            background-color: #000000;
+            color: white;
+        }
+
+        td:first-child, th:first-child {
+            border-left: none;
+        }
+
+        tr:hover {
+            background-color: #d0b079;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 1rem;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-edit:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #d0b079;
+            font-weight: bold;
+            margin-top: 50px;
+        }
+
+        .form-control {
+            color: #000000;
+        }
+
+        .table-container {
+            margin-bottom: 40px;
+        }
+
+        /* 주소 입력란과 버튼을 한 줄로 배치 */
+        .addr-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #addr {
+            width: 80%;  /* 주소 입력란 너비를 줄임 */
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            height: 50px;
+        }
+
+        #addrSerBtn {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 6px;
+            background-color: #000000;
+            color: white;
+            height: 50px;
+            white-space: nowrap;
+        }
+
+        /* 아이디와 이름에 대한 호버 기능 삭제 */
+        .no-hover tr:hover {
+            background-color: transparent; /* 호버 시 배경색 없애기 */
+        }
+
+        .note {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .user-name {
+            color: #d0b079;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="content">
+    <main id="content">
+        <h2 class="text-center mb-4">회원정보 수정</h2>
+
+        <div class="card" id="myinfo">
+            <div class="card-header">
+                <span th:text="${session.loginUser.name}" class="user-name"></span>님 회원 정보 수정
+            </div>
+
+            <div th:if="${session.loginUser.kakaoId == null}">
+
+                <form name="editfrm" id="editfrm" action="/user/user/edit" method="post">
+                    <div class="table-container no-hover">
+                        <table class="table table-bordered mb-4 id-name-table">
+                            <colgroup>
+                                <col style="width: 30%">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <td>아이디</td>
+                                <td><input type="text" name="userid" th:value="${session.loginUser.userid}" class="form-control" readonly></td>
+                            </tr>
+
+                            <tr>
+                                <td>이름</td>
+                                <td><input type="text" name="name" th:value="${session.loginUser.name}" class="form-control" readonly></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table table-bordered mb-4">
+                            <colgroup>
+                                <col style="width: 30%">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <td>새 비밀번호</td>
+                                <td>
+                                    <input type="password" name="userpwd" class="form-control">
+                                    <div class="note">※ 비밀번호 변경을 원하지 않으실 경우 입력하지 말고 넘어가주세요.</div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>비밀번호 확인</td>
+                                <td>
+                                    <input type="password" name="confirmUserpwd" class="form-control">
+                                    <div class="note">※ 비밀번호 변경을 원하지 않으실 경우 입력하지 말고 넘어가주세요.</div>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td>전화번호</td>
+                                <td><input type="text" name="phone" th:value="${session.loginUser.phone}" class="form-control"></td>
+                            </tr>
+
+                            <tr>
+                                <td>이메일</td>
+                                <td><input type="email" name="email" th:value="${session.loginUser.email}" class="form-control"></td>
+                            </tr>
+
+                            <tr>
+                                <td>주소</td>
+                                <td>
+                                    <div class="addr-container">
+                                        <input type="text" name="addr" th:value="${session.loginUser.addr}" id="addr" class="form-control">
+                                        <button type="button" id="addrSerBtn" class="btn btn-secondary">주소 검색</button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>상세주소</td>
+                                <td><input type="text" name="detailaddr" th:value="${session.loginUser.detailaddr}" class="form-control"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-center py-3">
+                        <button type="submit" class="btn-edit">
+                            <i class="fa-solid fa-user-edit"></i> 변경사항 저장
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script src="/static/js/user/user.js"></script>
+    <script>
+       function initializeKakao() {
+            if (typeof Kakao !== 'undefined') {
+                Kakao.init('1a152773c6d089e9e33ccb3d22718fce'); // 카카오 앱 키
+                document.querySelector('#addrSerBtn').addEventListener('click', function() {
+                    new daum.Postcode({
+                        oncomplete: function(data) {
+                            document.querySelector('#addr').value = data.address;
+                            document.querySelector('#addr').removeAttribute('readonly');
+                        }
+                    }).open();
+                });
+            } else {
+                console.error("카카오 SDK가 로드되지 않았습니다.");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeKakao();
+        });
+
+        const editfrm = document.querySelector('#editfrm');
+        editfrm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            clearErrorsMessages();
+            let isValid = validEditInputs(editfrm);
+            if (isValid) submitEditFrm(editfrm);
+        });
+    </script>
+</th:block>
+</html>

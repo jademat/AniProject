@@ -3,51 +3,36 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <th:block layout:fragment="content">
-    <main  th:with="pglink=${(#strings.isEmpty(param.findkey)) ?
-                    '/user/userlist?cpg=' : '/user/find?findtype=' +param.findtype + '&findkey=' +param.findkey + '&cpg='}">
-            <h2 class="text-center mb-4">사용자 리스트</h2>
+    <main class="p-4">
+        <div class="container my-5">
+            <h2 class="text-center mb-4">리플 신고 리스트</h2>
 
             <!-- 검색 및 필터 -->
             <div class="input-group mb-3 w-50 mx-auto">
-                <div class="d-flex align-items-center gap-3">
-                    <select class="form-select" id="findtype" name="findtype">
-                        <option value="uno" th:selected="${param.findtype == 'uno'}">번호</option>
-                        <option value="userid" th:selected="${param.findtype == 'userid'}">아이디</option>
-                        <option value="name" th:selected="${param.findtype == 'name'}">이름</option>
-                    </select>
-                    <input class="form-control" style="width: 350px" id = "findkey" name = "findkey" th:value="${param.findkey}">
-                    <button class="btn btn-success" id = "findbtn"><i class="fa-solid fa-magnifying-glass"></i> 검색</button>
-                </div>
+                <input class="form-control" id="searchInput" placeholder="사용자 검색" type="text">
+                <button class="btn btn-primary">검색</button>
             </div>
 
             <!-- 사용자 테이블 -->
             <div class="table-container">
                 <table class="table table-bordered table-hover text-center">
-                    <colgroup>
-                        <col style="width:7%">
-                        <col style="width: 8%">
-                        <col style="width:12%">
-                        <col style="width:12%">
-                        <col style="width:7%">
-                        <col style="width:7%">
-                    </colgroup>
                     <thead class="table-dark">
                     <tr>
                         <th>번호</th>
-                        <th>아이디</th>
                         <th>이름</th>
                         <th>이메일</th>
-                        <th>생성일</th>
+                        <th>직업</th>
+                        <th>신고수</th>
                         <th>관리</th>
                     </tr>
                     </thead>
                     <tbody id="userTableBody">
-                    <tr th:each="us : ${usdto.uslist}">
-                        <td th:text="${us.uno}"></td>
-                        <td th:text="${us.userid}"></td>
-                        <td th:text="${us.name}"></td>
-                        <td th:text="${us.email}">관리자</td>
-                        <td th:text="${us.regdate}"></td>
+                    <tr>
+                        <td>1</td>
+                        <td>홍길동</td>
+                        <td>hong@example.com</td>
+                        <td>관리자</td>
+                        <td>1</td>
                         <td>
                             <button class="btn btn-sm btn-primary" data-bs-target="#modifyModal" data-bs-toggle="modal"
                                     type="button">수정
@@ -55,40 +40,11 @@
                             <button class="btn btn-sm btn-danger btn-action" id = "delbtn">삭제</button>
                         </td>
                     </tr>
+
                     </tbody>
-
-                    <tr>
-                        <td colspan="6">
-                            <div class="d-flex justify-content-center"> <!-- 추가된 부분 -->
-                            <ul class="pagination">
-
-                                <li class= "page-item">
-                                    <a th:href = "|${pglink}1|" class="page-link">처음</a>
-                                </li>
-                                <li class = "page-item" th:if="${usdto.cpg gt 10}">
-                                    <a th:href = "|${pglink}${usdto.cpg - 1}|" class="page-link">이전</a>
-                                </li>
-                                <th:block th:each="i : ${#numbers.sequence(usdto.stblk,usdto.edblk)}">
-
-                                    <li  th:class = "${(i ne usdto.cpg) ? 'page-item' : 'page-item active'}" >
-                                        <a th:href = "|${pglink}${i}|"
-                                           class="page-link" th:text="${i}"></a>
-                                    </li>
-                                </th:block>
-                                <li class = "page-item" th:if="${usdto.cpg lt usdto.cntpg}">
-                                    <a th:href = "|${pglink}${usdto.cpg + 1}|" class="page-link">다음</a>
-                                </li>
-                                <li class= "page-item" >
-                                    <a th:href = "|${pglink}${usdto.cntpg}|" class="page-link">끝</a>
-                                </li>
-
-                            </ul>
-                            </div>
-                        </td>
-                    </tr>
                 </table>
             </div>
-
+        </div>
 
         <!-- The Modal -->
         <div class="modal" id="modifyModal">
@@ -144,8 +100,8 @@
             </div>
         </div>
     </main>
-<th:block layout:fragment="script">
-    <script src = "/static/js/admin/userlist.js"></script>
-</th:block>
+    <th:block layout:fragment="script">
+
+    </th:block>
 </th:block>
 </html>

@@ -1,4 +1,4 @@
-package project.animalfoot.aniproject.reposiotry.admin;
+package project.animalfoot.aniproject.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

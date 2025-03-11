@@ -1,5 +1,8 @@
 package project.animalfoot.aniproject.domain.admin.adboard;
 
+import lombok.Data;
+
+@Data
 public class Notice {
 
     private int not_no;

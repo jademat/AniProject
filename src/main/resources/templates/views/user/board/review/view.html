@@ -4,32 +4,59 @@
       layout:decorate="~{layouts/user/layout.html}">
 
 <th:block layout:fragment="content">
-    <h2>게시판 본문글</h2>
-    <div class="row offset-1 col-10 my-3">
-        <table class="table">
-            <thead>
+    <main id="content">
+        <h2>게시글 상세보기</h2>
+
+        <table class="table table-bordered">
             <tr>
+                <th>제목</th>
+                <td th:text="${board.bdTitle}"></td> <!-- 제목 -->
+            </tr>
+            <tr>
+                <th>작성자</th>
+                <td th:text="${board.userId}"></td> <!-- 작성자 -->
+            </tr>
+            <tr>
+                <th>작성일</th>
+                <td th:text="${#temporals.format(board.bdRegdate, 'yyyy-MM-dd HH:mm:ss')}"></td> <!-- 날짜 포맷 -->
+            </tr>
+            <tr>
+                <th>추천</th>
+                <td th:text="${board.bdThumbs}"></td> <!-- 추천 수 -->
+            </tr>
+            <tr>
+                <th>조회수</th>
+                <td th:text="${board.bdViews}"></td> <!-- 조회수 -->
+            </tr>
+            <tr>
+                <th>내용</th>
                 <td>
-                    <button type="button" class="btn btn-light">이전게시물</button>
-                    &nbsp;
-                    <button type="button" class="btn btn-light">다음게시물</button>
-                </td>
-                <td class="text-end">
-                    <button type="button" class="btn btn-primary" id="newbdbtn">새글쓰기</button>
+                    <p th:text="${board.bdContents}"></p> <!-- 게시글 내용 -->
                 </td>
             </tr>
-            </thead>
-            <tbody>
-            <tr><th class="vtit" colspan="2" th:text="${bd?.title ?: '제목 없음'}"></th></tr>
-            <tr>
-                <td th:text="${bd?.userid ?: '알 수 없음'}" class="vinfo">작성자</td>
-                <td class="text-end vinfo" th:text="|${bd?.regdate ?: '날짜 없음'}/${bd?.thumbs ?: 0}/${bd?.views ?: 0}|">
-                    작성일/추천/조회
-                </td>
-            </tr>
-            <tr><td class="vcont pre" colspan="2" th:text="${bd?.contents ?: '내용이 없습니다'}"></td></tr>
-            </tbody>
         </table>
-    </div>
+
+        <div class="text-end">
+            <a href="/board/review/list" class="btn btn-secondary">목록</a>
+
+            <!-- 로그인한 사용자만 수정/삭제 가능 -->
+            <th:block th:if="${userId != null and userId == board.userId}">
+                <a th:href="@{/board/review/edit/{bdNo}(bdNo=${board.bdNo})}" class="btn btn-warning">수정</a>
+                <button type="button" class="btn btn-danger" id="deleteBtn">삭제</button>
+            </th:block>
+        </div>
+    </main>
 </th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        document.querySelector("#deleteBtn")?.addEventListener('click', () => {
+            if (confirm("정말 삭제하시겠습니까?")) {
+                let bdNo = "[[${board.bdNo}]]";
+                location.href = "/board/review/delete/" + bdNo;
+            }
+        });
+    </script>
+</th:block>
+
 </html>

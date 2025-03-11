@@ -30,7 +30,10 @@
                     </div>
                 </td>
                 <td colspan="3" class="text-end">
-                    <button type="button" class="btn btn-primary" id="newbdbtn"><i class="fas fa-pen"></i> 글쓰기</button>
+                    <!-- 로그인한 사용자만 글쓰기 버튼 보이게 -->
+                    <th:block th:if="${userId != null}">
+                        <button type="button" class="btn btn-primary" id="newbdbtn"><i class="fas fa-pen"></i> 글쓰기</button>
+                    </th:block>
                 </td>
             </tr>
             <tr class="table-light">
@@ -44,21 +47,15 @@
             </thead>
 
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>게시글 제목</td>
-                <td>작성자</td>
-                <td>2025-03-05</td>
-                <td>10</td>
-                <td>100</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>게시글 제목 2</td>
-                <td>작성자 2</td>
-                <td>2025-03-06</td>
-                <td>5</td>
-                <td>200</td>
+            <tr th:each="board : ${boardList}">
+                <td th:text="${board.bdNo}"></td>
+                <td>
+                    <a th:href="@{/board/review/view/{bdNo}(bdNo=${board.bdNo})}" th:text="${board.bdTitle}"></a>
+                </td>
+                <td th:text="${board.userId}"></td>
+                <td th:text="${board.bdRegdate}"></td>
+                <td th:text="${board.bdThumbs}"></td>
+                <td th:text="${board.bdViews}"></td>
             </tr>
             </tbody>
 
@@ -83,20 +80,20 @@
         </table>
     </main>
 </th:block>
-<!--javascript 코드 제거, 게시물 목록/페이지 네이션-->
 
 <th:block layout:fragment="script">
     <script>
-        let newbdtn = document.querySelector("#newbdbtn");
+        document.querySelector("#newbdbtn")?.addEventListener('click', () => {
+            let userId = "[[${userId}]]";  // Thymeleaf에서 세션 값 가져오기
 
-        newbdtn?.addEventListener('click',(e) => {
-
-            location.href='/board/review/write';
+            if (!userId) {  // 로그인 안 되어 있으면 로그인 페이지로 이동
+                alert("로그인이 필요합니다.");
+                location.href = "/login";
+            } else {
+                location.href = "/board/review/write";  // 로그인 상태면 글쓰기 페이지로 이동
+            }
         });
-
-
     </script>
-
-
 </th:block>
+
 </html>

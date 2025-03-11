@@ -8,8 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import project.animalfoot.aniproject.domain.UserDTO;
-import project.animalfoot.aniproject.service.UserService;
+import project.animalfoot.aniproject.domain.user.UserDTO;
+import project.animalfoot.aniproject.domain.user.UserLoginDTO;
+import project.animalfoot.aniproject.service.user.UserService;
 
 import javax.servlet.http.HttpSession;
 
@@ -58,7 +59,7 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<?> loginok(UserDTO user, HttpSession session) {
+    public ResponseEntity<?> loginok(UserLoginDTO user, HttpSession session) {
         ResponseEntity<?> response = ResponseEntity.internalServerError().build();
         log.info("submit된 로그인 정보 : {}", user);
 

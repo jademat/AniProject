@@ -1,11 +1,10 @@
 package project.animalfoot.aniproject.service.admin;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import project.animalfoot.aniproject.domain.admin.login.Admin;
 import project.animalfoot.aniproject.domain.admin.login.AdminDTO;
-import project.animalfoot.aniproject.reposiotry.admin.AdminRepository;
+import project.animalfoot.aniproject.repository.AdminRepository;
 
 @Service
 @RequiredArgsConstructor

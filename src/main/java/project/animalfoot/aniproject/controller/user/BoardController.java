@@ -53,8 +53,11 @@ public class BoardController {
         List<BoardDTO> boardList = boardService.getAllBoards();
         model.addAttribute("boardList", boardList);
 
-        // 로그인 여부 체크 후 전달 (세션에 userId가 있으면 로그인 상태)
-        model.addAttribute("userId", session.getAttribute("userId"));
+        // 로그인 여부 체크 후 전달
+        String userId = (String) session.getAttribute("loginUser");
+        System.out.println("loginUser: " + userId);  // 로그에 출력하여 확인
+        model.addAttribute("loginUser", userId);
+
         return "views/user/board/review/list"; // Thymeleaf 템플릿 파일명
     }
 

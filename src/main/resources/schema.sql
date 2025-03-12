@@ -157,4 +157,77 @@ CREATE TABLE IF NOT EXISTS not_board (
     not_cont text not null,                                    -- 공지사항 내용
     not_date datetime default current_timestamp,              -- 공지사항 작성일
     foreign key (ad_id) references admin(ad_id)
-    );
+);
+
+-- cascade 설정
+alter table reply_report
+drop foreign key reply_report_ibfk_1;
+
+alter table reply_report
+    add constraint reply_report_ibfk_1
+        foreign key (re_no) references reply (re_no)
+            on delete cascade;
+
+alter table reply
+drop foreign key reply_ibfk_1;
+
+alter table reply
+drop foreign key reply_ibfk_2;
+
+alter table not_board
+drop foreign key not_board_ibfk_1;
+
+alter table not_board
+    add constraint not_board_ibfk_1
+        foreign key (ad_id) references admin (ad_id)
+            on delete cascade;
+
+alter table intake
+drop foreign key intake_ibfk_1;
+
+alter table intake
+    add constraint intake_ibfk_1
+        foreign key (uno) references users (uno)
+            on delete cascade;
+
+alter table board_report
+drop foreign key board_report_ibfk_1;
+
+alter table board_report
+    add constraint board_report_ibfk_1
+        foreign key (bd_no) references board (bd_no)
+            on delete cascade;
+
+alter table board
+drop foreign key board_ibfk_1;
+
+alter table board
+    add constraint board_ibfk_1
+        foreign key (uno) references users (uno)
+            on delete cascade;
+
+alter table animal_pic
+drop foreign key animal_pic_ibfk_1;
+
+alter table animal_pic
+    add constraint animal_pic_ibfk_1
+        foreign key (animal_no) references animal (animal_no)
+            on delete cascade;
+
+alter table adopt
+drop foreign key adopt_ibfk_1;
+
+alter table adopt
+    add constraint adopt_ibfk_1
+        foreign key (uno) references users (uno)
+            on delete cascade;
+
+alter table adopt
+drop foreign key adopt_ibfk_2;
+
+alter table adopt
+    add constraint adopt_ibfk_2
+        foreign key (animal_no) references animal (animal_no)
+            on delete cascade;
+
+

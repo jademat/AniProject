@@ -11,8 +11,8 @@
     </select>
 
     <select id="countFindUser" parameterType="map">
-        select ceil(count(uno) / ${pageSize}) cntus from users
-        where ${findtype} like concat('%', #{findkey}, '%')
+        select count(uno) cnt from users
+        where ${findtype} like concat('%', #{findkey},'%')
     </select>
 
 

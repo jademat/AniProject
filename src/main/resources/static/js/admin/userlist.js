@@ -1,16 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
-    let delbtn = document.querySelector("#delbtn");
-
-    if (delbtn) {
-        delbtn.addEventListener("click", function (e) {
-            if (confirm('정말 삭제하시겠습니까?')) {
-
-                alert('삭제되었습니다.'); // 예시
-            }
-        });
-    }
-});
-
+// 검색 이벤트
 let findbtn = document.querySelector("#findbtn");
 let findtype = document.querySelector("#findtype")
 let findkey = document.querySelector("#findkey")
@@ -31,3 +19,27 @@ findbtn.addEventListener('click', (e) => {
         location.href = `/user/find?${params}`;
     }
 });
+
+// 유저 상세정보
+function openPersonModal(uno) {
+    fetch(`/user/view/${uno}`)
+        .then(response => response.json())
+        .then(user => {
+            // 모달 내용 갱신
+            document.getElementById('userUno').textContent = user.uno;
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userId').textContent = user.userid;
+            document.getElementById('userPhone').textContent = user.phone;
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('userDoptApply').textContent = user.dopt_apply;
+            document.getElementById('userRegdate').textContent = user.regdate;
+            document.getElementById('userAddr').textContent = user.addr;
+            document.getElementById('userDetailAddr').textContent = user.detailaddr;
+
+            // 모달 창 띄우기
+            const modal = new bootstrap.Modal(document.getElementById('userInfoModal'));
+            modal.show();
+        })
+}
+
+

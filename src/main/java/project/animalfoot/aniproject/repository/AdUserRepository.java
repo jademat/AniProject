@@ -1,7 +1,9 @@
 package project.animalfoot.aniproject.repository;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import project.animalfoot.aniproject.domain.admin.user.User;
 import project.animalfoot.aniproject.domain.admin.user.UserDTO;
 
 import java.util.List;
@@ -18,4 +20,10 @@ public interface AdUserRepository {
     List<UserDTO> selectFindUser(Map<String,Object> params);
 
     int countFindUser(Map<String,Object> params);
+
+    @Select("select * from users where uno = #{uno}")
+    User selectOneUser(int uno);
+
+    @Delete("delete from users where uno = #{uno}")
+    void deleteUserid(int uno);
 }

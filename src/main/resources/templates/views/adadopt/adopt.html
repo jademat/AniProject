@@ -3,105 +3,112 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <th:block layout:fragment="content">
-    <main class="p-4">
-        <div class="container my-5">
-            <h2 class="text-center mb-4">입양 신청 리스트</h2>
-
-            <!-- 검색 및 필터 -->
-            <div class="input-group mb-3 w-50 mx-auto">
-                <input class="form-control" id="searchInput" placeholder="사용자 검색" type="text">
-                <button class="btn btn-primary">검색</button>
-            </div>
-
+    <main>
+        <div>
             <!-- 사용자 테이블 -->
-            <div class="table-container">
+            <div>
                 <table class="table table-bordered table-hover text-center">
                     <thead class="table-dark">
                     <tr>
-                        <th>번호</th>
-                        <th>이름</th>
-                        <th>이메일</th>
-                        <th>직업</th>
-                        <th>신고수</th>
+                        <th>신청번호</th>
+                        <th>신청자</th>
+                        <th>입양동물</th>
+                        <th>연락처</th>
+                        <th>신청상태</th>
+                        <th>신청일</th>
                         <th>관리</th>
                     </tr>
                     </thead>
                     <tbody id="userTableBody">
-                    <tr>
-                        <td>1</td>
-                        <td>홍길동</td>
-                        <td>hong@example.com</td>
-                        <td>관리자</td>
-                        <td>1</td>
+                    <tr th:each="ado : ${adosdto.adolist}">
+                        <td th:text="${ado.adono}"></td>
+                        <td th:text = "${ado.userid}"></td>
+                        <td th:text = "${ado.nm}"></td>
+                        <td th:text = "${ado.phone}"></td>
+                        <td th:text = "${ado.getAdoStatText()}">신청</td>
+                        <td th:text = "${ado.ado_date}">2024</td>
                         <td>
-                            <button class="btn btn-sm btn-primary" data-bs-target="#modifyModal" data-bs-toggle="modal"
-                                    type="button">수정
+                            <button class="btn btn-sm btn-primary"  th:onclick="|openAdoptModal(${ado.adono})|"
+                                    type="button">상세정보
                             </button>
-                            <button class="btn btn-sm btn-danger btn-action" id = "delbtn">삭제</button>
                         </td>
                     </tr>
-
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- The Modal -->
-        <div class="modal" id="modifyModal">
+        <div aria-hidden="true" aria-labelledby="openAdoptModalLabel" class="modal fade" id="adoptInfoModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">Modal Heading</h4>
-                        <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                        <h4 class="modal-title">유저 상세 정보</h4>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                     </div>
 
-                    <!-- Modal body -->
+                    <!-- Modal Body -->
                     <div class="modal-body">
-                        <div class="container">
-                            <h2>개인 정보 수정</h2>
-                            <br>
-                            <form>
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label for="name" class="form-label text-end">이름</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="name" value="홍길동">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label for="email" class="form-label text-end">이메일</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input type="email" class="form-control" id="email" value="hong@example.com">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label for="phone" class="form-label text-end">전화번호</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input type="tel" class="form-control" id="phone" value="010-1234-5678">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="modal-footer d-flex justify-content-end">
-                                        <button type="button" class="btn btn-primary">저장</button>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                                    </div>
-                                </div>
-                            </form>
+                        <!-- 사용자 정보 입력창들 -->
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">신청 번호</span>
+                            <span class="form-control" id="adoptNo"></span>
                         </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">아이디</span>
+                            <span class="form-control" id="userId"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">입양동물</span>
+                            <span class="form-control" id="animalName"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">키운적여부</span>
+                            <span class="form-control" id="adoRaised"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">가족구성원</span>
+                            <span class="form-control" id="adoMembers"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">주거형태</span>
+                            <span class="form-control" id="adoHousing"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">모두 찬성 여부</span>
+                            <span class="form-control" id="adoAllagree"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">입양 이유</span>
+                            <span class="form-control" id="adoReason"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">1년 예상 양육비</span>
+                            <span class="form-control" id="adoCost"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">경로 유입</span>
+                            <span class="form-control" id="adoSource"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">신청일</span>
+                            <span class="form-control" id="adoDate"></span>
+                        </div>
+
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
                     </div>
                 </div>
             </div>
         </div>
+
     </main>
     <th:block layout:fragment="script">
-
+        <script src="/static/js/admin/adopt.js"></script>
     </th:block>
 </th:block>
 </html>

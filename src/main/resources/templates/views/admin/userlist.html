@@ -5,8 +5,6 @@
 <th:block layout:fragment="content">
     <main th:with="pglink=${(#strings.isEmpty(param.findkey)) ? '/user/userlist?cpg=' : '/user/find?findtype=' + param.findtype + '&findkey=' + param.findkey + '&cpg='}">
         <h2 class="text-center mb-4">사용자 리스트</h2>
-
-
         <div class="input-group search-bar w-50 mx-auto">
             <!-- 드롭다운 메뉴 -->
             <select class="form-select custom-select " id="findtype" name="findtype" >
@@ -131,10 +129,6 @@
                             <span class="form-control" id="userEmail"></span>
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">입양횟수</span>
-                            <span class="form-control" id="userDoptApply"></span>
-                        </div>
-                        <div class="input-group mb-3">
                             <span class="input-group-text">생성일</span>
                             <span class="form-control" id="userRegdate"></span>
                         </div>
@@ -156,29 +150,6 @@
 
     <th:block layout:fragment="script">
         <script src="/static/js/admin/userlist.js"></script>
-        <script>
-            function confirmDelete(idx) {
-                if (confirm("정말 삭제하시겠습니까?")) {
-                    // DELETE 요청 보내기
-                    let form = document.getElementById(`deleteForm${idx}`);
-                    fetch(form.action, {
-                        method: 'Post', // 실제 DELETE 요청을 보냄
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                alert("유저가 삭제되었습니다.")
-                                window.location.href = '/user/userlist';  // 삭제 후 목록 페이지로 리디렉션
-                            } else {
-                                alert('삭제에 실패했습니다.');
-                            }
-                        })
-                        .catch(error => alert('삭제 중 오류가 발생했습니다.'));
-                }
-            }
-        </script>
     </th:block>
 </th:block>
 </html>

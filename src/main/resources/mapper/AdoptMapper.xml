@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="project.animalfoot.aniproject.repository.AdAdoptionRepository">
+
+  <select id="selectAdopt" resultType="project.animalfoot.aniproject.domain.admin.adboard.AdoptDTO">
+        SELECT
+            a.adono,
+            u.userid,
+            ani.nm,
+            u.phone,
+            a.ado_stat,
+            a.ado_date
+        FROM adopt a
+                 JOIN users u ON a.uno = u.uno
+                 JOIN animal ani ON a.animal_no = ani.animal_no
+        WHERE a.ado_stat = 1 or a.ado_stat = 2 or a.ado_stat = 3
+        ORDER BY a.adono DESC limit #{stnum}, #{pageSize};
+    </select>
+
+</mapper>

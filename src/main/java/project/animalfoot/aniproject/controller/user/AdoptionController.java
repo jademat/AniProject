@@ -46,6 +46,9 @@ public class AdoptionController {
         return "views/user/adoption/write";  // 입양 신청 페이지 뷰
     }
 
-
+    @GetMapping("/process")
+    public String process() {
+        return "views/user/adoption/process";
+    }
 
 }

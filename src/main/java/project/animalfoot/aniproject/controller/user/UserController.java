@@ -134,25 +134,4 @@ public class UserController {
         session.invalidate();  // 세션 삭제 (로그아웃)
         return "redirect:/";  // 로그아웃 후 메인 페이지로 이동
     }
-
-
-
-
-    @GetMapping("/aboutus/hello")
-    public String hello() {
-        return "views/user/aboutus/hello";
-    }
-
-    @GetMapping("/aboutus/location")
-    public String location() {
-        return "views/user/aboutus/location";
-    }
-
-    @GetMapping("/aboutus/burget")
-    public String burget() {
-        return "views/user/aboutus/burget";
-    }
-
-
-
 }

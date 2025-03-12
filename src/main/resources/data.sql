@@ -1,6 +1,5 @@
 insert into admin (ad_id,ad_pw,ad_email) values('admin12','admin123','admin12@admin.com')
 
--- users 테이블
 insert into users (userid, userpwd, name, phone, addr, detailaddr, email, dopt_apply)
 values
     ('user01', 'c7d0cccedf3900d458784c9fba1336d71c434bc380474cc219fda24a2d420f8f', '홍길동', '010-1234-5678', '서울시 강남구', '역삼동 123-45', 'user1@example.com', 0),
@@ -18,5 +17,3 @@ INSERT INTO board (uno, bd_title, bd_contents, bd_regdate, bd_thumbs, bd_views)
 VALUES ((SELECT uno FROM users WHERE userid = 'user02'), '고양이 입양 후기', '처음에는 낯설어했지만, 지금은 완전히 적응했어요!', NOW(), 10, 200);
 
 
-INSERT INTO board (uno, bd_title, bd_contents, bd_regdate, bd_thumbs, bd_views)
-VALUES ((SELECT uno FROM users WHERE userid = 'user02'), '고양이 입양 후기', '처음에는 낯설어했지만, 지금은 완전히 적응했어요!', NOW(), 10, 200);

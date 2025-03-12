@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="project.animalfoot.aniproject.repository.AdUserRepository">
+
+    <select id="selectFindUser" parameterType="map">
+        select uno, userid, name, email, regdate from users
+        where ${findtype} like concat('%', #{findkey}, '%')
+        order by uno desc limit #{stnum}, #{pageSize}
+    </select>
+
+    <select id="countFindUser" parameterType="map">
+        select count(uno) cnt from users
+        where ${findtype} like concat('%', #{findkey},'%')
+    </select>
+
+
+</mapper>

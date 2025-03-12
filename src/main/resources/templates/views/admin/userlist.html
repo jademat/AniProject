@@ -3,105 +3,182 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <th:block layout:fragment="content">
-    <main class="p-4">
-        <div class="container my-5">
-            <h2 class="text-center mb-4">사용자 리스트</h2>
+    <main th:with="pglink=${(#strings.isEmpty(param.findkey)) ? '/user/userlist?cpg=' : '/user/find?findtype=' + param.findtype + '&findkey=' + param.findkey + '&cpg='}">
+        <h2 class="text-center mb-4">사용자 리스트</h2>
 
-            <!-- 검색 및 필터 -->
-            <div class="input-group mb-3 w-50 mx-auto">
-                <input class="form-control" id="searchInput" placeholder="사용자 검색" type="text">
-                <button class="btn btn-primary">검색</button>
-            </div>
 
-            <!-- 사용자 테이블 -->
-            <div class="table-container">
-                <table class="table table-bordered table-hover text-center">
-                    <thead class="table-dark">
-                    <tr>
-                        <th>번호</th>
-                        <th>이름</th>
-                        <th>이메일</th>
-                        <th>직업</th>
-                        <th>신고수</th>
-                        <th>관리</th>
-                    </tr>
-                    </thead>
-                    <tbody id="userTableBody">
-                    <tr>
-                        <td>1</td>
-                        <td>홍길동</td>
-                        <td>hong@example.com</td>
-                        <td>관리자</td>
-                        <td>1</td>
-                        <td>
-                            <button class="btn btn-sm btn-primary" data-bs-target="#modifyModal" data-bs-toggle="modal"
-                                    type="button">수정
-                            </button>
-                            <button class="btn btn-sm btn-danger btn-action" id = "delbtn">삭제</button>
-                        </td>
-                    </tr>
+        <div class="input-group search-bar w-50 mx-auto">
+            <!-- 드롭다운 메뉴 -->
+            <select class="form-select custom-select " id="findtype" name="findtype" >
+                <option th:selected="${param.findtype == 'uno'}" value="uno">번호</option>
+                <option th:selected="${param.findtype == 'userid'}" value="userid">아이디</option>
+                <option th:selected="${param.findtype == 'name'}" value="name">이름</option>
+            </select>
 
-                    </tbody>
-                </table>
-            </div>
+            <!-- 검색 입력 필드 -->
+            <input
+                    class="form-control custom-input"
+                    id="findkey"
+                    name="findkey"
+                    placeholder="사용자 검색"
+                    type="text"
+                    th:value="${param.findkey}">
+
+            <!-- 검색 버튼 -->
+            <button class="btn btn-success custom-button" id="findbtn">
+                <i class="fa-solid fa-magnifying-glass"></i> 검색
+            </button>
         </div>
+        <br>
 
-        <!-- The Modal -->
-        <div class="modal" id="modifyModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Modal Heading</h4>
-                        <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class="container">
-                            <h2>개인 정보 수정</h2>
-                            <br>
-                            <form>
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label for="name" class="form-label text-end">이름</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="name" value="홍길동">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label for="email" class="form-label text-end">이메일</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input type="email" class="form-control" id="email" value="hong@example.com">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label for="phone" class="form-label text-end">전화번호</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input type="tel" class="form-control" id="phone" value="010-1234-5678">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="modal-footer d-flex justify-content-end">
-                                        <button type="button" class="btn btn-primary">저장</button>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                                    </div>
-                                </div>
+        <!-- 사용자 테이블 -->
+        <div>
+            <table class="table table-bordered table-hover text-center">
+                <colgroup>
+                    <col style="width:3%">
+                    <col style="width: 8%">
+                    <col style="width:12%">
+                    <col style="width:12%">
+                    <col style="width:7%">
+                    <col style="width:10%">
+                </colgroup>
+                <thead class="table-dark">
+                <tr>
+                    <th>번호</th>
+                    <th>아이디</th>
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th>생성일</th>
+                    <th>관리</th>
+                </tr>
+                </thead>
+                <tbody id="userTableBody">
+                <tr th:each="us, stat : ${usdto.uslist}" id="user-[[${us.uno}]]">
+                    <td th:text="${us.uno}"></td>
+                    <td th:text="${us.userid}"></td>
+                    <td th:text="${us.name}"></td>
+                    <td th:text="${us.email}"></td>
+                    <td th:text="${us.regdate}"></td>
+                    <td>
+                        <div class="d-flex justify-content-center"> <!-- Flexbox로 가운데 정렬 -->
+                            <button class="btn btn-sm btn-info me-2" th:onclick="|openPersonModal(${us.uno})|" type="button">상세보기</button>
+                            <form th:id="|deleteForm${stat.index + 1}|" th:action="@{/user/delete/{uno}(uno=${us.uno})}" method="POST">
+                                <button type="button" class="btn btn-danger" th:onclick="|confirmDelete(${stat.index + 1})|">삭제</button>
                             </form>
                         </div>
+                    </td>
+                </tr>
+                </tbody>
+
+                <tr>
+                    <td colspan="6">
+                        <div class="d-flex justify-content-center">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link" th:href="|${pglink}1|">처음</a>
+                                </li>
+                                <li class="page-item" th:if="${usdto.cpg gt 1}">
+                                    <a class="page-link" th:href="|${pglink}${usdto.cpg - 1}|">이전</a>
+                                </li>
+                                <th:block th:each="i : ${#numbers.sequence(usdto.stblk, usdto.edblk)}">
+                                    <li th:class="${(i ne usdto.cpg) ? 'page-item' : 'page-item active'}">
+                                        <a class="page-link" th:href="|${pglink}${i}|" th:text="${i}"></a>
+                                    </li>
+                                </th:block>
+                                <li class="page-item" th:if="${usdto.cpg lt usdto.cntpg}">
+                                    <a class="page-link" th:href="|${pglink}${usdto.cpg + 1}|">다음</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" th:href="|${pglink}${usdto.cntpg}|">끝</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div aria-hidden="true" aria-labelledby="openPersonModalLabel" class="modal fade" id="userInfoModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">유저 상세 정보</h4>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <!-- 사용자 정보 입력창들 -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">번 호</span>
+                            <span class="form-control" id="userUno"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">이 름</span>
+                            <span class="form-control" id="userName"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">아이디</span>
+                            <span class="form-control" id="userId"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">연락처</span>
+                            <span class="form-control" id="userPhone"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">이메일</span>
+                            <span class="form-control" id="userEmail"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">입양횟수</span>
+                            <span class="form-control" id="userDoptApply"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">생성일</span>
+                            <span class="form-control" id="userRegdate"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">주 소</span>
+                            <span class="form-control" id="userAddr"></span>
+                            <span class="form-control" id="userDetailAddr"></span>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-<th:block layout:fragment="script">
-    <script src = "/static/js/admin/userlist.js"></script>
-</th:block>
+
+    <th:block layout:fragment="script">
+        <script src="/static/js/admin/userlist.js"></script>
+        <script>
+            function confirmDelete(idx) {
+                if (confirm("정말 삭제하시겠습니까?")) {
+                    // DELETE 요청 보내기
+                    let form = document.getElementById(`deleteForm${idx}`);
+                    fetch(form.action, {
+                        method: 'Post', // 실제 DELETE 요청을 보냄
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                alert("유저가 삭제되었습니다.")
+                                window.location.href = '/user/userlist';  // 삭제 후 목록 페이지로 리디렉션
+                            } else {
+                                alert('삭제에 실패했습니다.');
+                            }
+                        })
+                        .catch(error => alert('삭제 중 오류가 발생했습니다.'));
+                }
+            }
+        </script>
+    </th:block>
 </th:block>
 </html>

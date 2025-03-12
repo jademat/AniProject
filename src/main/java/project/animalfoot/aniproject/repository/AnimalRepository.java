@@ -25,8 +25,8 @@ public interface AnimalRepository {   // animal 테이블의 모든 레코드 �
     @Select("SELECT * FROM animal_pic WHERE animal_no = #{animalNo}")
     List<AnimalPicDTO> findPicsByAnimalNo(@Param("animalNo") int animalNo);
 
-    @Insert("INSERT INTO adopt (uno, animal_no, ado_raised, ado_members, ado_housing, ado_allagree, ado_reason, ado_cost, ado_source) " +
-            "VALUES (#{uno}, #{animal_no}, #{ado_raised}, #{ado_members}, #{ado_housing}, #{ado_allagree}, #{ado_reason}, #{ado_cost}, #{ado_source})")
+    @Insert("INSERT INTO adopt (uno, animal_no, ado_raised, ado_members, ado_housing, ado_allagree, ado_reason, ado_cost, ado_source,ado_stat) " +
+            "VALUES (#{uno}, #{animal_no}, #{ado_raised}, #{ado_members}, #{ado_housing}, #{ado_allagree}, #{ado_reason}, #{ado_cost}, #{ado_source},1)")
     void insertAdoption(AdoptDTO adoptDTO);
 
 

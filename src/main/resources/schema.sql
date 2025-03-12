@@ -101,6 +101,7 @@ CREATE TABLE IF NOT EXISTS adopt (
     ado_cost VARCHAR(100) NOT NULL,                          -- 1년 양육비
     ado_source VARCHAR(100) NOT NULL,                        -- 경로 유입
     ado_date datetime default current_timestamp,              -- 신청일
+    ado_stat int default 0,                                   -- 신청상태 1 : 신청, 2 : 입양허가, 3 : 반려
     foreign key (uno) references users (uno),
     foreign key (animal_no) references animal (animal_no)
     );

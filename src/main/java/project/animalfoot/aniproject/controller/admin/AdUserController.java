@@ -1,12 +1,13 @@
 package project.animalfoot.aniproject.controller.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import project.animalfoot.aniproject.domain.admin.user.User;
 import project.animalfoot.aniproject.service.admin.AdUserService;
 
 
@@ -36,12 +37,29 @@ public class AdUserController {
                        @RequestParam(defaultValue = "1") int cpg) {
 
 
-        m.addAttribute("uslist", adUserService.findUser(cpg,findtype,findkey));
-        m.addAttribute("cpg", cpg);
-        m.addAttribute("stblk", ((cpg -1) /10)*10 +1);
-        m.addAttribute("cntpg", adUserService.countFindUser(findtype,findkey));
+        m.addAttribute("usdto", adUserService.findUser(cpg,findtype,findkey));
 
         return "views/admin/userlist";
+    }
+
+    @GetMapping("/view/{uno}")
+    public ResponseEntity<?> view(@PathVariable int uno) {
+        User user = adUserService.readOneUser(uno);
+        if (user == null) {
+            return ResponseEntity.badRequest().body("유저 정보를 찾을 수 없습니다.");
+        }
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/delete/{uno}")
+    public String delete(@PathVariable int uno) {
+       boolean isdeleted = adUserService.deleteUser(uno);
+
+       if(isdeleted) {
+           return "redirect:/user/userlist";
+       }else{
+           return "error";
+       }
     }
 
 

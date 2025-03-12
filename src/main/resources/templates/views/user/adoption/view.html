@@ -52,11 +52,11 @@
                 </div>
             </div>
 
-            <!-- 입양하기 버튼 클릭 시 입양 신청서 페이지로 이동 -->
+            <!-- 입양하기 버튼, 로그인된 사용자만 보이도록 조건 추가 -->
             <div class="text-center mt-4">
-                <!-- 입양 상세보기 페이지에서 입양하기 버튼 링크 수정 -->
-                <a th:href="@{/adoption/write/{animalNo}(animalNo=${adoption.animalNo})}" class="btn btn-primary">입양하기</a>
-
+                <a th:if="${userId != null}" th:href="@{/adoption/write/{animalNo}(animalNo=${adoption.animalNo})}" class="btn btn-primary">
+                    입양하기
+                </a>
             </div>
         </div>
     </main>

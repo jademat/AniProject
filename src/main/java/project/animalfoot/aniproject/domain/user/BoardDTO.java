@@ -5,10 +5,8 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-
 @Data
 @Builder
-
 public class BoardDTO {
     private int bdNo;          // 게시글 번호
     private int uno;           // 작성자 ID (users 테이블과 연관)

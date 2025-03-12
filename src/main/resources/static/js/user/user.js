@@ -26,7 +26,7 @@ const patterns = [
     /^[가-힣]{2,5}|[a-zA-Z]{2,10}$/,
     /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/,
     /^[\w\s,.-]{5,150}$/,
-    /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 ];
 
 // 모든 error-message 요소의 내용을 초기화
@@ -154,6 +154,11 @@ const submitJoinFrm = async (frm) => {
 } // submitJoinFrm
 
 const submitEditFrm = async (frm) => {
+    // 유효성 검사
+    if (!validEditInputs(frm)) {
+        return; // 유효성 검사 실패 시 함수 종료
+    }
+
     // Web Crypto API로 비밀번호 암호화
     frm.userpwd.value = await hashPassword(frm.userpwd.value);
 
@@ -170,7 +175,7 @@ const submitEditFrm = async (frm) => {
         } else if (response.status === 400) {
             alert(await response.text());
         }else {     // 회원정보 수정이 실패했다면
-            alert('회원가입에 실패했습니다!! 다시 시도 해주세요!');
+            alert('회원정보 변경 실패했습니다!! 다시 시도 해주세요!');
         }
 
     }) .catch(error => {
@@ -179,72 +184,73 @@ const submitEditFrm = async (frm) => {
     });
 } // submiteditFrm
 
-// 비밀번호 변경 시 유효성 검사
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
-    const newPasswordField = form.querySelector('input[name="userpwd"]');
-    const confirmPasswordField = form.querySelector('input[name="confirmUserpwd"]');
-
-    form.addEventListener('submit', async function (event) {
-        event.preventDefault();
-
-        let isValid = true;
-
-        // 비밀번호가 변경된 경우에만 검사
-        if (newPasswordField.value.trim() !== "") {
-            // 비밀번호와 비밀번호 확인이 일치하는지 검사
-            if (newPasswordField.value !== confirmPasswordField.value) {
-                displayErrorMessages(confirmPasswordField, editMessages[1]); // 비밀번호 불일치 메시지
-                isValid = false;
-            }
-
-            // 비밀번호의 유효성 검사 (6자 이상, 영문 대소문자, 숫자, 특수문자 포함)
-            console.log('newPasswordField:', newPasswordField);
-            console.log('정규 표현식 검사:', patterns[1].test(newPasswordField.value));
-            console.log('비밀번호 입력값:', newPasswordField.value);
-
-            if (!patterns[1].test(newPasswordField.value)) {
-                displayErrorMessages(newPasswordField, editMessages[0]); // 비밀번호 형식 오류 메시지
-                isValid = false;
-            }
-        }
-
-        // 유효성 검사를 통과하지 못하면 종료
-        if (!isValid) return;
-
-        // 비밀번호를 해싱한 후 폼을 제출해야 함
-        const hashedPassword = await hashPassword(newPasswordField.value);
-        newPasswordField.value = hashedPassword;
-        confirmPasswordField.value = hashedPassword; // 두 개 동일하게 맞추기
-
-        form.submit(); // 비밀번호 해싱이 끝난 후 폼 제출
-    });
-});
-
 
 // 입력 요소 유효성 검사
 const validEditInputs = (form) => {
     let isValid = true;
+    let hasChanges = false;
 
     // 먼저 기존의 에러 메시지를 모두 초기화
     clearErrorsMessages();
 
-    // 회원가입 폼안의 모든 input 요소 수집
+    // 회원정보 수정 폼안의 모든 input 요소 수집
     const inputs = form.querySelectorAll('input');
-    inputs.forEach((input, idx) => {    // input 요소에 인덱스를 줘서 하나씩 검사
-        if (!input.checkValidity()) {   // html5 태그를 이용한 유효성 검사
-            displayErrorMessages(input, errorMessages[idx]);
+
+    /// 아이디, 이름 제외한 필드만 유효성 검사
+    const newPassword = inputs[2]; // 비밀번호 필드
+    const confirmPassword = inputs[3]; // 비밀번호 확인 필드
+    const phone = inputs[4]; // 전화번호
+    const email = inputs[5]; // 이메일
+    const addr = inputs[6]; // 주소
+    const detailaddr = inputs[7]; // 상세주소
+
+    // 비밀번호가 변경된 경우에만 유효성 검사
+    if (newPassword.value.trim() !== "") {
+        // 비밀번호 유효성 검사 (6자 이상, 영문 대소문자, 숫자, 특수문자 포함)
+        if (!patterns[1].test(newPassword.value)) {
+            displayErrorMessages(newPassword, editMessages[0]); // 비밀번호 형식 오류 메시지
             isValid = false;
         }
-    });
-    // 비밀번호 일치 여부 검사
-    if (inputs[2].value !== inputs[3].value) {
-        displayErrorMessages(inputs[2], errorMessages[2]);
+
+        // 비밀번호 일치 여부 검사
+        if (newPassword.value !== confirmPassword.value) {
+            displayErrorMessages(confirmPassword, editMessages[1]); // 비밀번호 불일치 메시지
+            isValid = false;
+        }
+    }
+
+    // 전화번호 유효성 검사
+    if (!patterns[4].test(phone.value)) {
+        displayErrorMessages(phone, errorMessages[4]);
         isValid = false;
     }
 
+    // 이메일 입력 여부 검사
+    if (!patterns[6].test(email.value)) {
+        displayErrorMessages(email, errorMessages[7]);
+        isValid = false;
+    }
+
+    // 주소 입력 여부 검사
+    if (!addr.value) {
+        displayErrorMessages(addr, errorMessages[5]);
+        isValid = false;
+    }
+
+    // 상세주소 입력 여부 검사
+    if (!detailaddr.value) {
+        displayErrorMessages(detailaddr, errorMessages[6]);
+        isValid = false;
+    }
+
+    // 변경 사항이 없으면 알림
+    if (!hasChanges) {
+        alert('변경사항이 없습니다!');
+        isValid = false;  // 변경사항이 없으므로 유효성 검사 통과하지 않음
+    }
 
     return isValid;
+
 }
 
 

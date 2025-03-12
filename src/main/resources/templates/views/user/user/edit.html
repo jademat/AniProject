@@ -6,11 +6,9 @@
 <head>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7fb;
             margin: 0;
             padding: 0;
-            font-weight: bold;
         }
 
         #myinfo {
@@ -19,7 +17,7 @@
             padding: 40px;
             background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(234, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgb(208, 176, 121);
         }
 
         h2 {
@@ -42,11 +40,6 @@
             padding: 20px;
             font-size: 1.5rem;
             text-align: center;
-        }
-
-        .card-body {
-            padding: 20px;
-            margin-bottom: 40px;
         }
 
         .table {
@@ -72,6 +65,7 @@
 
         tr:hover {
             background-color: #d0b079;
+            font-weight: bold;
         }
 
         .btn-edit {
@@ -88,14 +82,6 @@
 
         .btn-edit:hover {
             background-color: #0056b3;
-        }
-
-        .message {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #d0b079;
-            font-weight: bold;
-            margin-top: 50px;
         }
 
         .form-control {
@@ -136,17 +122,62 @@
         /* 아이디와 이름에 대한 호버 기능 삭제 */
         .no-hover tr:hover {
             background-color: transparent; /* 호버 시 배경색 없애기 */
+            font-weight: bold;
         }
 
         .note {
             font-size: 0.9rem;
-            color: #888;
+            color: #557af6;
             margin-top: 5px;
         }
 
         .user-name {
             color: #d0b079;
+            font-weight: bold;
         }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 20px;
+        }
+
+        .btn-container button {
+            width: 20%; /* 버튼 너비를 40%로 설정하여 좀 더 좁게 배치 */
+            margin-right: 40%;  /* 오른쪽 버튼과의 간격 추가 */
+            padding: 8px 16px; /* 버튼 패딩을 줄여서 크기 축소 */
+            font-size: 0.9rem; /* 폰트 크기 줄이기 */
+            height: auto; /* 버튼 높이 자동 조정 */
+        }
+
+        /* 마지막 버튼에는 오른쪽 마진을 없애기 */
+        .btn-container button:last-child {
+            margin-right: 0;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 16px; /* 패딩 축소 */
+            font-size: 0.9rem; /* 폰트 크기 줄이기 */
+            border-radius: 6px;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-edit:hover {
+            background-color: #0056b3;
+        }
+
+        /* 마지막 버튼에는 오른쪽 마진을 없애기 */
+        .btn-container button:last-child {
+            margin-right: 0;
+        }
+
+
+
     </style>
 </head>
 
@@ -234,9 +265,12 @@
                         </table>
                     </div>
 
-                    <div class="d-flex justify-content-center py-3">
+                    <div class=" btn-container d-flex justify-content-center py-3">
+                        <button type="reset" class="btn btn-danger" onclick="window.history.back();">
+                            <i class="fa-solid fa-delete-left"></i> 취소
+                        </button>
                         <button type="submit" class="btn-edit">
-                            <i class="fa-solid fa-user-edit"></i> 변경사항 저장
+                            <i class="fa-solid fa-user-edit"></i> 저장
                         </button>
                     </div>
                 </form>

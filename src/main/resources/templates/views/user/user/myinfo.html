@@ -6,11 +6,9 @@
 <head>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7fb;
             margin: 0;
             padding: 0;
-            font-weight: bold;
         }
 
         #myinfo {
@@ -19,7 +17,7 @@
             padding: 40px;
             background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(234, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgb(208, 176, 121);
         }
 
         h2 {
@@ -65,14 +63,17 @@
             background-color: #000000;
             color: white;  /* th의 텍스트 색상을 흰색으로 변경 */
             border-left: none;  /* 첫 번째 열의 세로 테두리는 없애기 */
+
         }
 
         td:first-child, th:first-child {
             border-left: none;  /* 첫 번째 열에는 왼쪽 세로 테두리를 없애기 */
+            font-weight: bold;
         }
 
         tr:hover {
             background-color: #d0b079;  /* 호버 시 배경색 변경 */
+            font-weight: bold;
         }
 
         .btn-edit {
@@ -93,14 +94,26 @@
         .message {
             text-align: center;
             font-size: 1.2rem;
-            color: #d0b079;
+            color: #e11f1f;
             font-weight: bold;
             margin-top: 50px;  /* 메시지와 테이블 사이의 여백 추가 */
         }
 
         .user-id {
             color: #d0b079;
+            font-weight: bold;
         }
+
+        .fa-solid {
+            color: #ffffff;
+        }
+
+        .justify-content-center {
+            margin-top: 50px;
+            margin-bottom: 0px;
+        }
+
+
 
     </style>
 
@@ -114,12 +127,11 @@
         <!-- 카드 형식으로 회원정보 감싸기 -->
         <div class="card" id="myinfo">
             <div class="card-header">
-                <span th:text="${session.loginUser.userid != null ? session.loginUser.userid : session.loginUser.kakaoId}" class="user-id"></span>님 회원 정보
+                <span th:text="${session.loginUser.name != null ? session.loginUser.name : session.loginUser.name}" class="user-id"></span>님 회원 정보
             </div>
             <div class="card-body">
                 <!-- 카카오 로그인 사용자일 경우 정보 출력 -->
                 <div th:if="${session.loginUser.kakaoId != null}">
-                    <h4>카카오 로그인 사용자</h4>
                     <table class="table table-bordered mb-0">
                         <colgroup>
                             <col style="width: 30%">
@@ -150,14 +162,13 @@
 
                     <!-- 카카오 사용자의 경우 수정 버튼 숨기기 -->
                     <div class="message">
-                        카카오 로그인 사용자는 회원정보 수정이 불가능합니다.<br>
-                        카카오톡에서 확인해주세요!
+                        ※ 카카오 로그인 사용자는 회원정보 수정이 불가능합니다.<br>
+                        <i class="fa-solid fa-comment"></i> 카카오톡에서 확인해주세요!
                     </div>
                 </div>
 
                 <!-- 일반 사용자일 경우 정보 출력 -->
                 <div th:if="${session.loginUser.kakaoId == null}">
-                    <h4>일반 사용자</h4>
                     <table class="table table-bordered mb-0">
                         <colgroup>
                             <col style="width: 30%">

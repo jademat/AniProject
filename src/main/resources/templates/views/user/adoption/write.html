@@ -61,12 +61,14 @@
 
 <th:block layout:fragment="content">
   <main>
+
+
     <!-- 동물 이름을 제목에 포함 -->
     <h2 th:text="|${adoption.nm} 입양 신청서|"></h2>
 
     <form action="/adoption/submit" method="post">
-      <!-- 신청자 번호 -->
-      <input type="hidden" name="uno" th:value="${uno ?: 0}">
+      <!-- 신청자 번호 (hidden) -->
+      <input type="hidden" name="uno" th:value="${uno}">
 
       <!-- 입양할 동물 번호 -->
       <input type="hidden" name="animal_no" th:value="${animal_no}">
@@ -76,14 +78,16 @@
       <input type="text" name="animal_name" th:value="${adoption.nm}" readonly>
 
       <label>📌 신청자 정보</label>
+
+
       <label>이름:</label>
-      <input type="text" name="applicant_name" placeholder="이름을 입력하세요" required>
+      <input type="text" name="applicant_name" th:value="${applicant_name}" readonly>
 
       <label>연락처:</label>
-      <input type="text" name="applicant_phone" placeholder="연락처를 입력하세요" required>
+      <input type="text" name="applicant_phone" th:value="${applicant_phone}" readonly>
 
       <label>이메일:</label>
-      <input type="email" name="applicant_email" placeholder="이메일을 입력하세요" required>
+      <input type="email" name="applicant_email" th:value="${applicant_email}" readonly>
 
       <label>1. 이전에 반려동물을 키운 경험이 있습니까?</label>
       <div class="radio-group">

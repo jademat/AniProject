@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/user/layout.html}">
+
+<th:block layout:fragment="content">
+  <main id="content">
+    <h2>게시글 수정</h2>
+    <!-- 수정할 게시글 정보 -->
+    <form th:action="@{/board/review/edit/{bdNo}(bdNo=${board.bdNo})}" method="POST">
+      <input type="hidden" name="brId" th:value="${userId}" />
+
+
+      <div class="mb-3">
+        <label for="bdTitle" class="form-label">제목</label>
+        <input type="text" class="form-control" id="bdTitle" name="bdTitle" th:value="${board.bdTitle}" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="bdContents" class="form-label">내용</label>
+        <textarea class="form-control" id="bdContents" name="bdContents" rows="4" required th:text="${board.bdContents}"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">수정하기</button>
+    </form>
+  </main>
+</th:block>
+
+<th:block layout:fragment="script">
+  <script>
+    // 수정 버튼 클릭 시 확인
+    document.querySelector("form").addEventListener('submit', (event) => {
+      if (!confirm("수정하시겠습니까?")) {
+        event.preventDefault();  // 수정 취소 시 폼 제출을 막음
+      }
+    });
+  </script>
+</th:block>
+
+</html>

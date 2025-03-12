@@ -6,56 +6,92 @@
 <th:block layout:fragment="content">
     <main id="content">
         <h2>게시글 상세보기</h2>
-
+        <!-- 숨겨진 필드로 uno 값 전달 -->
+        <input type="hidden" name="uno" th:value="${uno}" />
         <table class="table table-bordered">
             <tr>
                 <th>제목</th>
-                <td th:text="${board.bdTitle}"></td> <!-- 제목 -->
+                <td th:text="${board.bdTitle}"></td>
             </tr>
             <tr>
                 <th>작성자</th>
-                <td th:text="${board.userId}"></td> <!-- 작성자 -->
+                <td th:text="${board.userId}"></td>
             </tr>
             <tr>
                 <th>작성일</th>
-                <td th:text="${#temporals.format(board.bdRegdate, 'yyyy-MM-dd HH:mm:ss')}"></td> <!-- 날짜 포맷 -->
+                <td th:text="${#temporals.format(board.bdRegdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
             </tr>
             <tr>
                 <th>추천</th>
-                <td th:text="${board.bdThumbs}"></td> <!-- 추천 수 -->
+                <td th:text="${board.bdThumbs}"></td>
             </tr>
             <tr>
                 <th>조회수</th>
-                <td th:text="${board.bdViews}"></td> <!-- 조회수 -->
+                <td th:text="${board.bdViews}"></td>
             </tr>
             <tr>
                 <th>내용</th>
                 <td>
-                    <p th:text="${board.bdContents}"></p> <!-- 게시글 내용 -->
+                    <p th:text="${board.bdContents}"></p>
                 </td>
             </tr>
         </table>
 
-        <div class="text-end">
+        <div class="d-flex justify-content-between">
+            <!-- 목록 버튼 (항상 표시) -->
             <a href="/board/review/list" class="btn btn-secondary">목록</a>
 
-            <!-- 로그인한 사용자만 수정/삭제 가능 -->
-            <th:block th:if="${userId != null and userId == board.userId}">
-                <a th:href="@{/board/review/edit/{bdNo}(bdNo=${board.bdNo})}" class="btn btn-warning">수정</a>
-                <button type="button" class="btn btn-danger" id="deleteBtn">삭제</button>
+            <div>
+                <!-- 신고하기 버튼 -->
+                <th:block th:if="${uno != null}">
+                    <a th:href="@{/board/review/report/{bdNo}(bdNo=${board.bdNo})}" class="btn btn-danger">신고하기</a>
+                </th:block>
+            </div>
+
+            <!-- 로그인한 사용자만 수정/삭제 버튼을 보이게 하기 -->
+            <th:block th:if="${uno != null}">
+                <div>
+                    <a th:href="@{/board/review/edit/{bdNo}(bdNo=${board.bdNo})}" class="btn btn-warning">수정</a>
+
+                    <!-- 삭제 버튼 -->
+                    <form id="deleteForm" th:action="@{/board/review/delete/{bdNo}(bdNo=${board.bdNo})}" method="POST" style="display: inline;">
+                        <button type="button" class="btn btn-danger" onclick="confirmDelete()">삭제</button>
+                    </form>
+                </div>
             </th:block>
         </div>
+
+        <div class="my-3">
+            <h3><i class="fa fa-commenting"></i> 나도 한마디</h3>
+        </div>
+
+
     </main>
 </th:block>
 
 <th:block layout:fragment="script">
     <script>
-        document.querySelector("#deleteBtn")?.addEventListener('click', () => {
+        function confirmDelete() {
             if (confirm("정말 삭제하시겠습니까?")) {
-                let bdNo = "[[${board.bdNo}]]";
-                location.href = "/board/review/delete/" + bdNo;
+                // DELETE 요청 보내기
+                let form = document.getElementById('deleteForm');
+                fetch(form.action, {
+                    method: 'Post', // 실제 DELETE 요청을 보냄
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("게시물이 삭제되었습니다.")
+                            window.location.href = '/board/review/list';  // 삭제 후 목록 페이지로 리디렉션
+                        } else {
+                            alert('삭제에 실패했습니다.');
+                        }
+                    })
+                    .catch(error => alert('삭제 중 오류가 발생했습니다.'));
             }
-        });
+        }
     </script>
 </th:block>
 

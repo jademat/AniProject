@@ -48,14 +48,14 @@
 
             <tbody>
             <tr th:each="board : ${boardList}">
-                <td th:text="${board.bdNo}"></td>
+                <td th:text="${board.bdNo}"></td> <!-- bd_no -> bdNo -->
                 <td>
-                    <a th:href="@{/board/review/view/{bdNo}(bdNo=${board.bdNo})}" th:text="${board.bdTitle}"></a>
+                    <a th:href="@{/board/review/view/{bdNo}(bdNo=${board.bdNo})}" th:text="${board.bdTitle}"></a> <!-- bdTitle -->
                 </td>
-                <td th:text="${board.userId}"></td>
-                <td th:text="${board.bdRegdate}"></td>
-                <td th:text="${board.bdThumbs}"></td>
-                <td th:text="${board.bdViews}"></td>
+                <td th:text="${board.userId}"></td> <!-- userId -->
+                <td th:text="${board.bdRegdate}"></td> <!-- bdRegdate -->
+                <td th:text="${board.bdThumbs}"></td> <!-- bdThumbs -->
+                <td th:text="${board.bdViews}"></td> <!-- bdViews -->
             </tr>
             </tbody>
 

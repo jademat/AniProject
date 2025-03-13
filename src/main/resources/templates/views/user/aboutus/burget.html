@@ -3,9 +3,347 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/user/layout}">
 
-    <th:block layout:fragment="content">
-        <main id="content">
-            <h2>유기동물 현황</h2>
-        </main>
-    </th:block>
-</html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <style>
+        /* 전체 캔버스 크기 설정 */
+        canvas {
+            margin: 10px;
+            width: 100% !important;
+            height: 400px !important;
+        }
+
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .chart-container canvas {
+            width: 45% !important;
+            height: 400px !important;
+        }
+
+        /* pie 차트의 사이즈를 조정하기 위한 스타일 */
+        .pie {
+            width: 100% !important;
+            max-width: 400px !important; /* 최대 크기 */
+            height: 250px !important;  /* 원하는 높이 */
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 30px;
+            margin-top: 30px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            margin-top: 50px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="content">
+    <main id="content">
+        <h1>유기동물 현황</h1>
+
+        <!-- 1. 서울시 지역구별 유기동물 현황 (막대그래프) -->
+        <h2>1.서울시 지역구별 유기동물 현황</h2>
+        <canvas id="barChart" class="bar-Chart"></canvas>
+
+        <!-- 2. 파양 / 입양 강아지, 고양이 현황 -->
+        <h2>2.파양 / 입양 강아지, 고양이 현황</h2>
+        <div class="chart-container">
+            <canvas id="returnedChart" class="pie"></canvas>
+            <canvas id="adoptedChart" class="pie"></canvas>
+        </div>
+
+        <!-- 3. 안락사된 강아지, 고양이 현황 -->
+        <h2>3.안락사된 강아지, 고양이 현황</h2>
+        <div class="chart-container">
+            <canvas id="euthanizedChart" class="pie"></canvas>
+        </div>
+
+        <!-- 4. 이송된 강아지, 고양이 현황 -->
+        <h2>4.이송된 강아지, 고양이 현황</h2>
+        <div class="chart-container">
+            <canvas id="transferredChart" class="pie"></canvas>
+        </div>
+
+        <!-- 5. 서울시 지역구별 파양 현황 -->
+        <h2>5.서울시 지역구별 파양 현황</h2>
+        <div class="chart-container bar-Chart">
+            <canvas id="returnedBarChart"></canvas>
+        </div>
+
+        <!-- 6. 서울시 지역구별 입양 현황 -->
+        <h2>6.서울시 지역구별 입양 현황</h2>
+        <div class="chart-container bar-Chart">
+            <canvas id="adoptedBarChart"></canvas>
+        </div>
+
+        <!-- 7. 서울시 지역구별 안락사 현황 -->
+        <h2>7.서울시 지역구별 안락사 현황</h2>
+        <div class="chart-container bar-Chart">
+            <canvas id="euthanizedBarChart"></canvas>
+        </div>
+
+        <!-- 8. 서울시 지역구별 이송 현황 -->
+        <h2>8.서울시 지역구별 이송 현황</h2>
+        <div class="chart-container bar-Chart">
+            <canvas id="transferredBarChart"></canvas>
+        </div>
+
+    </main>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        Chart.register(ChartDataLabels); // 데이터 라벨 플러그인 등록
+
+        const districts = [[${districts}]];
+        const totalDogs = [[${totalDogs}]];
+        const totalCats = [[${totalCats}]];
+
+        const returnedDogs = [[${returnedDogs}]];
+        const returnedCats = [[${returnedCats}]];
+        const adoptedDogs = [[${adoptedDogs}]];
+        const adoptedCats = [[${adoptedCats}]];
+        const euthanizedDogs = [[${euthanizedDogs}]];
+        const euthanizedCats = [[${euthanizedCats}]];
+        const transferredDogs = [[${transferredDogs}]];
+        const transferredCats = [[${transferredCats}]];
+
+        // 소계 항목 제거
+        totalDogs.splice(17, 1);
+        totalCats.splice(17, 1);
+        returnedDogs.splice(17, 1);
+        returnedCats.splice(17, 1);
+        adoptedDogs.splice(17, 1);
+        adoptedCats.splice(17, 1);
+        euthanizedDogs.splice(17, 1);
+        euthanizedCats.splice(17, 1);
+        transferredDogs.splice(17, 1);
+        transferredCats.splice(17, 1);
+
+        // 막대 그래프 공통 옵션//
+        const barChartOptions = {
+            plugins: {
+                datalabels: {
+                    display: false
+                }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        };
+
+        // 막대 그래프: 1. 서울시 지역구별 유기동물 현황
+        new Chart(document.getElementById('barChart'), {
+            type: 'bar',
+            data: {
+                labels: districts,
+                datasets: [
+                    {
+                        label: '강아지',
+                        data: totalDogs,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '고양이',
+                        data: totalCats,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: barChartOptions
+        });
+
+        // 2. (파이 차트 옵션
+        const pieChartOptions = {
+            plugins: {
+                legend: { display: true, position: 'bottom' },
+                datalabels: {
+                    display: true,
+                    formatter: (value) => value + ' 마리', // ✅ 그래프 안에 "000 마리" 표시
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 25
+                    },
+                    align: 'center',
+                    anchor: 'center'
+                }
+            }
+        };
+
+        // 2. 파양 현황 (파이 차트)
+        new Chart(document.getElementById('returnedChart'), {
+            type: 'pie',
+            data: {
+                labels: ['파양된 강아지', '파양된 고양이'],
+                datasets: [{
+                    data: [returnedDogs.reduce((a, b) => a + b, 0), returnedCats.reduce((a, b) => a + b, 0)],
+                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)']
+                }]
+            },
+            options: pieChartOptions
+        });
+
+        // 3. 입양 현황 (파이 차트)
+        new Chart(document.getElementById('adoptedChart'), {
+            type: 'pie',
+            data: {
+                labels: ['입양된 강아지', '입양된 고양이'],
+                datasets: [{
+                    data: [adoptedDogs.reduce((a, b) => a + b, 0), adoptedCats.reduce((a, b) => a + b, 0)],
+                    backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)']
+                }]
+            },
+            options: pieChartOptions
+        });
+
+        // 4. 안락사 현황 (파이 차트)
+        new Chart(document.getElementById('euthanizedChart'), {
+            type: 'pie',
+            data: {
+                labels: ['안락사된 강아지', '안락사된 고양이'],
+                datasets: [{
+                    data: [euthanizedDogs.reduce((a, b) => a + b, 0), euthanizedCats.reduce((a, b) => a + b, 0)],
+                    backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+                    borderColor: ['rgba(255, 159, 64, 1)', 'rgba(153, 102, 255, 1)']
+                }]
+            },
+            options: pieChartOptions
+        });
+
+        // 5. 이송 현황 (파이 차트)
+        new Chart(document.getElementById('transferredChart'), {
+            type: 'pie',
+            data: {
+                labels: ['이송된 강아지', '이송된 고양이'],
+                datasets: [{
+                    data: [transferredDogs.reduce((a, b) => a + b, 0), transferredCats.reduce((a, b) => a + b, 0)],
+                    backgroundColor: ['rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)'],
+                    borderColor: ['rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)']
+                }]
+            },
+            options: pieChartOptions
+        });
+
+        // 6. 서울시 지역구별 파양 현황 (막대그래프)
+        new Chart(document.getElementById('returnedBarChart'), {
+            type: 'bar',
+            data: {
+                labels: districts,
+                datasets: [
+                    {
+                        label: '파양된 강아지',
+                        data: returnedDogs,
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '파양된 고양이',
+                        data: returnedCats,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: barChartOptions
+        });
+
+        // 7. 서울시 지역구별 입양 현황 (막대그래프)
+        new Chart(document.getElementById('adoptedBarChart'), {
+            type: 'bar',
+            data: {
+                labels: districts,
+                datasets: [
+                    {
+                        label: '입양된 강아지',
+                        data: adoptedDogs,
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '입양된 고양이',
+                        data: adoptedCats,
+                        backgroundColor: 'rgba(153, 102, 255, 0.5)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: barChartOptions
+        });
+
+        // 8. 서울시 지역구별 안락사 현황 (막대그래프)
+        new Chart(document.getElementById('euthanizedBarChart'), {
+            type: 'bar',
+            data: {
+                labels: districts,
+                datasets: [
+                    {
+                        label: '안락사된 강아지',
+                        data: euthanizedDogs,
+                        backgroundColor: 'rgba(255, 159, 64, 0.5)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '안락사된 고양이',
+                        data: euthanizedCats,
+                        backgroundColor: 'rgba(153, 102, 255, 0.5)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: barChartOptions
+        });
+
+        // 9. 서울시 지역구별 이송 현황 (막대그래프)
+        new Chart(document.getElementById('transferredBarChart'), {
+            type: 'bar',
+            data: {
+                labels: districts,
+                datasets: [
+                    {
+                        label: '이송된 강아지',
+                        data: transferredDogs,
+                        backgroundColor: 'rgba(255, 206, 86, 0.5)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '이송된 고양이',
+                        data: transferredCats,
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: barChartOptions
+        });
+    </script>
+</th:block>

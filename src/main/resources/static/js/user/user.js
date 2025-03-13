@@ -13,14 +13,20 @@ const loginMessages = [
     '※ 아이디를 올바르게 입력하세요',
     '※ 비밀번호를 올바르게 입력하세요',
 ];
+
+const editMessages = [
+    '※ 비밀번호는 영문 대소문자, 숫자, 특수문자를 포함해야 합니다 (최소 6자 ~ 최대 18자)',
+    '※ 비밀번호가 일치하지 않습니다',
+]
+
 const patterns = [
     /^[a-z][a-z0-9]{5,17}$/,
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,18}$/,
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,18}$/,
     /^[가-힣]{2,5}|[a-zA-Z]{2,10}$/,
-    /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}$/,
+    /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/,
     /^[\w\s,.-]{5,150}$/,
-    /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 ];
 
 // 모든 error-message 요소의 내용을 초기화
@@ -123,6 +129,8 @@ const submitJoinFrm = async (frm) => {
     frm.userpwd.value = await hashPassword(frm.userpwd.value);
     console.log(frm.userpwd.value);
 
+
+
     // 폼에 입력된 데이터를 formData 객체로 초기화
     const formData = new FormData(frm);
 
@@ -144,6 +152,107 @@ const submitJoinFrm = async (frm) => {
         alert('서버와 통신중 오류가 발생했습니다!! 관리자에게 문의하세요!');
     });
 } // submitJoinFrm
+
+const submitEditFrm = async (frm) => {
+    // 유효성 검사
+    if (!validEditInputs(frm)) {
+        return; // 유효성 검사 실패 시 함수 종료
+    }
+
+    // Web Crypto API로 비밀번호 암호화
+    frm.userpwd.value = await hashPassword(frm.userpwd.value);
+
+    // 폼에 입력된 데이터를 formData 객체로 초기화
+    const formData = new FormData(frm);
+
+    fetch('/user/user/edit', {
+        method: 'POST',
+        body: formData
+    }).then(async response => {
+        if (response.ok) {  // 회원정보 수정 정상적으로 처리되었다면
+            alert('변경이 완료되었습니다!!');
+            location.href = 'myinfo';
+        } else if (response.status === 400) {
+            alert(await response.text());
+        }else {     // 회원정보 수정이 실패했다면
+            alert('회원정보 변경 실패했습니다!! 다시 시도 해주세요!');
+        }
+
+    }) .catch(error => {
+        console.error('edit error:', error);
+        alert('서버와 통신중 오류가 발생했습니다!! 관리자에게 문의하세요!');
+    });
+} // submiteditFrm
+
+
+// 입력 요소 유효성 검사
+const validEditInputs = (form) => {
+    let isValid = true;
+    let hasChanges = false;
+
+    // 먼저 기존의 에러 메시지를 모두 초기화
+    clearErrorsMessages();
+
+    // 회원정보 수정 폼안의 모든 input 요소 수집
+    const inputs = form.querySelectorAll('input');
+
+    /// 아이디, 이름 제외한 필드만 유효성 검사
+    const newPassword = inputs[2]; // 비밀번호 필드
+    const confirmPassword = inputs[3]; // 비밀번호 확인 필드
+    const phone = inputs[4]; // 전화번호
+    const email = inputs[5]; // 이메일
+    const addr = inputs[6]; // 주소
+    const detailaddr = inputs[7]; // 상세주소
+
+    // 비밀번호가 변경된 경우에만 유효성 검사
+    if (newPassword.value.trim() !== "") {
+        // 비밀번호 유효성 검사 (6자 이상, 영문 대소문자, 숫자, 특수문자 포함)
+        if (!patterns[1].test(newPassword.value)) {
+            displayErrorMessages(newPassword, editMessages[0]); // 비밀번호 형식 오류 메시지
+            isValid = false;
+        }
+
+        // 비밀번호 일치 여부 검사
+        if (newPassword.value !== confirmPassword.value) {
+            displayErrorMessages(confirmPassword, editMessages[1]); // 비밀번호 불일치 메시지
+            isValid = false;
+        }
+    }
+
+    // 전화번호 유효성 검사
+    if (!patterns[4].test(phone.value)) {
+        displayErrorMessages(phone, errorMessages[4]);
+        isValid = false;
+    }
+
+    // 이메일 입력 여부 검사
+    if (!patterns[6].test(email.value)) {
+        displayErrorMessages(email, errorMessages[7]);
+        isValid = false;
+    }
+
+    // 주소 입력 여부 검사
+    if (!addr.value) {
+        displayErrorMessages(addr, errorMessages[5]);
+        isValid = false;
+    }
+
+    // 상세주소 입력 여부 검사
+    if (!detailaddr.value) {
+        displayErrorMessages(detailaddr, errorMessages[6]);
+        isValid = false;
+    }
+
+    // 변경 사항이 없으면 알림
+    if (!hasChanges) {
+        alert('변경사항이 없습니다!');
+        isValid = false;  // 변경사항이 없으므로 유효성 검사 통과하지 않음
+    }
+
+    return isValid;
+
+}
+
 
 // 로그인 폼 유효성 검사
 const validLogin = (form) => {

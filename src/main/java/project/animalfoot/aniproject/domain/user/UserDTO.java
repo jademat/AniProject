@@ -21,6 +21,7 @@ public class UserDTO {        // DB전송 객체
     private LocalDateTime regdate;
     private String kakaoId;
 
+
     // 생성자 추가 (모든 필드를 인자로 받음)
     public UserDTO(int uno, String userid, String userpwd, String name, String phone, String addr, String detailaddr, String email, int dopt_apply, LocalDateTime regdate, String kakaoId) {
         this.uno = uno;

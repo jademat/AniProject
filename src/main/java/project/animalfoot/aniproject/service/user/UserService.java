@@ -1,11 +1,13 @@
 package project.animalfoot.aniproject.service.user;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.animalfoot.aniproject.domain.user.UserDTO;
 import project.animalfoot.aniproject.domain.user.UserLoginDTO;
 import project.animalfoot.aniproject.repository.UserRepository;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -57,6 +59,24 @@ public class UserService {
         return findUser;
     }
 
+
+    public void updateUser(UserDTO user) {
+        log.info("service update user {} ", user);
+
+        // 사용자 정보를 수정하기 전에, 해당 사용자가 존재하는지 확인
+        UserDTO existingUser = userMapper.findByUserid(user.getUserid());
+
+        if (existingUser == null) {
+            throw new IllegalStateException("사용자가 존재하지 않습니다.");
+        }
+
+        // 수정된 정보를 DB에 반영
+        int result = userMapper.updateUser(user);
+
+        if (result != 1) {
+            throw new IllegalStateException("사용자 정보를 수정하는데 실패했습니다.");
+        }
+    }
 
 
 

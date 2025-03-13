@@ -3,9 +3,139 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/user/layout}">
 
+<head>
+    <style>
+        h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .pTitle {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .call {
+            font-size: 1.5rem;
+            text-align: center;
+            background-color: #FFFFFF;
+            margin-bottom: 30px;
+            margin-top: 30px;
+        }
+
+        .call:hover {
+            font-weight: bold;
+        }
+
+        p{
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .adoption-img {
+            display: block;  /* block 요소로 변경 (가운데 정렬 위해 필요) */
+            margin: 0 auto;  /* 가운데 정렬 */
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
 <th:block layout:fragment="content">
     <main id="content">
         <h2>입양 절차</h2>
+
+        <div>
+            <div>
+                <img src="http://localhost/cdn/adoption.jpg" class="adoption-img" alt="adoptProcess">
+
+            </div>
+            <p>
+                동물자유연대의 입양 절차가 까다롭고 복잡하다고 말씀하는 분도 계십니다. 하지만 한번 입양한 동물은 평생을 함께할 가족입니다.
+                동물자유연대와 좋은 인연으로 맺어지길 진심으로 바랍니다.
+            </p>
+
+            <div class="call">
+                입양신청 및 상담: 온라인 유기동물 입양 중개소 발바닥 온센터
+                02-2292-6338
+            </div>
+
+            <p>
+                동물자유연대 온센터 보호 동물은 대부분 학대, 방치 등 열악한 환경 속에서 구조되었습니다.
+                입양은 고통과 절망 속에서 지내던 동물들에게 새로운 희망을 안겨줍니다.
+                동물과 행복하고 건강하게 살아가기 위해서는 어떤 태도와 각오가 필요할까요?
+                동물을 입양하기 전에 생각해야 할 것과 절망의 끝에서 희망을 끌어안은 동물들의 모습을 영상으로 만나보세요!
+            </p>
+
+            <div>
+                <div style="text-align: center; margin: 20px 0;">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/HFvgUuSuj8g"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div> <br><br>
+
+            <p class="pTitle">
+                입양한 동물이 새로운 환경에 적응할 때까지 사랑과 인내심을 가지고 기다려줄 수 있나요?
+            </p>
+
+            <p>
+                동물자유연대 온센터 보호 동물은 대부분 학대, 방치 등 열악한 환경에서 구조되었습니다.
+                마음의 상처를 가지고 있거나 외부 환경에 대한 경험치가 부족한 동물은 낯선 장소, 낯선 사람에게 마음의 문을 여는 데 시간이 오래 걸릴 수도 있습니다.
+                사람의 욕심으로 동물을 바꾸려 하기보다는 동물이 마음의 문을 열 때까지 인내심과 사랑으로 기다려줄 수 있어야 합니다.
+            </p> <br><br>
+
+
+            <p class="pTitle">
+                동물을 건강하게 돌볼 수 있는 비용을 감당할 수 있나요?
+            </p>
+
+            <p>
+                반려동물도 사람과 마찬가지로 정기적으로 건강 관리가 필요하며 그에 따른 비용을 고려해야 합니다.
+                동물은 사람보다 평균 수명이 짧기 때문에 상대적으로 사람에 비해 노화가 빨리 찾아옵니다.
+                반려동물이 나이가 들면서 예상치 못한 비용이 발생할 수도 있습니다.
+                부상과 질병이 찾아오더라도 가족인 반려동물을 보듬을 수 있는 마음의 준비와 시간과 노력을 투자할 준비가 되어있어야 합니다.
+            </p> <br><br>
+
+
+            <p class="pTitle">
+                반려동물을 맞아들이기에 적절한 시기인가요?
+            </p>
+
+            <p>
+                반려동물에 대한 책임감을 이해하기에 너무 어린 가족 구성원이 있는 가정, 집을 자주 비우는 직업을 가진 사람,
+                안정된 주거환경을 제공하거나 비용을 감당하기 어려운 사람의 경우 동물 입양에 대해 조금 더 고민해 보는 것이 좋습니다.
+                유기동물이 발생하는 원인 중 결혼, 출산, 육아, 이직 등이 많은 부분을 차지합니다. 순간의 마음으로 입양을 결심하기보다는
+                현실적인 시기와 상황을 고려하여 입양을 결심하는 태도가 무엇보다 중요합니다.
+            </p> <br><br>
+
+
+            <p class="pTitle">
+                책임감을 잃지 않는 반려동물 보호자가 될 결심이 되셨나요?
+            </p>
+
+            <p>
+                충분한 운동과 놀이 시간, 적절한 치료와 건강 관리로 동물과 건강하게 함께할 준비가 되어있어야 합니다.
+                무엇보다 결혼, 출산, 유학, 이사 등 예상치 못한 상황이 찾아와도 반려동물의 평생을 책임질 수 있는 각오가 필요합니다.
+                입양한 동물의 안전을 위해서도 최선을 다하는 보호자가 되어야 하겠죠!?
+            </p> <br><br>
+
+
+            <p class="pTitle">
+                입양한 동물의 평생을 책임질 준비가 되어 있나요?
+            </p>
+
+            <p>
+                반려동물의 수명은 평균 10년에서 15년, 길게는 20년까지 이어질 수 있습니다.
+                그렇기에 반려동물과 함께 하는 것은 10년 이상의 헌신과 약속을 의미합니다.
+                보호자의 삶에 큰 변화가 찾아와도, 시간이 흘러 반려동물이 늙고 병들어도 평생 함께하겠다는 마음가짐이 필요합니다.
+            </p> <br><br>
+
+        </div>
     </main>
 </th:block>
 </html>

@@ -8,4 +8,6 @@ import lombok.Data;
 @Data
 @Builder
 public class Board {
+
+    
 }

@@ -21,15 +21,15 @@
         </nav>
 
         <!-- 메인 콘텐츠 -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div th:replace="~{fragments/admin/header::header}"></div>
 
-            <div class="content py-4">
+            <div class=" py-4">
                 <th:block layout:fragment="content"></th:block>
             </div>
 
             <div th:replace="~{fragments/admin/footer::footer}"></div>
-        </main>
+        </div>
     </div>
 </div>
 

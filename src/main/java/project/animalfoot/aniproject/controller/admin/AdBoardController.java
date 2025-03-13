@@ -24,8 +24,6 @@ public class AdBoardController {
     @GetMapping("/notice")
     public String notice(Model m) {
 
-//        m.addAttribute("notdto",adBoardService.listNotice());
-
         return "views/adboard/notice";
     }
 }

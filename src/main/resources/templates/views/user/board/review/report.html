@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/user/layout.html}">
+
+<th:block layout:fragment="content">
+  <main id="content">
+    <h2>게시글 신고</h2>
+    <form th:action="@{/board/review/report/{bdNo}(bdNo=${bdNo})}" method="POST">
+      <input type="hidden" name="brId" th:value="${session.userId}" />
+
+      <label for="brCategory">신고 유형:</label>
+      <select id="brCategory" name="brCategory" required>
+        <option value="욕설">욕설</option>
+        <option value="도배">도배</option>
+        <option value="음란물">음란물</option>
+        <option value="기타">기타</option>
+      </select>
+
+      <label for="brContent">신고 내용:</label>
+      <textarea id="brContent" name="brContent" required></textarea>
+
+      <button type="submit">신고 제출</button>
+    </form>
+  </main>
+</th:block>
+
+<th:block layout:fragment="script">
+  <script>
+    // 수정 버튼 클릭 시 확인
+    document.querySelector("form").addEventListener('submit', (event) => {
+      if (!confirm("신고하시겠습니까?")) {
+        event.preventDefault();  // 수정 취소 시 폼 제출을 막음
+      }
+    });
+  </script>
+</th:block>
+
+</html>

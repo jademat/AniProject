@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layouts/admin/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block layout:fragment="content">
+    <main>
+        <div>
+            <!-- 사용자 테이블 -->
+            <div>
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>신청번호</th>
+                        <th>신청자</th>
+                        <th>입양동물</th>
+                        <th>연락처</th>
+                        <th>신청상태</th>
+                        <th>신청일</th>
+                        <th>관리</th>
+                    </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                    <tr th:each="ado : ${adosdto.adolist}">
+                        <td th:text="${ado.adono}"></td>
+                        <td th:text = "${ado.userid}"></td>
+                        <td th:text = "${ado.nm}"></td>
+                        <td th:text = "${ado.phone}"></td>
+                        <td th:text = "${ado.getAdoStatText()}">신청</td>
+                        <td th:text = "${ado.ado_date}">2024</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary"  th:onclick="|openAdoptModal(${ado.adono})|"
+                                    type="button">상세정보
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div aria-hidden="true" aria-labelledby="openAdoptModalLabel" class="modal fade" id="adoptInfoModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">유저 상세 정보</h4>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <!-- 사용자 정보 입력창들 -->
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">신청 번호</span>
+                            <span class="form-control" id="adoptNo"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">아이디</span>
+                            <span class="form-control" id="userId"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">입양동물</span>
+                            <span class="form-control" id="animalName"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">키운적여부</span>
+                            <span class="form-control" id="adoRaised"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">가족구성원</span>
+                            <span class="form-control" id="adoMembers"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">주거형태</span>
+                            <span class="form-control" id="adoHousing"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">모두 찬성 여부</span>
+                            <span class="form-control" id="adoAllagree"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">입양 이유</span>
+                            <span class="form-control" id="adoReason"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">1년 예상 양육비</span>
+                            <span class="form-control" id="adoCost"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">경로 유입</span>
+                            <span class="form-control" id="adoSource"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">신청일</span>
+                            <span class="form-control" id="adoDate"></span>
+                        </div>
+
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <th:block layout:fragment="script">
+        <script src="/static/js/admin/adopt.js"></script>
+    </th:block>
+</th:block>
+</html>

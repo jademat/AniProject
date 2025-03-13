@@ -2,8 +2,69 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/user/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>입양 게시판</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- FontAwesome 아이콘 추가 -->
+    <style>
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 2s forwards;
+        }
+
+        /* 애니메이션 효과 */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* 성공 메시지 (입양 완료) */
+        .message.success {
+            background-color: #28a745; /* 초록색 배경 */
+            color: white;
+            border: 2px solid #218838; /* 초록색 테두리 */
+        }
+
+        /* 아이콘 스타일 */
+        .message i {
+            margin-right: 10px; /* 아이콘과 텍스트 사이 간격 */
+            font-size: 1.5em; /* 아이콘 크기 */
+        }
+    </style>
+
+    <script>
+        // 페이지 로드 시 10초 후 메시지를 숨기기
+        window.onload = function() {
+            const messageElement = document.querySelector('.message');
+            if (messageElement) {
+                setTimeout(() => {
+                    messageElement.style.display = 'none';  // 10초 후 메시지 숨기기
+                }, 10000);  // 10000ms = 10초
+            }
+        };
+    </script>
+</head>
+
 <th:block layout:fragment="content">
     <main id="content">
+        <!-- 알림 메시지 출력 부분 -->
+        <div th:if="${message}" class="message success">
+            <i class="fa fa-check-circle"></i> <!-- 체크 아이콘 -->
+            <p th:text="${message}">입양 신청이 완료되었습니다!</p>
+        </div>
+
         <h2>입양 게시판</h2>
         <table class="table table-bordered">
             <thead>
@@ -30,4 +91,5 @@
         </table>
     </main>
 </th:block>
+
 </html>

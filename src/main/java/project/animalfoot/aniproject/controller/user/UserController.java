@@ -69,7 +69,7 @@ public class UserController {
             if (loginUser != null) {
                 // 로그인 성공
                 session.setAttribute("loginUser", loginUser); // 로그인 세션 설정
-                session.setMaxInactiveInterval(600); // 세션 유지 시간 설정: 10분
+                session.setMaxInactiveInterval(1800); // 세션 유지 시간 설정: 10분
 
                 response = ResponseEntity.ok().build();
             }

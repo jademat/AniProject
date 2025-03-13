@@ -3,6 +3,7 @@ package project.animalfoot.aniproject.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import project.animalfoot.aniproject.domain.user.AdoptDTO;
 import project.animalfoot.aniproject.domain.user.AnimalDTO;
 import project.animalfoot.aniproject.domain.user.AnimalPicDTO;
 import project.animalfoot.aniproject.repository.AnimalRepository;
@@ -29,4 +30,11 @@ public class AdoptionSevrciceImpl implements AdoptionService {
     public List<AnimalPicDTO> getPicsByAnimalNo(int animalNo) {
         return adoptionRepository.findPicsByAnimalNo(animalNo);
     }
+
+    @Override
+    public void submitAdoption(AdoptDTO adoptDTO) {
+        adoptionRepository.insertAdoption(adoptDTO);
+    }
+
+
 }

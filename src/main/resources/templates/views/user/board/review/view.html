@@ -1,14 +1,31 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/user/layout.html}">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/user/layout.html}">
+<head>
+    <style>
+        .comment {
+            border-bottom: 1px solid #ddd; /* 댓글 하단에 구분선 추가 */
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
 
+        .sub-comment {
+            border-left: 2px solid #ccc; /* 대댓글 왼쪽에 구분선 추가 */
+            padding-left: 10px;
+            margin-left: 20px;
+        }
+
+    </style>
+
+</head>
 <th:block layout:fragment="content">
     <main id="content">
         <h2>게시글 상세보기</h2>
-        <!-- 숨겨진 필드로 uno 값 전달 -->
-        <input type="hidden" name="uno" th:value="${uno}" />
+        <!-- 게시글 정보 -->
         <table class="table table-bordered">
+            <tr>
+                <th>글번호</th>
+                <td th:text="${board.bdNo}"></td>
+            </tr>
             <tr>
                 <th>제목</th>
                 <td th:text="${board.bdTitle}"></td>
@@ -20,10 +37,6 @@
             <tr>
                 <th>작성일</th>
                 <td th:text="${#temporals.format(board.bdRegdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-            </tr>
-            <tr>
-                <th>추천</th>
-                <td th:text="${board.bdThumbs}"></td>
             </tr>
             <tr>
                 <th>조회수</th>
@@ -61,16 +74,88 @@
             </th:block>
         </div>
 
+        <!-- 댓글 작성 -->
         <div class="my-3">
-            <h3><i class="fa fa-commenting"></i> 나도 한마디</h3>
+            <h3><i class="fa fa-commenting"></i> 댓글</h3>
+            <form action="/board/review/reply" method="post">
+
+                <input type="hidden" name="bdNo" th:value="${board.bdNo}" />  <!-- 게시글 번호 -->
+                <input type="hidden" name="uno" th:value="${uno}" />   <!-- 로그인된 사용자 uno -->
+
+                <textarea name="reCon" required placeholder="댓글을 입력하세요" class="form-control"></textarea>
+                <button type="submit" class="btn btn-primary mt-2">댓글 작성</button>
+            </form>
         </div>
 
+        <!-- 댓글 목록 -->
+        <div class="my-3">
+            <h4>댓글 목록</h4>
+            <div th:each="reply : ${replies}">
+                <!-- 댓글 (reNo == refNo) -->
+                <div th:if="${reply.reNo == reply.refNo}" class="comment">
+                    <p><strong th:text="${reply.userid}"></strong>
+                        <span th:text="${#temporals.format(reply.reRegdate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                    </p>
+                    <p th:text="${reply.reCon}"></p>
 
+                    <!-- 대댓글 작성 버튼 -->
+                    <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#replyModal"
+                            th:data-ref="${reply.reNo}" th:data-parent="${reply.refNo}">대댓글 작성</button>
+
+                    <!-- 대댓글 목록 -->
+                    <div class="sub-comments ms-4">
+                        <div th:each="subReply : ${replies}" th:if="${subReply.refNo == reply.reNo and subReply.reNo != subReply.refNo}">
+                            <div class="sub-comment">
+                                <p><strong th:text="${subReply.userid}"></strong>
+                                    <span th:text="${#temporals.format(subReply.reRegdate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                                </p>
+                                <p th:text="${subReply.reCon}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 대댓글 모달 -->
+        <div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="replyModalLabel">대댓글 작성</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/board/review/reply2" method="post" id="replyForm">
+                            <input type="hidden" name="bdNo" th:value="${board.bdNo}" />
+                            <input type="hidden" name="uno" th:value="${uno}" />
+                            <!-- 대댓글 부모 댓글 번호 -->
+                            <input type="hidden" name="refNo" id="refNo" />
+                            <input type="hidden" name="reNo" id="reNo" />
+                            <textarea name="reCon" required placeholder="대댓글을 입력하세요" class="form-control"></textarea>
+                            <button type="submit" class="btn btn-primary mt-2">대댓글 작성</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </th:block>
 
 <th:block layout:fragment="script">
     <script>
+        // 대댓글 작성 버튼 클릭 시, refNo와 reNo 값 설정
+        $('#replyModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);  // 버튼 클릭 이벤트
+            var refNo = button.data('parent');    // 부모 댓글 번호
+            var reNo = button.data('ref');       // 댓글 번호
+
+            // 모달 내부에 값 설정
+            var modal = $(this);
+            modal.find('#refNo').val(refNo);  // 부모 댓글 번호
+            modal.find('#reNo').val(reNo);    // 댓글 번호
+        });
+
         function confirmDelete() {
             if (confirm("정말 삭제하시겠습니까?")) {
                 // DELETE 요청 보내기
@@ -83,7 +168,7 @@
                 })
                     .then(response => {
                         if (response.ok) {
-                            alert("게시물이 삭제되었습니다.")
+                            alert("게시물이 삭제되었습니다.");
                             window.location.href = '/board/review/list';  // 삭제 후 목록 페이지로 리디렉션
                         } else {
                             alert('삭제에 실패했습니다.');

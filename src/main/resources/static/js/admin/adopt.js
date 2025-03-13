@@ -59,6 +59,7 @@ document.getElementById('appbtn').addEventListener('click', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                alert('승인 하셨습니다.');
                 window.location.href = '/adopt/list'; // 성공 시 adopt/list로 리디렉션
             } else {
                 alert('업데이트 실패');
@@ -85,6 +86,7 @@ document.getElementById('rejectBtn').addEventListener('click', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                alert('반려 하셨습니다.');
                 window.location.href = '/adopt/list'; // 성공 시 adopt/list로 리디렉션
             } else {
                 alert('업데이트 실패');

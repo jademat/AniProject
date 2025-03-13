@@ -14,4 +14,6 @@ public class AnimalDTO {
     private String breeds;          // 품종
     private String adpSttus;        // 입양 상태 (대기, 입양완료 등)
     private String tmprPrtcSttus;   // 임시 보호 상태 (보호 중, 보호 완료 등)
+
+
 }

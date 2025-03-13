@@ -4,9 +4,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import project.animalfoot.aniproject.domain.user.AdoptDTO;
-import project.animalfoot.aniproject.domain.user.AnimalDTO;
-import project.animalfoot.aniproject.domain.user.AnimalPicDTO;
+import project.animalfoot.aniproject.domain.user.*;
 
 import java.util.List;
 

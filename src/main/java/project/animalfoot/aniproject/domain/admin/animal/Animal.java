@@ -18,6 +18,30 @@ public class Animal {
     private String adp_sttus;        // 입양 상태 (대기, 입양완료 등)
     private String tmpr_prtc_sttus;   // 임시 보호 상태 (보호 중, 보호 완료 등)
 
+    public String getAdoStatText() {
+        switch (adp_sttus) {
+            case "N":
+                return "입양대기";
+            case "P":
+                return "입양진행중";
+            case "C":
+                return "입양완료";
+        }
+        return "해당없음";
+    }
+
+    public String getTmprPrtcStatText() {
+        switch (adp_sttus) {
+            case "N":
+                return "센터보호중";
+            case "C":
+                return "임시보호중";
+        }
+        return "해당없음";
+    }
+
+
+
 
 
 }

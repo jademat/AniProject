@@ -7,4 +7,9 @@ import project.animalfoot.aniproject.domain.admin.login.Admin;
 @Mapper
 public interface HomeRepository {
 
+    @Select("select count(adono) adono from adopt where ado_stat = 1")
+    int adoptCount();
+
+    @Select("select count(animal_no)  from animal where adp_sttus = 'N'")
+    int adoptAniCount();
 }

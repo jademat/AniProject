@@ -63,6 +63,7 @@
                             <form th:id="|deleteForm${stat.index + 1}|" th:action="@{/user/delete/{uno}(uno=${us.uno})}" method="POST">
                                 <button type="button" class="btn btn-danger" th:onclick="|confirmDelete(${stat.index + 1})|">삭제</button>
                             </form>
+
                         </div>
                     </td>
                 </tr>

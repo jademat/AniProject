@@ -37,13 +37,13 @@ create table if not exists board (
 create table if not exists reply (
                                      re_no int auto_increment  primary key,              -- 댓글 번호
                                      ref_no int,                                         -- 대댓글 번호
-                                     uno int not null,                                   -- 댓글 작성자
+                                     userid varchar(18) not null,                                         -- 댓글 작성자
                                      bd_no int not null,                                 -- 게시글 번호
                                      re_con text not null ,                              -- 댓글 내용
                                      re_regdate datetime default current_timestamp,      -- 댓글 작성일
-                                     re_update datetime,                                 -- 댓글 수정일
-                                     foreign key (uno) references users (uno),
-    foreign key (bd_no) references board (bd_no)
+                                     re_update datetime                                 -- 댓글 수정일
+                                   /*  foreign key (uno) references users (uno),
+    foreign key (bd_no) references board (bd_no)*/
     );
 
 -- animal 테이블 (변경 없음)

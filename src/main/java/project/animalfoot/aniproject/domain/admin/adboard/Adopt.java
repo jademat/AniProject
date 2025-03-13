@@ -19,4 +19,17 @@ public class Adopt {
     private int ado_stat;
     private String userid;
     private String nm;
+
+    public String getAdoStatText() {
+        switch (ado_stat) {
+            case 1:
+                return "신청";
+            case 2:
+                return "승인";
+            case 3:
+                return "반려";
+            default:
+                return "기타";
+        }
+    }
 }

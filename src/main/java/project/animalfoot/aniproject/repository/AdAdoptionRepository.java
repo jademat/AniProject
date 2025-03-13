@@ -1,9 +1,12 @@
 package project.animalfoot.aniproject.repository;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import project.animalfoot.aniproject.domain.admin.adboard.Adopt;
 import project.animalfoot.aniproject.domain.admin.adboard.AdoptDTO;
+import project.animalfoot.aniproject.domain.admin.animal.Animal;
 
 import java.util.List;
 
@@ -15,12 +18,12 @@ public interface AdAdoptionRepository {
     @Select("select count(adono) cntad from adopt")
     int countAdopt();
 
-    @Select("select u.userid, ani.nm, a.adono, a.uno, a.animal_no, a.ado_raised, a.ado_members, a.ado_housing, a.ado_allagree, a.ado_reason, a.ado_cost, a.ado_source, a.ado_date, a.ado_stat\n" +
-            "from adopt a\n" +
-            "join users u on a.uno = u.uno\n" +
-            "join animal ani on a.animal_no = ani.animal_no\n" +
-            "where a.adono =  #{adono}")
     Adopt selectOneAdopt(int adono);
 
+    @Update("UPDATE adopt SET ado_stat = #{adoStat} WHERE adono = #{adono} AND ado_stat = 1")
+    int updateAdoStat(@Param("adono") int adono, @Param("adoStat") int adoStat);
+
+    @Select("select animal_no, nm, entrnc_date, spcs, breeds, sexdstn, age, bdwgh, adp_sttus, tmpr_prtc_sttus from animal order by animal_no desc")
+    List<Animal> selectAniList();
 
 }

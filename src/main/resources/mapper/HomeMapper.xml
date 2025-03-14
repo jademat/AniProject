@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="project.animalfoot.aniproject.repository.HomeRepository">
+
+    <select id="adoptList" resultType="project.animalfoot.aniproject.domain.admin.adboard.HoAdoptDTO">
+        select a.adono, u.userid, an.nm, a.ado_date  from adopt a
+            join users u on a.uno = u.uno
+            join animal an on a.animal_no = an.animal_no
+            where ado_stat = 1
+            order by adono limit 10;
+    </select>
+
+    <select id="boardList" resultType="project.animalfoot.aniproject.domain.admin.adboard.HoBoardDTO">
+        select b.bd_no, u.userid, b.bd_title, b.bd_regdate
+        from board b
+            join users u on b.uno = u.uno
+            order by bd_no desc limit 10
+    </select>
+
+</mapper>

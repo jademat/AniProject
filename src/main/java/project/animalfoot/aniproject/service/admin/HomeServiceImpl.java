@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import project.animalfoot.aniproject.domain.admin.adboard.Adopt;
 import project.animalfoot.aniproject.domain.admin.adboard.Board;
+import project.animalfoot.aniproject.domain.admin.adboard.HoAdoptDTO;
+import project.animalfoot.aniproject.domain.admin.adboard.HoBoardDTO;
 import project.animalfoot.aniproject.repository.HomeRepository;
 
+import java.util.List;
 
 
 @Service
@@ -24,4 +27,16 @@ public class HomeServiceImpl implements HomeService {
     public int countAni() {
         return homeMapper.adoptAniCount();
     }
+
+    @Override
+    public List<HoAdoptDTO> hoadList() {
+        return homeMapper.adoptList();
+    }
+
+    @Override
+    public List<HoBoardDTO> hoboList() {
+        return homeMapper.boardList();
+    }
+
+
 }

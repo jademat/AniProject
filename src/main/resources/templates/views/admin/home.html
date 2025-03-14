@@ -46,11 +46,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="board : ${bddto.bdlist}">
+                        <tr th:each="board : ${hobolist}">
                             <td th:text="${board.bd_no}"></td>
                             <td th:text="${board.bd_title}"></td>
                             <td th:text="${board.userid}"></td>
                             <td th:text="${board.bd_regdate}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(hobolist)}">
+                            <td colspan="4" class="text-center text-muted">입양 신청이 없습니다.</td>
                         </tr>
                         </tbody>
                     </table>
@@ -68,11 +71,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="adopt : ${adosdto.adolist}">
-                            <td th:text="${adopt.adono}"></td>
-                            <td th:text="${adopt.nm}"></td>
-                            <td th:text="${adopt.userid}"></td>
-                            <td th:text="${adopt.ado_date}"></td>
+                        <tr th:each="hoad : ${hoadlist}">
+                            <td th:text="${hoad.adono}"></td>
+                            <td th:text="${hoad.nm}"></td>
+                            <td th:text="${hoad.userid}"></td>
+                            <td th:text="${hoad.ado_date}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(hoadlist)}">
+                            <td colspan="4" class="text-center text-muted">입양 신청이 없습니다.</td>
                         </tr>
                         </tbody>
                     </table>

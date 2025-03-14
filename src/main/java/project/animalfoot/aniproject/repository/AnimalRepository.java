@@ -77,4 +77,7 @@ public interface AnimalRepository {   // animal 테이블의 모든 레코드 �
 
     @Select("select count(animal_no) as cntbd from animal")
     int countAnimal();
+
+    @Select("SELECT uno,userid,dopt_apply from users")
+    List<UserDTO> selectAdoptUser();
 }

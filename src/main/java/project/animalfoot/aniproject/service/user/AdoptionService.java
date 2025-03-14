@@ -1,9 +1,6 @@
 package project.animalfoot.aniproject.service.user;
 
-import project.animalfoot.aniproject.domain.user.AdoptDTO;
-import project.animalfoot.aniproject.domain.user.AnimalDTO;
-import project.animalfoot.aniproject.domain.user.AnimalPicDTO;
-import project.animalfoot.aniproject.domain.user.BoardListDTO;
+import project.animalfoot.aniproject.domain.user.*;
 
 import java.util.List;
 
@@ -17,8 +14,9 @@ public interface AdoptionService {
 
 
     // users 테이블의 dopt_aply에 1
-    void updateDoptApplyStatus(int userId);
+//    void updateDoptApplyStatus(int userId);
 
     BoardListDTO readBoard(int cpg);
 
+    List<UserDTO> selectAdopt();
 }

@@ -1,9 +1,6 @@
 package project.animalfoot.aniproject.repository;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import project.animalfoot.aniproject.domain.user.UserDTO;
 
 @Mapper
@@ -34,5 +31,7 @@ public interface UserRepository {
     @Update("UPDATE users SET dopt_apply = #{dopt_apply} WHERE uno = #{uno}")
     int updateDoptApplyStatus(int uno, int doptApply);  // uno로 상태 변경
 
+    @Update("UPDATE users SET dopt_apply = dopt_apply + 1 WHERE uno = #{uno}")
+    void updateDoptApply(@Param("uno") int uno);
 
 }

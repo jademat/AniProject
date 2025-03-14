@@ -11,6 +11,7 @@ import project.animalfoot.aniproject.service.user.BoardReportService;
 import project.animalfoot.aniproject.service.user.BoardService;
 import project.animalfoot.aniproject.service.user.GoogleRecaptchaService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -47,41 +48,34 @@ public class BoardController {
     }
 
     @GetMapping("/review/list")
-    public String listBoard(Model model, HttpSession session) {
+    public String listBoard(Model model, @RequestParam(defaultValue = "1") int cpg,HttpSession session, HttpServletResponse response) {
+
+        // 클라이언트 캐시 제어
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
         // 로그인된 사용자의 정보 가져오기
         UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
 
         // 로그인한 사용자만 글쓰기 버튼 보이기
         String userId = (loginUser != null) ? loginUser.getUserid() : null;
 
-        List<BoardDTO> boardList = boardService.getAllBoards();
-        model.addAttribute("boardList", boardList);
+        model.addAttribute("bdsdto", boardService.readBoard(cpg));
         model.addAttribute("userId", userId);  // userId를 model에 추가
 
         return "views/user/board/review/list"; // Thymeleaf 템플릿 파일명
     }
 
-    @GetMapping("review/view/{bdNo}")
-    public String viewBoard(@PathVariable("bdNo") int bdNo, Model model, HttpSession session) {
+    @GetMapping("/review/find")
+    public String find(Model model, String findtype, String findkey,
+                       @RequestParam(defaultValue = "1") int cpg) {
 
-        UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
 
-        Integer uno = (loginUser != null) ? loginUser.getUno() : null;
-        // 조회수 증가
-        boardService.incrementViewCount(bdNo);
-
-        // 게시글 데이터 가져오기
-        BoardDTO board = boardService.getBoardById(bdNo);
-
-        if (board == null) {
-            return "redirect:/board/review/list";
-        }
-
-        model.addAttribute("board", board);
-        model.addAttribute("uno", uno);
-
-        return "views/user/board/review/view";
+        model.addAttribute("bdsdto", boardService.findBoard(cpg, findtype, findkey));
+        return "views/user/board/review/list";
     }
+
+
 
     @PostMapping("/review/delete/{bdNo}")
     public String deleteBoard(@PathVariable("bdNo") int bdNo) {
@@ -140,7 +134,7 @@ public class BoardController {
 
         // 로그인되지 않은 경우 로그인 페이지로 리디렉션
         if (loginUser == null) {
-            return "redirect:/login";  // 로그인 페이지로 리디렉션
+            return "redirect:user/user/login";  // 로그인 페이지로 리디렉션
         }
 
         String brId = loginUser.getUserid();  // 로그인한 사용자 ID 가져오기
@@ -193,6 +187,88 @@ public class BoardController {
 
         return response;
     }
+
+    @GetMapping("/review/view/{bdNo}")
+    public String viewBoard(@PathVariable("bdNo") int bdNo, Model model, HttpSession session) {
+
+        UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+
+        Integer uno = (loginUser != null) ? loginUser.getUno() : null;
+        // 조회수 증가
+        boardService.incrementViewCount(bdNo);
+
+        // 게시글 데이터 가져오기
+        BoardDTO board = boardService.getBoardById(bdNo);
+        if (board == null) {
+            return "redirect:/board/review/list";
+        }
+
+        // 댓글 가져오기
+        List<Reply> replies = boardService.getRepliesByBoardId(bdNo);
+
+
+        model.addAttribute("loginUser", loginUser);
+
+        model.addAttribute("board", board);
+        model.addAttribute("uno", uno);
+        model.addAttribute("replies", replies);
+
+        return "views/user/board/review/view";
+    }
+
+    // **📌 댓글 작성**
+    @PostMapping("/review/reply")
+    public String addReply(ReplyDTO replyDTO, HttpSession session) {
+        // 로그인된 사용자 정보 확인
+        UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+
+        if (loginUser == null) {
+            return "redirect:/user/user/login";  // 로그인 안 되어 있으면 로그인 페이지로 이동
+        }
+
+        // 로그인된 사용자의 uno 설정
+        replyDTO.setUserid(loginUser.getUserid());
+
+        // 댓글 추가 서비스 호출
+        boolean success = boardService.addReply(replyDTO);
+
+        // 댓글 추가 후 해당 게시글로 리다이렉트
+        return "redirect:/board/review/view/" + replyDTO.getBdNo();
+    }
+    // **📌 대댓글 작성**
+    @PostMapping("/review/reply2")
+    public String addSubReply(ReplyDTO replyDTO, HttpSession session) {
+        log.info("boardService.addSubReply : {}", replyDTO);
+
+        // 로그인된 사용자 정보 확인
+        UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+
+        if (loginUser == null) {
+            return "redirect:/user/user/login";  // 로그인 안 되어 있으면 로그인 페이지로 이동
+        }
+
+        // 로그인된 사용자의 uno 설정
+        replyDTO.setUserid(loginUser.getUserid());
+
+        // 부모 댓글의 reNo를 refNo로 설정
+        // 대댓글은 부모 댓글 번호를 refNo로 전달
+        if (replyDTO.getRefNo() == null) {
+            // 대댓글일 경우 refNo가 존재해야 함
+            return "redirect:/board/review/view/" + replyDTO.getBdNo(); // refNo가 없으면 오류 처리(예시)
+        }
+
+        // 대댓글 추가 서비스 호출
+        boolean success = boardService.addSubReply(replyDTO);  // 대댓글 추가 호출
+        log.info("boardService.addSubReply");
+
+        // 대댓글 추가 후 해당 게시글로 리다이렉트
+        return "redirect:/board/review/view/" + replyDTO.getBdNo();
+    }
+
+
+
+
+
 
 
 

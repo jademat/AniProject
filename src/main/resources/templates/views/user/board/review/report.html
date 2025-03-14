@@ -6,7 +6,7 @@
 <th:block layout:fragment="content">
   <main id="content">
     <h2>게시글 신고</h2>
-    <form th:action="@{/board/review/report/{bdNo}(bdNo=${bdNo})}" method="POST">
+    <form th:action="@{/board/review/report/{bdNo}(bdNo=${bdNo})}" method="POST" id="reportForm">
       <input type="hidden" name="brId" th:value="${session.userId}" />
 
       <label for="brCategory">신고 유형:</label>
@@ -22,15 +22,34 @@
 
       <button type="submit">신고 제출</button>
     </form>
+
+    <!-- 커스텀 알림 박스 -->
+    <div id="customAlert" style="display: none; padding: 15px; background-color: #28a745; color: white; border-radius: 5px; margin-top: 15px;">
+      신고가 성공적으로 제출되었습니다.
+    </div>
   </main>
 </th:block>
 
 <th:block layout:fragment="script">
   <script>
-    // 수정 버튼 클릭 시 확인
-    document.querySelector("form").addEventListener('submit', (event) => {
+    // 폼 제출 전에 확인 메시지 표시
+    document.querySelector("#reportForm").addEventListener('submit', function(event) {
       if (!confirm("신고하시겠습니까?")) {
         event.preventDefault();  // 수정 취소 시 폼 제출을 막음
+      } else {
+        // 커스텀 알림 표시
+        let alertBox = document.querySelector("#customAlert");
+        alertBox.style.display = "block"; // 알림 박스 표시
+
+        // 알림 5초 후 사라지도록 설정 (시간 늘림)
+        setTimeout(function() {
+          alertBox.style.display = "none"; // 알림 숨기기
+
+          // 5초 후 리다이렉트 (원하는 페이지로)
+          window.location.href = "/board/review/list"; // 리다이렉트 URL 수정
+        }, 5000);  // 5000 밀리초 (5초)
+
+        event.preventDefault();  // 폼 제출을 막고, 알림 표시 후 리다이렉트 실행
       }
     });
   </script>

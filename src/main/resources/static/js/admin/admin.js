@@ -68,7 +68,7 @@ const submitLoginfrm = async (frm) => {
     }).then(async response => {
         if (response.ok) { // 로그인 성공했다면
             alert('로그인 성공');
-            location.href = '/admin/home';
+            location.href = '/home/main';
         } else if (response.status === 400) {
             alert(await response.text());
         } else { // 로그인 실패

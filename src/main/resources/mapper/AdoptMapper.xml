@@ -19,4 +19,13 @@
         ORDER BY a.adono DESC limit #{stnum}, #{pageSize};
     </select>
 
+    <select id="selectOneAdopt" resultType="project.animalfoot.aniproject.domain.admin.adboard.Adopt">
+        select u.userid, ani.nm, a.adono, a.uno, a.animal_no, a.ado_raised, a.ado_members, a.ado_housing, a.ado_allagree, a.ado_reason, a.ado_cost, a.ado_source, a.ado_date, a.ado_stat
+            from adopt a
+            join users u on a.uno = u.uno
+            join animal ani on a.animal_no = ani.animal_no
+            where a.adono =  #{adono}
+             ORDER BY a.adono DESC
+    </select>
+
 </mapper>

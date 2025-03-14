@@ -16,8 +16,9 @@ public interface BoardRepository {
             "b.bd_contents AS bdContents, b.bd_regdate AS bdRegdate, b.bd_thumbs AS bdThumbs, b.bd_views AS bdViews " +
             "FROM board b " +
             "JOIN users u ON b.uno = u.uno " +
-            "ORDER BY b.bd_no DESC")
-    List<BoardDTO> selectAllBoards();
+            "ORDER BY b.bd_no DESC " +
+            "LIMIT #{stnum}, #{pageSize}")
+    List<BoardDTO> selectAllBoards(int stnum, int pageSize);
 
 
     // 조회수 증가
@@ -39,9 +40,9 @@ public interface BoardRepository {
     @Update("UPDATE board SET bd_title = #{bdTitle}, bd_contents = #{bdContents} WHERE bd_no = #{bdNo}")
     int updateBoard(BoardUpdateDTO boardUpdateDTO);
 
-    int countFindBoard(Map<String, Object> params);
 
-    @Select("select count(bd_no) cntbd from board")
+
+    @Select("SELECT COUNT(bd_no) AS cntbd FROM board")
     int countBoard();
 
     @Select("SELECT b.bd_no AS bdNo, b.uno AS uno, u.userid AS userId, b.bd_title AS bdTitle, " +
@@ -56,4 +57,19 @@ public interface BoardRepository {
 
     @Update("UPDATE board SET bd_report = 1 WHERE bd_no = #{bdNo}")
     void updateReportStatus(@Param("bdNo") int bdNo);
+
+
+    @Select("SELECT b.bd_no AS bdNo, b.uno AS uno, u.userid AS userId, b.bd_title AS bdTitle, " +
+            "b.bd_contents AS bdContents, b.bd_regdate AS bdRegdate, b.bd_thumbs AS bdThumbs, b.bd_views AS bdViews " +
+            "FROM board b " +
+            "JOIN users u ON b.uno = u.uno " +
+            "WHERE ${findType} LIKE CONCAT('%', #{findkey}, '%') " +  // 동적 검색 조건
+            "ORDER BY b.bd_no DESC " +
+            "LIMIT #{stnum}, #{pageSize}")
+    List<BoardDTO> selectFindBoard(Map<String, Object> params);
+
+    @Select("SELECT count(b.bd_no) FROM board b JOIN users u ON b.uno = u.uno WHERE ${findType} LIKE CONCAT('%', #{findkey}, '%')")
+    int countFindBoard(Map<String, Object> params);
+
+
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,14 +52,22 @@ public class AdminController {
         return response;
     }
 
-    @GetMapping("/home")
+    /*@GetMapping("/home")
     public String home() {
         return "views/admin/home";
-    }
+    }*/
 
 
     @GetMapping("/setting")
-    public String setting() {
+    public String setting(Model m, HttpSession session) {
+
+        Admin loginAdmin = (Admin) session.getAttribute("loginAdmin");
+        if (loginAdmin == null) {
+            return "redirect:/admin/login";
+        }
+
+        m.addAttribute("admin", loginAdmin);
+
         return "views/admin/setting";
     }
 

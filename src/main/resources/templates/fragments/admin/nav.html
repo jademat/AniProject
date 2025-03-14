@@ -3,7 +3,7 @@
 <nav class="sidebar" th:fragment="nav">
     <h2>관리자</h2>
     <div class="menu-item">
-        <a class="nav-link" href="/admin/home">대시보드</a></div>
+        <a class="nav-link" href="/home/main">대시보드</a></div>
 
     <div class="menu-item">
         <a class="nav-link" href="/user/userlist">회원 리스트</a></div>
@@ -12,25 +12,25 @@
         <a class="nav-link" href="/adboard/boardlist">게시글 리스트</a></div>
 
     <div class="menu-item" onclick="toggleMenu('post-menu')">
-        <a class = "nav-link" href = "/adboard/notice">공지사항</a></div>
+        <a class = "nav-link" href = "/home/error">공지사항</a></div>
 
     <div class="menu-item" onclick="toggleMenu('donate-menu')">후원</div>
     <ul class="submenu" id="donate-menu">
-        <li><a class="nav-link" href="/donate/board">후원 내역 확인</a></li>
-        <li><a class="nav-link" href="/donate/board">후원금 재정 현황 공개 </a></li>
+        <li><a class="nav-link" href="/home/error">후원 내역 확인</a></li>
+        <li><a class="nav-link" href="/home/error">후원금 재정 현황 공개 </a></li>
     </ul>
 
     <div class="menu-item" onclick="toggleMenu('adoption-menu')">입양/입소</div>
     <ul class="submenu" id="adoption-menu">
-        <li><a class="nav-link" href="/adoption/board">입양동물현황</a></li>
+        <li><a class="nav-link" href="/adopt/anilist">입양동물현황</a></li>
         <li><a class="nav-link" href="/adopt/list">입양신청</a></li>
-        <li><a class="nav-link" href="/adopt/admission">입소신청</a></li>
+        <li><a class="nav-link" href="/home/error">입소신청</a></li>
     </ul>
 
     <div class="menu-item" onclick="toggleMenu('report-menu')">신고 관리</div>
     <ul class="submenu" id="report-menu">
-        <li><a class="nav-link" href="/report/bdreport">게시글</a></li>
-        <li><a class="nav-link" href="/report/rpreport">댓글</a></li>
+        <li><a class="nav-link" href="/home/error">게시글</a></li>
+        <li><a class="nav-link" href="/home/error">댓글</a></li>
     </ul>
 
     <div class="menu-item" onclick="toggleMenu('admin-menu')">설정</div>

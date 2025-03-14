@@ -14,13 +14,8 @@
             </select>
 
             <!-- 검색 입력 필드 -->
-            <input
-                    class="form-control custom-input"
-                    id="findkey"
-                    name="findkey"
-                    placeholder="사용자 검색"
-                    type="text"
-                    th:value="${param.findkey}">
+            <input class="form-control custom-input" id="findkey" name="findkey"
+                    placeholder="사용자 검색" type="text" th:value="${param.findkey}">
 
             <!-- 검색 버튼 -->
             <button class="btn btn-success custom-button" id="findbtn">
@@ -63,6 +58,7 @@
                             <form th:id="|deleteForm${stat.index + 1}|" th:action="@{/user/delete/{uno}(uno=${us.uno})}" method="POST">
                                 <button type="button" class="btn btn-danger" th:onclick="|confirmDelete(${stat.index + 1})|">삭제</button>
                             </form>
+
                         </div>
                     </td>
                 </tr>

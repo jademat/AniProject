@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import project.animalfoot.aniproject.domain.admin.user.User;
 import project.animalfoot.aniproject.domain.admin.user.UserDTO;
 import project.animalfoot.aniproject.domain.admin.user.UserListDTO;
-import project.animalfoot.aniproject.domain.user.BoardDTO;
 import project.animalfoot.aniproject.repository.AdUserRepository;
 
 import java.util.HashMap;

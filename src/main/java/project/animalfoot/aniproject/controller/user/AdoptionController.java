@@ -88,6 +88,10 @@ public class AdoptionController {
         return "redirect:/adoption/list";
     }
 
+  @GetMapping("/process")
+    public String process() {
+        return "views/user/adoption/process";
+    }
 
 
 }

@@ -9,4 +9,6 @@ public interface AdminRepository {
 
     @Select("select * from admin where ad_id = #{ad_id}")
     Admin findByAdmin(String admin);
+
+
 }

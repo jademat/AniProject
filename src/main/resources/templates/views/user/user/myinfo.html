@@ -6,11 +6,9 @@
 <head>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7fb;
             margin: 0;
             padding: 0;
-            font-weight: bold;
         }
 
         #myinfo {
@@ -19,12 +17,13 @@
             padding: 40px;
             background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(234, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgb(208, 176, 121);
         }
 
         h2 {
             text-align: center;
             font-size: 2rem;
+            margin-top: 50px;  /* 위쪽 여백을 추가하여 간격 늘리기 */
             margin-bottom: 30px;
             color: #333;
         }
@@ -37,7 +36,7 @@
         }
 
         .card-header {
-            background-color: #f4f4f4;
+            background-color: #ffffff;
             padding: 20px;
             font-size: 1.5rem;
             text-align: center;
@@ -45,6 +44,7 @@
 
         .card-body {
             padding: 20px;
+            margin-bottom: 40px;  /* 테이블과 메시지 사이 간격을 늘리기 */
         }
 
         .table {
@@ -54,12 +54,26 @@
 
         th, td {
             padding: 12px;
-            text-align: left;
-            border: 2px solid #ddd;
+            text-align: center;  /* 가운데 정렬 */
+            border-bottom: 3px solid #ddd; /* 가로 테두리 기본 색상 */
+            border-left: 3px solid #000;   /* 세로 테두리 검은색 */
         }
 
         th {
-            background-color: #f4f4f4;
+            background-color: #000000;
+            color: white;  /* th의 텍스트 색상을 흰색으로 변경 */
+            border-left: none;  /* 첫 번째 열의 세로 테두리는 없애기 */
+
+        }
+
+        td:first-child, th:first-child {
+            border-left: none;  /* 첫 번째 열에는 왼쪽 세로 테두리를 없애기 */
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #d0b079;  /* 호버 시 배경색 변경 */
+            font-weight: bold;
         }
 
         .btn-edit {
@@ -76,7 +90,34 @@
         .btn-edit:hover {
             background-color: #0056b3;
         }
+
+        .message {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #e11f1f;
+            font-weight: bold;
+            margin-top: 50px;  /* 메시지와 테이블 사이의 여백 추가 */
+        }
+
+        .user-id {
+            color: #d0b079;
+            font-weight: bold;
+        }
+
+        .fa-solid {
+            color: #ffffff;
+        }
+
+        .justify-content-center {
+            margin-top: 50px;
+            margin-bottom: 0px;
+        }
+
+
+
     </style>
+
+
 </head>
 
 <th:block layout:fragment="content">
@@ -86,77 +127,120 @@
         <!-- 카드 형식으로 회원정보 감싸기 -->
         <div class="card" id="myinfo">
             <div class="card-header">
-                회원 정보
+                <span th:text="${session.loginUser.name != null ? session.loginUser.name : session.loginUser.name}" class="user-id"></span>님 회원 정보
             </div>
             <div class="card-body">
-                <table class="table table-bordered mb-0">
-                    <colgroup>
-                        <col style="width: 30%">
-                        <col>
-                    </colgroup>
-                    <tbody>
-                    <tr>
-                        <td>아이디</td>
-                        <td>
-                            <!-- 카카오 로그인 사용자일 경우 kakaoId 표시, 아니면 userid 표시 -->
-                            <span th:text="${session.loginUser.kakaoId != null ? session.loginUser.kakaoId : session.loginUser.userid}"></span>
-                        </td>
-                    </tr>
+                <!-- 카카오 로그인 사용자일 경우 정보 출력 -->
+                <div th:if="${session.loginUser.kakaoId != null}">
+                    <table class="table table-bordered mb-0">
+                        <colgroup>
+                            <col style="width: 30%">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <td>카카오 아이디</td>
+                            <td><span th:text="${session.loginUser.kakaoId}"></span></td>
+                        </tr>
 
-                    <tr>
-                        <td>이름</td>
-                        <td>
-                            <span th:text="${session.loginUser.name != null ? session.loginUser.name : '이름 없음'}"></span>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>이름</td>
+                            <td><span th:text="${session.loginUser.name}"></span></td>
+                        </tr>
 
-                    <tr>
-                        <td>전화번호</td>
-                        <td>
-                            <span th:text="${session.loginUser.phone != null ? session.loginUser.phone : '전화번호 없음'}"></span>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>이메일</td>
+                            <td><span th:text="${session.loginUser.email}"></span></td>
+                        </tr>
 
+                        <tr>
+                            <td>전화번호</td>
+                            <td><span th:text="${session.loginUser.phone}"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
 
-                    <tr>
-                        <td>이메일</td>
-                        <td>
-                            <span th:text="${session.loginUser.email != null ? session.loginUser.email : '이메일 없음'}"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>주소</td>
-                        <td>
-                            <span th:text="${session.loginUser.addr != null ? session.loginUser.addr : '주소 없음'}"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>상세주소</td>
-                        <td>
-                            <span th:text="${session.loginUser.detailaddr != null ? session.loginUser.detailaddr : '상세주소 없음'}"></span>
-                        </td>
-                    </tr>
+                    <!-- 카카오 사용자의 경우 수정 버튼 숨기기 -->
+                    <div class="message">
+                        ※ 카카오 로그인 사용자는 회원정보 수정이 불가능합니다.<br>
+                        <i class="fa-solid fa-comment"></i> 카카오톡에서 확인해주세요!
+                    </div>
+                </div>
 
+                <!-- 일반 사용자일 경우 정보 출력 -->
+                <div th:if="${session.loginUser.kakaoId == null}">
+                    <table class="table table-bordered mb-0">
+                        <colgroup>
+                            <col style="width: 30%">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <td>아이디</td>
+                            <td><span th:text="${session.loginUser.userid}"></span></td>
+                        </tr>
 
+                        <tr>
+                            <td>비밀번호</td>
+                            <td><span class="password-span">●●●●●●</span></td>
+                        </tr>
 
+                        <tr>
+                            <td>이름</td>
+                            <td><span th:text="${session.loginUser.name}"></span></td>
+                        </tr>
 
-                    <tr>
-                        <td>가입일</td>
-                        <td>
-                            <span th:text="${session.loginUser.regdate != null ? #temporals.format(session.loginUser.regdate, 'yyyy-MM-dd HH:mm:ss') : '가입일 없음'}"></span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                        <tr>
+                            <td>전화번호</td>
+                            <td><span th:text="${session.loginUser.phone}"></span></td>
+                        </tr>
 
-                <!-- 회원정보 수정 버튼 -->
-                <div class="d-flex justify-content-center py-3">
-                    <a href="/user/user/edit" class="btn-edit">
-                        <i class="fa-solid fa-user-edit"></i> 회원정보 수정
-                    </a>
+                        <tr>
+                            <td>이메일</td>
+                            <td><span th:text="${session.loginUser.email}"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td>주소</td>
+                            <td><span th:text="${session.loginUser.addr}"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td>상세주소</td>
+                            <td><span th:text="${session.loginUser.detailaddr}"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td>가입일</td>
+                            <td><span th:text="${#temporals.format(session.loginUser.regdate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- 일반 사용자만 수정 버튼 활성화 -->
+                    <div class="d-flex justify-content-center py-3">
+                        <a href="/user/user/edit" class="btn-edit">
+                            <i class="fa-solid fa-user-edit"></i> 회원정보 수정
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- 입양 신청 여부 카드 -->
+<!--        <div class="card">-->
+<!--            <div class="card-header">-->
+<!--                입양 신청 여부-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                <p style="font-size: 1.3rem; font-weight: bold; color: #333;">-->
+<!--                    <span th:if="${session.loginUser.adoptionStatus == 0}" style="color: gray;">신청 안함</span>-->
+<!--                    <span th:if="${session.loginUser.adoptionStatus == 1}" style="color: blue;">신청</span>-->
+<!--                    <span th:if="${session.loginUser.adoptionStatus == 2}" style="color: green;">입양 확정</span>-->
+<!--                    <span th:if="${session.loginUser.adoptionStatus == 3}" style="color: red;">반려</span>-->
+<!--                </p>-->
+<!--            </div>-->
+<!--        </div>-->
     </main>
 </th:block>
 

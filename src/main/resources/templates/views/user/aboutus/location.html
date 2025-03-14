@@ -2,10 +2,274 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/user/layout}">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-    <th:block layout:fragment="content">
-        <main id="content">
-            <h2>보호소 위치</h2>
-        </main>
-    </th:block>
+        .tab-menu {
+            display: flex;
+            justify-content: center; /* 중앙 정렬 */
+            border-bottom: 2px solid #d0b079;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px;
+            cursor: pointer;
+            border: none;
+            background: #f8f9fa;
+            font-size: 16px;
+            transition: background 0.3s, color 0.3s;
+            border-radius: 25px; /* 둥글게 */
+            margin: 5px; /* 버튼 간격 */
+            color: #333; /* 기본 글자색 검정 */
+            font-weight: bold;
+        }
+
+        /* 선택된 탭 버튼 스타일 */
+        .tab-button.selected {
+            background: #d0b079 !important;
+            color: white !important;
+        }
+
+        .info-card {
+            width: 90%;
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed !important; /* 테이블 레이아웃을 고정 */
+        }
+
+        .info-table th, .info-table td {
+            padding: 16px;
+            font-size: 18px;
+            text-align: center;
+            border: 1px solid #ddd;
+            background: #fff;
+            vertical-align: middle;
+            word-wrap: break-word;
+        }
+
+        .info-table th {
+            background: #d0b079;
+            color: white;
+        }
+
+        /* 서울동물복지지원센터 테이블 첫 번째 th와 td 너비 줄이기 */
+        #welfare .info-table th:first-child,
+        #welfare .info-table td:first-child {
+            width: 150px !important; /* 첫 번째 th와 td의 너비 50px로 설정 */
+            max-width: 150px !important;
+            white-space: nowrap; /* 줄 바꿈 방지 */
+            overflow: hidden;
+            text-overflow: ellipsis; /* 넘치는 텍스트가 ...으로 표시 */
+            font-weight: bold;
+        }
+
+        /* 자치구 유기동물 입양센터 테이블 첫 번째 th와 td 너비 줄이기 */
+        #adoption .info-table th:first-child,
+        #adoption .info-table td:first-child {
+            width: 150px !important; /* 첫 번째 th와 td의 너비 50px로 설정 */
+            max-width: 150px !important;
+            white-space: nowrap; /* 줄 바꿈 방지 */
+            overflow: hidden;
+            text-overflow: ellipsis; /* 넘치는 텍스트가 ...으로 표시 */
+            font-weight: bold;
+        }
+
+        .info-table img {
+            max-width: 100% !important; /* 이미지가 셀을 넘지 않도록 제한 */
+            height: auto;
+            display: block;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .info-table td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .info-table td a:hover {
+            text-decoration: underline;
+        }
+
+        .warning {
+            color: red;
+            font-weight: bold;
+        }
+
+        .tab-menu {
+            margin-top: 50px; /* h2 위쪽 간격 추가 */
+            margin-bottom: 20px; /* h2와 카드 사이 간격 조정 */
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="content">
+    <main id="content">
+       <!-- <h2 class="text-center mb-4">보호소 위치</h2>-->
+
+        <div class="tab-menu">
+            <button class="tab-button selected" data-tab="welfare" onclick="showTab('welfare')">서울동물복지지원센터</button>
+            <button class="tab-button" data-tab="adoption" onclick="showTab('adoption')">자치구 유기동물 입양센터</button>
+        </div>
+
+        <!-- 서울동물복지지원센터 -->
+        <div id="welfare" class="tab-content" style="display: block;">
+            <div class="info-card">
+                <table class="info-table">
+                    <tbody>
+                    <tr>
+                        <th></th>
+                        <th>마포 센터</th>
+                        <th>구로 센터</th>
+                        <th>동대문 센터</th>
+                    </tr>
+                    <tr>
+                        <td>사진</td>
+                        <td><img th:src="@{http://localhost/cdn/location_seoul_mapo.jpg}" alt="마포 센터 사진"></td>
+                        <td><img th:src="@{http://localhost/cdn/location_seoul_guro.jpg}" alt="구로 센터 사진"></td>
+                        <td><img th:src="@{http://localhost/cdn/location_seoul_dongdaemoon.jpg}" alt="동대문 센터 사진"></td>
+                    </tr>
+                    <tr>
+                        <td>주소</td>
+                        <td>마포구 매봉산로 31<br>(지하1층)</td>
+                        <td>구로구 경인로 472</td>
+                        <td>동대문구 무학로 201</td>
+                    </tr>
+                    <tr>
+                        <td>시설</td>
+                        <td>진료실, 입양센터,<br>사회화 교실 등</td>
+                        <td>진료실, 입양센터 등</td>
+                        <td>입양센터, 교육시설 등</td>
+                    </tr>
+                    <tr>
+                        <td>기능</td>
+                        <td>유기동물 입양,<br>동물보호 시민교육</td>
+                        <td>유기동물 보호, 입양</td>
+                        <td>유기동물 입양, 시민 교육</td>
+                    </tr>
+                    <tr>
+                        <td>대중교통</td>
+                        <td>디지털미디어시티역 2번출구 도보 약 20분</td>
+                        <td>구로역 도보 약 10분</td>
+                        <td>동대문역 도보 약 15분</td>
+                    </tr>
+                    <tr>
+                        <td>자가용</td>
+                        <td>지하주차장 있음<br>(시간당 3,000원)<br><span class="warning"> * 주차요금이 지원되지 않습니다.</span></td>
+                        <td>주차시설 없음 <br><span class="warning">* 대중교통 이용 바랍니다.</span></td>
+                        <td>주차시설 있음<br>(시간당 2,000원) <br><span class="warning">* 대중교통 이용 바랍니다.</span></td>
+                    </tr>
+                    <tr>
+                        <td>연락처</td>
+                        <td>02-2124-2839</td>
+                        <td>02-1234-5678</td>
+                        <td>02-8765-4321</td>
+                    </tr>
+                    <tr>
+                        <td>커뮤니티</td>
+                        <td><a href="https://cafe.naver.com/seoulanimalcare">https://cafe.naver.com/seoulanimalcare</a></td>
+                        <td><a href="https://cafe.naver.com/seoulcatcafe">https://cafe.naver.com/seoulcatcafe</a></td>
+                        <td><a href="https://cafe.naver.com/seoulanimalcare">https://cafe.naver.com/seoulanimalcare</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 자치구 유기동물 입양센터 -->
+        <div id="adoption" class="tab-content" style="display: none;">
+            <div class="info-card">
+                <table class="info-table">
+                    <tbody>
+                    <tr>
+                        <th></th>
+                        <th>강동구</th>
+                        <th>서초구</th>
+                        <th>노원구</th>
+                        <th>서대문구</th>
+                    </tr>
+                    <tr>
+                        <td>명칭</td>
+                        <td>리본 Re:born</td>
+                        <td>서초 동물사랑센터</td>
+                        <td>노원 댕댕하우스</td>
+                        <td>서대문 내품애(愛)</td>
+                    </tr>
+                    <tr>
+                        <td>사진</td>
+                        <td><img th:src="@{http://localhost/cdn/location_seoul_gangdong.jpg}" alt="강동구 사진"></td>
+                        <td><img th:src="@{http://localhost/cdn/location_seoul_seocho.jpg}" alt="서초구 사진"></td>
+                        <td><img th:src="@{http://localhost/cdn/location_seoul_nowon.jpg}" alt="노원구 사진"></td>
+                        <td><img th:src="@{http://localhost/cdn/location_seoul_seodaemoon.jpg}" alt="서대문구 사진"></td>
+                    </tr>
+                    <tr>
+                        <td>위치</td>
+                        <td>강동구 양재대로81길 73(성내동)</td>
+                        <td>서초구 양재천로19길 22(양재동)</td>
+                        <td>노원구 수락산로 258</td>
+                        <td>서대문구 모래내로 333(홍은동)</td>
+                    </tr>
+                    <tr>
+                        <td>연락처</td>
+                        <td>070-4163-7350</td>
+                        <td>02-6956-7980</td>
+                        <td>02-933-8500</td>
+                        <td>02-330-3821</td>
+                    </tr>
+                    <tr>
+                        <td>홈페이지</td>
+                        <td><a href="http://www.reborncenter.org">http://www.reborncenter.org</a></td>
+                        <td><a href="http://www.seocho.go.kr/site/animal/main.do">http://www.seocho.go.kr/site/animal/main.do</a></td>
+                        <td><a href="http://www.nowonhouse.kr">http://www.nowonhouse.kr</a></td>
+                        <td><a href="https://www.sdm-amllove.or.kr">https://www.sdm-amllove.or.kr</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script>
+        function showTab(tabName) {
+            // 모든 탭 콘텐츠 숨기기
+            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+            document.getElementById(tabName).style.display = 'block';
+
+            // 모든 버튼 초기화
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('selected');
+                button.style.color = '#333'; // 기본 글자색 검정 유지
+            });
+
+            // 선택된 버튼 스타일 변경
+            const selectedButton = document.querySelector(`.tab-button[data-tab="${tabName}"]`);
+            selectedButton.classList.add('selected');
+            selectedButton.style.color = 'white';
+        }
+
+        // 기본 탭 설정
+        document.addEventListener("DOMContentLoaded", function() {
+            showTab('welfare');
+        });
+    </script>
+</th:block>
+
+
 </html>

@@ -8,12 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import project.animalfoot.aniproject.domain.admin.login.Admin;
 import project.animalfoot.aniproject.domain.admin.login.AdminDTO;
 import project.animalfoot.aniproject.service.admin.AdminService;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -54,14 +52,22 @@ public class AdminController {
         return response;
     }
 
-    @GetMapping("/home")
+    /*@GetMapping("/home")
     public String home() {
         return "views/admin/home";
-    }
+    }*/
 
 
     @GetMapping("/setting")
-    public String setting() {
+    public String setting(Model m, HttpSession session) {
+
+        Admin loginAdmin = (Admin) session.getAttribute("loginAdmin");
+        if (loginAdmin == null) {
+            return "redirect:/admin/login";
+        }
+
+        m.addAttribute("admin", loginAdmin);
+
         return "views/admin/setting";
     }
 

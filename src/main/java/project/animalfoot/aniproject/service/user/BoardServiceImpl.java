@@ -2,13 +2,16 @@ package project.animalfoot.aniproject.service.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.animalfoot.aniproject.domain.user.*;
 import project.animalfoot.aniproject.repository.BoardRepository;
 import project.animalfoot.aniproject.repository.ReplyRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -17,16 +20,52 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardMapper;
     private final ReplyRepository replyMapper;
+    @Value("${board.page-size}") private int pageSize;
 
-    @Override
+
+   /* @Override
     public List<BoardDTO> getAllBoards() {
         return boardMapper.selectAllBoards();
-    }
+    }*/
 
     // 게시글 번호로 게시글 조회
     @Override
     public BoardDTO getBoardById(int bdNo) {
         return boardMapper.selectBoardById(bdNo);
+    }
+
+    @Override
+    public BoardListDTO readBoard(int cpg) {
+        int stnum = (cpg - 1) * pageSize;
+        int totalItems=boardMapper.countBoard();
+        List<BoardDTO> boards = boardMapper.selectAllBoards(stnum,pageSize);
+
+        return new BoardListDTO(cpg,totalItems,pageSize,boards);
+    }
+
+    @Override
+    public BoardListDTO findBoard(int cpg, String findtype, String findkey) {
+
+        Map<String,Object> params=new HashMap<>();
+        params.put("stnum",(cpg-1)*pageSize);
+        params.put("pageSize",pageSize);
+        params.put("findType",findtype);
+        params.put("findkey",findkey);
+
+        int totalCount= countfindBoard(params);
+
+       List<BoardDTO> boardList= boardMapper.selectFindBoard(params);
+
+        return new BoardListDTO(cpg,totalCount,pageSize,boardList);
+    }
+
+
+
+    @Override
+    public int countfindBoard(Map<String, Object> params) {
+
+
+        return boardMapper.countFindBoard(params);
     }
 
     // 조회수 증가

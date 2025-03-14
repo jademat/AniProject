@@ -4,18 +4,23 @@ package project.animalfoot.aniproject.service.user;
 import project.animalfoot.aniproject.domain.user.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BoardService {
 
-    // 모든 게시글 가져오기
-    public List<BoardDTO> getAllBoards() ;
+    BoardListDTO readBoard(int cpg);
+
+    BoardListDTO findBoard(int cpg,String findtype,String findkey);
+
+    int countfindBoard(Map<String, Object> params);
+
     // 조회수 증가
     public void incrementViewCount(int bdNo) ;
     // 게시글 조회
     public BoardDTO getBoardById(int bdNo);
     // 게시글 작성
 
-    boolean newBoard(NewBoardDTO board);
+    boolean newBoard(NewBoardDTO gal );
 
     boolean deleteBoard(int bdNo);
 
@@ -35,4 +40,6 @@ public interface BoardService {
     boolean addReply(ReplyDTO replyDTO);
     // 대댓글 작성
     boolean addSubReply(ReplyDTO replyDTO);
+
+
 }

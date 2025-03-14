@@ -11,6 +11,7 @@ import project.animalfoot.aniproject.service.user.BoardReportService;
 import project.animalfoot.aniproject.service.user.BoardService;
 import project.animalfoot.aniproject.service.user.GoogleRecaptchaService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -47,18 +48,31 @@ public class BoardController {
     }
 
     @GetMapping("/review/list")
-    public String listBoard(Model model, HttpSession session) {
+    public String listBoard(Model model, @RequestParam(defaultValue = "1") int cpg,HttpSession session, HttpServletResponse response) {
+
+        // 클라이언트 캐시 제어
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
         // 로그인된 사용자의 정보 가져오기
         UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
 
         // 로그인한 사용자만 글쓰기 버튼 보이기
         String userId = (loginUser != null) ? loginUser.getUserid() : null;
 
-        List<BoardDTO> boardList = boardService.getAllBoards();
-        model.addAttribute("boardList", boardList);
+        model.addAttribute("bdsdto", boardService.readBoard(cpg));
         model.addAttribute("userId", userId);  // userId를 model에 추가
 
         return "views/user/board/review/list"; // Thymeleaf 템플릿 파일명
+    }
+
+    @GetMapping("/review/find")
+    public String find(Model model, String findtype, String findkey,
+                       @RequestParam(defaultValue = "1") int cpg) {
+
+
+        model.addAttribute("bdsdto", boardService.findBoard(cpg, findtype, findkey));
+        return "views/user/board/review/list";
     }
 
 
@@ -120,7 +134,7 @@ public class BoardController {
 
         // 로그인되지 않은 경우 로그인 페이지로 리디렉션
         if (loginUser == null) {
-            return "redirect:/login";  // 로그인 페이지로 리디렉션
+            return "redirect:user/user/login";  // 로그인 페이지로 리디렉션
         }
 
         String brId = loginUser.getUserid();  // 로그인한 사용자 ID 가져오기
@@ -209,7 +223,7 @@ public class BoardController {
         UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
 
         if (loginUser == null) {
-            return "redirect:/user/login";  // 로그인 안 되어 있으면 로그인 페이지로 이동
+            return "redirect:/user/user/login";  // 로그인 안 되어 있으면 로그인 페이지로 이동
         }
 
         // 로그인된 사용자의 uno 설정
@@ -230,7 +244,7 @@ public class BoardController {
         UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
 
         if (loginUser == null) {
-            return "redirect:/user/login";  // 로그인 안 되어 있으면 로그인 페이지로 이동
+            return "redirect:/user/user/login";  // 로그인 안 되어 있으면 로그인 페이지로 이동
         }
 
         // 로그인된 사용자의 uno 설정

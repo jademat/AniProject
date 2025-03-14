@@ -59,7 +59,7 @@
 
 <th:block layout:fragment="content">
     <main id="content"
-      th:with="pglink=${(#strings.isEmpty(param.findkey)) ? '/adoption/list?cpg=' : '/board/find?findtype=' + param.findtype + '&findkey='+ param.findkey + '&cpg=' }">
+          th:with="pglink=${(#strings.isEmpty(param.findkey)) ? '/adoption/list?cpg=' : '/board/find?findtype=' + param.findtype + '&findkey='+ param.findkey + '&cpg=' }">
         <!-- 알림 메시지 출력 부분 -->
         <div th:if="${message}" class="message success">
             <i class="fa fa-check-circle"></i> <!-- 체크 아이콘 -->

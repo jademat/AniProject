@@ -8,7 +8,6 @@ import project.animalfoot.aniproject.domain.admin.adboard.BoardDTO;
 import project.animalfoot.aniproject.domain.admin.adboard.NoticeListDTO;
 
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface AdBoardRepository {
@@ -23,8 +22,4 @@ public interface AdBoardRepository {
 
     @Delete("delete from board where bd_no = #{bd_no}")
     void deleteBoard(int bd_no);
-
-    List<BoardDTO> selectFindBoard(Map<String,Object> params);
-
-    int countFindBoard(Map<String,Object> params);
 }

@@ -41,16 +41,6 @@ public class AdBoardController {
         return ResponseEntity.ok(board);
     }
 
-    @GetMapping("/find")
-    public String find(Model m,String findtype, String findkey,
-                       @RequestParam(defaultValue = "1") int cpg) {
-
-        m.addAttribute("bddto", adBoardService.findBoard(cpg,findtype,findkey));
-
-        System.out.println("findtype : " + findtype);
-        return "views/adboard/boardlist";
-    }
-
     @PostMapping("/delete/{bd_no}")
     public String delete(@PathVariable int bd_no) {
         boolean boardDeleted = adBoardService.deleteBoard(bd_no);

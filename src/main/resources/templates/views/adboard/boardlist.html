@@ -3,27 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <th:block layout:fragment="content">
-    <main th:with="pglink=${(#strings.isEmpty(param.findkey)) ? '/adboard/boardlist?cpg=' : '/adboard/find?findtype=' + param.findtype + '&findkey=' + param.findkey + '&cpg='}">
+    <main class="p-4">
         <div class="container my-5">
             <h2 class="text-center mb-4">게시글 리스트</h2>
-            <div class="input-group search-bar w-50 mx-auto">
-                <!-- 드롭다운 메뉴 -->
-                <select class="form-select custom-select " id="findtype" name="findtype" >
-                    <option th:selected="${param.findtype == 'userid'}" value="userid" selected>아이디</option>
-                    <option th:selected="${param.findtype == 'bd_title'}" value="bd_title">제목</option>
-                    <option th:selected="${param.findtype == 'bd_contents'}" value="bd_contents">내용</option>
-                </select>
 
-                <!-- 검색 입력 필드 -->
-                <input class="form-control custom-input" id="findkey" name="findkey"
-                        type="text" th:value="${param.findkey}">
-
-                <!-- 검색 버튼 -->
-                <button class="btn btn-success custom-button" id="findbtn">
-                    <i class="fa-solid fa-magnifying-glass"></i> 검색
-                </button>
-            </div>
-            <br>
 
             <!-- 사용자 테이블 -->
             <div class="table-container">
@@ -65,32 +48,8 @@
                             </div>
                         </td>
                     </tr>
+
                     </tbody>
-                    <tr>
-                        <td colspan="6">
-                            <div class="d-flex justify-content-center">
-                                <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" th:href="|${pglink}1|">처음</a>
-                                    </li>
-                                    <li class="page-item" th:if="${bddto.cpg gt 1}">
-                                        <a class="page-link" th:href="|${pglink}${bddto.cpg - 1}|">이전</a>
-                                    </li>
-                                    <th:block th:each="i : ${#numbers.sequence(bddto.stblk, bddto.edblk)}">
-                                        <li th:class="${(i ne bddto.cpg) ? 'page-item' : 'page-item active'}">
-                                            <a class="page-link" th:href="|${pglink}${i}|" th:text="${i}"></a>
-                                        </li>
-                                    </th:block>
-                                    <li class="page-item" th:if="${bddto.cpg lt bddto.cntpg}">
-                                        <a class="page-link" th:href="|${pglink}${bddto.cpg + 1}|">다음</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" th:href="|${pglink}${bddto.cntpg}|">끝</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
                 </table>
             </div>
         </div>

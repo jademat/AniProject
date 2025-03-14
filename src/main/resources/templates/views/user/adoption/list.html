@@ -58,7 +58,8 @@
 </head>
 
 <th:block layout:fragment="content">
-    <main id="content">
+    <main id="content"
+      th:with="pglink=${(#strings.isEmpty(param.findkey)) ? '/adoption/list?cpg=' : '/board/find?findtype=' + param.findtype + '&findkey='+ param.findkey + '&cpg=' }">
         <!-- 알림 메시지 출력 부분 -->
         <div th:if="${message}" class="message success">
             <i class="fa fa-check-circle"></i> <!-- 체크 아이콘 -->
@@ -77,7 +78,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="adoption : ${adoptions}">
+            <tr th:each="adoption : ${bdsdto.bdlist}">
                 <td th:text="${adoption.animalNo}">1</td>
                 <td>
                     <a th:href="@{/adoption/view(animalNo=${adoption.animalNo})}"
@@ -88,6 +89,30 @@
                 <td th:text="${adoption.adpSttus}">입양 상태</td>
             </tr>
             </tbody>
+
+            <tfoot>
+            <tr><td colspan="6">
+                <ul class="pagination">
+                    <!--현재 페이지가 1/10보다 이전 링크를 표시-->
+                    <li class="page-item" th:if="${bdsdto.cpg gt 10}">
+                        <a th:href="|${pglink}${bdsdto.cpg - 1}|" class="page-link">이전</a></li>
+
+                    <th:block th:each="i : ${#numbers.sequence(bdsdto.stblk, bdsdto.edblk)}">
+
+                        <!--i와 cpg가 일치하지 않으면 평범하게 출력-->
+                        <li th:class="${(i ne bdsdto.cpg) ? 'page-item' : 'page-item active'}">
+                            <a th:href="|${pglink}${i}|"
+                               class="page-link" th:text="${i}"></a>
+                        </li>
+                    </th:block>
+
+                    <li class="page-item">
+                        <a th:href="|${pglink}${bdsdto.cpg + 1}|" class="page-link">다음</a></li>
+                </ul>
+            </td></tr>
+            </tfoot>
+
+
         </table>
     </main>
 </th:block>

@@ -14,8 +14,9 @@ import java.util.List;
 public interface AnimalRepository {   // animal 테이블의 모든 레코드 조회
 
     // animal 테이블의 모든 레코드 조회
-    @Select("SELECT * FROM animal")
-    List<AnimalDTO> findAllAdoptions();
+    @Select("SELECT * FROM animal " +
+            "LIMIT #{stnum}, #{pageSize}")
+    List<AnimalDTO> findAllAdoptions(int stnum, int pageSize);
 
     // animal 테이블에서 동물 번호로 조회
     @Select("SELECT * FROM animal WHERE animal_no = #{animalNo}")
@@ -29,5 +30,6 @@ public interface AnimalRepository {   // animal 테이블의 모든 레코드 �
             "VALUES (#{uno}, #{animal_no}, #{ado_raised}, #{ado_members}, #{ado_housing}, #{ado_allagree}, #{ado_reason}, #{ado_cost}, #{ado_source},1)")
     void insertAdoption(AdoptDTO adoptDTO);
 
-
+    @Select("select count(animal_no) as cntbd from animal")
+    int countAnimal();
 }

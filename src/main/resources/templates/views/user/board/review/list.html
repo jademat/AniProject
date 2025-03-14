@@ -4,8 +4,30 @@
       layout:decorate="~{layouts/user/layout.html}">
 
 <th:block layout:fragment="content">
-    <main id="content">
+    <main id="content"
+          th:with="pglink=${(#strings.isEmpty(param.findkey)) ?
+                        '/board/review/list?cpg=' : '/board/review/find?findtype=' + param.findtype + '&findkey='+ param.findkey + '&cpg=' }">
         <h2>입양후기 게시판</h2>
+
+        <!-- 검색 부분 추가 -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-3">
+                <select class="form-select" style="width: 120px" id="findtype" name="findtype">
+
+                    <option th:selected="${param.findtype == 'uno'}" value="bd_title">제목</option>
+                    <option th:selected="${param.findtype == 'name'}" value="bd_contents">내용</option>
+                    <option th:selected="${param.findtype == 'userid'}" value="userid">아이디</option>
+                </select>
+                <input class="form-control" style="width: 250px" id="findkey" name="findkey" th:value="${param.findkey}">
+                <button class="btn btn-success" id="findbtn"><i class="fa-solid fa-magnifying-glass"></i> 검색</button>
+            </div>
+
+            <!-- 로그인한 사용자만 글쓰기 버튼 보이게 -->
+            <th:block th:if="${userId != null}">
+                <button type="button" class="btn btn-primary" id="newbdbtn"><i class="fas fa-pen"></i> 글쓰기</button>
+            </th:block>
+        </div>
+
         <table class="table table-striped">
             <colgroup>
                 <col style="width:7%">
@@ -18,63 +40,44 @@
 
             <thead>
             <tr>
-                <td colspan="3" class="text-start">
-                    <div class="d-flex align-items-center gap-3">
-                        <select class="form-select" style="width: 120px" id="findtype" name="findtype">
-                            <option value="title" selected>제목</option>
-                            <option value="userid">작성자</option>
-                            <option value="contents">내용</option>
-                        </select>
-                        <input class="form-control" style="width: 250px" id="findkey" name="findkey" th:value="${param.findkey}">
-                        <button class="btn btn-success" id="findbtn"><i class="fa-solid fa-magnifying-glass"></i> 검색</button>
-                    </div>
-                </td>
-                <td colspan="3" class="text-end">
-                    <!-- 로그인한 사용자만 글쓰기 버튼 보이게 -->
-                    <th:block th:if="${userId != null}">
-                        <button type="button" class="btn btn-primary" id="newbdbtn"><i class="fas fa-pen"></i> 글쓰기</button>
-                    </th:block>
-                </td>
-            </tr>
-            <tr class="table-light">
                 <th>번호</th>
                 <th>제목</th>
                 <th>작성자</th>
                 <th>작성일</th>
-                <th>추천</th>
                 <th>조회</th>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="board : ${boardList}">
-                <td th:text="${board.bdNo}"></td> <!-- bd_no -> bdNo -->
+            <tr th:each="board : ${bdsdto.bdlist}">
+                <td th:text="${board.bdNo}"></td>
                 <td>
-                    <a th:href="@{/board/review/view/{bdNo}(bdNo=${board.bdNo})}" th:text="${board.bdTitle}"></a> <!-- bdTitle -->
+                    <a th:href="@{/board/review/view/{bdNo}(bdNo=${board.bdNo})}" th:text="${board.bdTitle}"></a>
                 </td>
-                <td th:text="${board.userId}"></td> <!-- userId -->
-                <td th:text="${board.bdRegdate}"></td> <!-- bdRegdate -->
-                <td th:text="${board.bdThumbs}"></td> <!-- bdThumbs -->
-                <td th:text="${board.bdViews}"></td> <!-- bdViews -->
+                <td th:text="${board.userId}"></td>
+                <td th:text="${board.bdRegdate}"></td>
+                <td th:text="${board.bdViews}"></td>
             </tr>
             </tbody>
 
             <tfoot>
-            <tr>
-                <td colspan="6">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a href="#" class="page-link">이전</a>
+            <tr><td colspan="6">
+                <ul class="pagination">
+                    <!-- 현재 페이지가 1/10보다 이전 링크를 표시 -->
+                    <li class="page-item" th:if="${bdsdto.cpg gt 10}">
+                        <a th:href="|${pglink}${bdsdto.cpg - 1}|" class="page-link">이전</a></li>
+
+                    <th:block th:each="i : ${#numbers.sequence(bdsdto.stblk,bdsdto.edblk)}">
+                        <li th:class="${(i ne bdsdto.cpg) ? 'page-item' : 'page-item active'}">
+                            <a th:href="|${pglink}${i}|"
+                               class="page-link" th:text="${i}"></a>
                         </li>
-                        <li class="page-item active">
-                            <a href="#" class="page-link">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a href="#" class="page-link">다음</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
+                    </th:block>
+
+                    <li class="page-item">
+                        <a th:href="|${pglink}${bdsdto.cpg + 1}|" class="page-link">다음</a></li>
+                </ul>
+            </td></tr>
             </tfoot>
 
         </table>
@@ -83,6 +86,22 @@
 
 <th:block layout:fragment="script">
     <script>
+        let findbtn = document.querySelector("#findbtn");
+        let findtype = document.querySelector("#findtype");
+        let findkey = document.querySelector("#findkey");
+
+        findbtn.addEventListener('click', (e) => {
+
+            if(findkey.value === ''){
+                alert('검색어를 입력하세요!!');
+            }else{
+                let params = `findtype=${findtype.value}&findkey=${findkey.value}`;
+                location.href= `/board/review/find?${params}` ;
+            }
+        });
+
+
+
         document.querySelector("#newbdbtn")?.addEventListener('click', () => {
             let userId = "[[${userId}]]";  // Thymeleaf에서 세션 값 가져오기
 
@@ -93,6 +112,9 @@
                 location.href = "/board/review/write";  // 로그인 상태면 글쓰기 페이지로 이동
             }
         });
+
+
+
     </script>
 </th:block>
 

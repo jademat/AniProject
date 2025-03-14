@@ -15,7 +15,7 @@ public class BoardListDTO {
 
     public BoardListDTO(int cpg, int totalItems , int pageSize, List<?> bdlist) {
         this.cpg = cpg;
-        this.cntpg = (int)Math.ceil((double) totalItems / pageSize);   // 총 페이지 구하는 식
+        this.cntpg = (int) Math.ceil( (double) totalItems / pageSize);   // 총 페이지 구하는 식
         this.bdlist = bdlist;
         // 페이지네이션 범위계산
         this.stblk = ((cpg-1) /10) *10 +1;

@@ -3,105 +3,172 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <th:block layout:fragment="content">
-    <main class="p-4">
+    <main th:with="pglink=${(#strings.isEmpty(param.findkey)) ? '/adboard/boardlist?cpg=' : '/adboard/find?findtype=' + param.findtype + '&findkey=' + param.findkey + '&cpg='}">
         <div class="container my-5">
             <h2 class="text-center mb-4">게시글 리스트</h2>
+            <div class="input-group search-bar w-50 mx-auto">
+                <!-- 드롭다운 메뉴 -->
+                <select class="form-select custom-select " id="findtype" name="findtype" >
+                    <option th:selected="${param.findtype == 'userid'}" value="userid" selected>아이디</option>
+                    <option th:selected="${param.findtype == 'bd_title'}" value="bd_title">제목</option>
+                    <option th:selected="${param.findtype == 'bd_contents'}" value="bd_contents">내용</option>
+                </select>
 
-            <!-- 검색 및 필터 -->
-            <div class="input-group mb-3 w-50 mx-auto">
-                <input class="form-control" id="searchInput" placeholder="사용자 검색" type="text">
-                <button class="btn btn-primary">검색</button>
+                <!-- 검색 입력 필드 -->
+                <input class="form-control custom-input" id="findkey" name="findkey"
+                        type="text" th:value="${param.findkey}">
+
+                <!-- 검색 버튼 -->
+                <button class="btn btn-success custom-button" id="findbtn">
+                    <i class="fa-solid fa-magnifying-glass"></i> 검색
+                </button>
             </div>
+            <br>
 
             <!-- 사용자 테이블 -->
             <div class="table-container">
                 <table class="table table-bordered table-hover text-center">
+                    <colgroup>
+                        <col style="width:3%">
+                        <col style="width: 8%">
+                        <col style="width:12%">
+                        <col style="width:12%">
+                        <col style="width:7%">
+                        <col style="width:10%">
+                    </colgroup>
+
                     <thead class="table-dark">
                     <tr>
                         <th>번호</th>
                         <th>이름</th>
-                        <th>이메일</th>
-                        <th>직업</th>
+                        <th>제목</th>
+                        <th>작성일</th>
                         <th>신고수</th>
                         <th>관리</th>
                     </tr>
                     </thead>
                     <tbody id="userTableBody">
-                    <tr>
-                        <td>1</td>
-                        <td>홍길동</td>
-                        <td>hong@example.com</td>
-                        <td>관리자</td>
-                        <td>1</td>
+                    <tr th:each="bdo : ${bddto.bdlist}">
+                        <td th:text="${bdo.bd_no}"></td>
+                        <td th:text ="${bdo.userid}"></td>
+                        <td th:text ="${bdo.bd_title}"></td>
+                        <td th:text="${bdo.bd_regdate}"></td>
+                        <td th:text = "${bdo.bd_report}"></td>
                         <td>
-                            <button class="btn btn-sm btn-primary" data-bs-target="#modifyModal" data-bs-toggle="modal"
-                                    type="button">수정
+                            <div class="d-flex justify-content-center"> <!-- Flexbox로 가운데 정렬 -->
+                            <button class="btn btn-sm btn-primary" th:onclick = "|BoardDetailModal(${bdo.bd_no})|"
+                                    type="button">상세보기
                             </button>
-                            <button class="btn btn-sm btn-danger btn-action" id = "delbtn">삭제</button>
+                            <form id= "deleteForm" th:action="@{/adboard/delete/{bd_no}(bd_no=${bdo.bd_no})}" method="POST">
+                                <button type="button" class="btn btn-danger" onclick="confirmDelete()">삭제</button>
+                            </form>
+                            </div>
                         </td>
                     </tr>
-
                     </tbody>
+                    <tr>
+                        <td colspan="6">
+                            <div class="d-flex justify-content-center">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link" th:href="|${pglink}1|">처음</a>
+                                    </li>
+                                    <li class="page-item" th:if="${bddto.cpg gt 1}">
+                                        <a class="page-link" th:href="|${pglink}${bddto.cpg - 1}|">이전</a>
+                                    </li>
+                                    <th:block th:each="i : ${#numbers.sequence(bddto.stblk, bddto.edblk)}">
+                                        <li th:class="${(i ne bddto.cpg) ? 'page-item' : 'page-item active'}">
+                                            <a class="page-link" th:href="|${pglink}${i}|" th:text="${i}"></a>
+                                        </li>
+                                    </th:block>
+                                    <li class="page-item" th:if="${bddto.cpg lt bddto.cntpg}">
+                                        <a class="page-link" th:href="|${pglink}${bddto.cpg + 1}|">다음</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" th:href="|${pglink}${bddto.cntpg}|">끝</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>
 
         <!-- The Modal -->
-        <div class="modal" id="modifyModal">
+        <div aria-hidden="true" aria-labelledby="BoardDetailModalLabel" class="modal fade" id="BoardDetailModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">Modal Heading</h4>
-                        <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                        <h4 class="modal-title">유저 상세 정보</h4>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                     </div>
 
-                    <!-- Modal body -->
+                    <!-- Modal Body -->
                     <div class="modal-body">
-                        <div class="container">
-                            <h2>개인 정보 수정</h2>
-                            <br>
-                            <form>
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label for="name" class="form-label text-end">이름</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="name" value="홍길동">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label for="email" class="form-label text-end">이메일</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input type="email" class="form-control" id="email" value="hong@example.com">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label for="phone" class="form-label text-end">전화번호</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input type="tel" class="form-control" id="phone" value="010-1234-5678">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="modal-footer d-flex justify-content-end">
-                                        <button type="button" class="btn btn-primary">저장</button>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                                    </div>
-                                </div>
-                            </form>
+                        <!-- 사용자 정보 입력창들 -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">번 호</span>
+                            <span class="form-control" id="bdNo"></span>
                         </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">아이디</span>
+                            <span class="form-control" id="userId"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">제목</span>
+                            <span class="form-control" id="bdTitle"></span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">내용</span>
+                            <textarea class="form-control no-resize" id="bdCont" rows="5" readonly style="resize: none;"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">작성일</span>
+                                    <span class="form-control" id="bdRegdate"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">추천</span>
+                                    <span class="form-control" id="bdThumbs"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">조회수</span>
+                                    <span class="form-control" id="bdViews"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">신고수</span>
+                                    <span class="form-control" id="bdReport"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
                     </div>
                 </div>
             </div>
         </div>
+
+
+
     </main>
     <th:block layout:fragment="script">
-
+        <script src="/static/js/admin/board.js"></script>
     </th:block>
 </th:block>
 </html>

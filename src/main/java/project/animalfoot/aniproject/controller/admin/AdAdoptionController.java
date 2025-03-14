@@ -12,6 +12,8 @@ import project.animalfoot.aniproject.domain.admin.adboard.Adopt;
 import project.animalfoot.aniproject.service.admin.AdAdoptionService;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/adopt")
@@ -40,6 +42,22 @@ public class AdAdoptionController {
         }
         return ResponseEntity.ok(adopt);
     }
+
+    @PostMapping("/updateAdoStat/{adono}")
+    public ResponseEntity<?> updateAdoStat(@PathVariable int adono, @RequestBody Map<String, Integer> request) {
+        int adoStat = request.get("ado_stat"); // "adoStat" 키로 상태 값을 받음
+        boolean success = adAdoptionService.updateAdoStat(adono, adoStat); // 서비스 호출
+        return ResponseEntity.ok(Map.of("success", success)); // 성공 여부 반환
+    }
+
+    @GetMapping("/anilist")
+    public String anilist(Model m) {
+
+        m.addAttribute("anidto",adAdoptionService.aniList());
+
+        return "views/adadopt/anilist";
+    }
+
 
     @GetMapping("/admission")
     public String admissionlist() {

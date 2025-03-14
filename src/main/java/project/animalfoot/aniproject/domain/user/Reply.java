@@ -3,13 +3,22 @@ package project.animalfoot.aniproject.domain.user;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class Reply {
 
-    private String re_no;
-    private String ref_no;
-    private int uno;
-    private int bd_no;
-    private String comments;
+    private int reNo;
+    private Long refNo;
+    private String userid;
+    private int bdNo;
+    private String reCon;
+    private LocalDateTime reRegdate;
+    private LocalDateTime reUpdate;
+
+
+
+
+
 }

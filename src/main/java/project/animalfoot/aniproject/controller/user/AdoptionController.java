@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.animalfoot.aniproject.domain.user.AdoptDTO;
 import project.animalfoot.aniproject.domain.user.AnimalDTO;
@@ -16,6 +13,7 @@ import project.animalfoot.aniproject.domain.user.AnimalPicDTO;
 import project.animalfoot.aniproject.domain.user.UserDTO;
 import project.animalfoot.aniproject.service.user.AdoptionService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -30,9 +28,15 @@ public class AdoptionController {
 
     // 리스트 페이지: 모든 입양 동물 리스트 조회
     @GetMapping("/list")
-    public String list(Model model) {
-        List<AnimalDTO> adoptionList = adoptionService.getAllAdoptions();
-        model.addAttribute("adoptions", adoptionList);
+    public String list(Model model, @RequestParam(defaultValue = "1")int cpg, HttpServletResponse response) {
+
+        // 클라이언트 캐시 제어
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        model.addAttribute("bdsdto",adoptionService.readBoard(cpg));
+
         return "views/user/adoption/list";  // Thymeleaf 뷰
     }
 

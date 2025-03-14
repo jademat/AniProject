@@ -10,19 +10,19 @@
             <div class="col-md-4">
                 <div class="card shadow-sm p-3">
                     <h5 class="fw-bold">입양 신청자</h5>
-                    <p class="fs-4">1,250명</p>
+                    <p class="fs-4" th:text="${adoptUser} + 명"></p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card shadow-sm p-3">
                     <h5 class="fw-bold">총 회원수</h5>
-                    <p class="fs-4">30명</p>
+                    <p class="fs-4" th:text="${totalUser} + 명"></p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card shadow-sm p-3">
-                    <h5 class="fw-bold">이달 기부금액</h5>
-                    <p class="fs-4">₩5,000,000</p>
+                    <h5 class="fw-bold">입양 가능 동물</h5>
+                    <p class="fs-4" th:text="${adoptAni} + 마리"></p>
                 </div>
             </div>
         </div>
@@ -46,18 +46,21 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>첫 번째 후기</td>
-                            <td>사용자A</td>
-                            <td>2025-03-06</td>
+                        <tr th:each="board : ${hobolist}">
+                            <td th:text="${board.bd_no}"></td>
+                            <td th:text="${board.bd_title}"></td>
+                            <td th:text="${board.userid}"></td>
+                            <td th:text="${board.bd_regdate}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(hobolist)}">
+                            <td colspan="4" class="text-center text-muted">입양 신청이 없습니다.</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <div class="col-md-6">
-                    <h5>유기/학대 신고</h5>
+                    <h5>입양 신청</h5>
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -68,11 +71,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>신고 내용</td>
-                            <td>사용자B</td>
-                            <td>2025-03-06</td>
+                        <tr th:each="hoad : ${hoadlist}">
+                            <td th:text="${hoad.adono}"></td>
+                            <td th:text="${hoad.nm}"></td>
+                            <td th:text="${hoad.userid}"></td>
+                            <td th:text="${hoad.ado_date}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(hoadlist)}">
+                            <td colspan="4" class="text-center text-muted">입양 신청이 없습니다.</td>
                         </tr>
                         </tbody>
                     </table>

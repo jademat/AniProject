@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layouts/admin/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block layout:fragment="content">
+    <main class="p-4">
+        <div class="container my-5">
+            <h2 class="text-center mb-4">입양 동물 현황</h2>
+
+            <div class="table-container">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>번호</th>
+                        <th>이름</th>
+                        <th>입소일</th>
+                        <th>종</th>
+                        <th>품종</th>
+                        <th>성별</th>
+                        <th>나이</th>
+                        <th>몸무게</th>
+                        <th>입양상태</th>
+                        <th>임보상태</th>
+                    </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                    <tr th:each="anis : ${anidto}">
+                        <td th:text="${anis.animal_no}"></td>
+                        <td th:text="${anis.nm}"></td>
+                        <td th:text="${anis.entrnc_date}"></td>
+                        <td th:text="${anis.spcs}"></td>
+                        <td th:text="${anis.breeds}"></td>
+                        <td th:text="${anis.sexdstn}"></td>
+                        <td th:text="${anis.age}"></td>
+                        <td th:text="${anis.bdwgh}"></td>
+                        <td th:text="${anis.getAdoStatText()}"></td>
+                        <td th:text="${anis.getTmprPrtcStatText()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+    <th:block layout:fragment="script">
+
+    </th:block>
+</th:block>
+</html>

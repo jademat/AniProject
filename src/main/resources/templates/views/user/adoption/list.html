@@ -94,6 +94,9 @@
             <tr><td colspan="6">
                 <ul class="pagination">
                     <!--현재 페이지가 1/10보다 이전 링크를 표시-->
+                    <li class="page-item">
+                        <a class="page-link" th:href="|${pglink}1|">처음</a>
+                    </li>
                     <li class="page-item" th:if="${bdsdto.cpg gt 10}">
                         <a th:href="|${pglink}${bdsdto.cpg - 1}|" class="page-link">이전</a></li>
 
@@ -106,9 +109,14 @@
                         </li>
                     </th:block>
 
+                    <li class="page-item" th:if="${bdsdto.cpg lt bdsdto.cntpg}" >
+                        <a th:href="|${pglink}${bdsdto.cpg + 1}|" class="page-link">다음</a>
+                    </li>
                     <li class="page-item">
-                        <a th:href="|${pglink}${bdsdto.cpg + 1}|" class="page-link">다음</a></li>
+                        <a class="page-link" th:href="|${pglink}${bdsdto.cntpg}|">끝</a>
+                    </li>
                 </ul>
+
             </td></tr>
             </tfoot>
 

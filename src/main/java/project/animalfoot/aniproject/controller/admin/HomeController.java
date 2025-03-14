@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import project.animalfoot.aniproject.repository.AdUserRepository;
-import project.animalfoot.aniproject.service.admin.AdAdoptionService;
 import project.animalfoot.aniproject.service.admin.AdBoardService;
 import project.animalfoot.aniproject.service.admin.HomeService;
 
@@ -21,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 public class HomeController {
 
     private final AdBoardService adBoardService;
-    private final AdAdoptionService adAdoptionService;
     private final AdUserRepository adUserMapper;
     private final HomeService homeService;
 
@@ -34,12 +32,16 @@ public class HomeController {
         response.setDateHeader("Expires", 0);
 
         m.addAttribute("bddto", adBoardService.readBoard(cpg));
-
-        m.addAttribute("adosdto", adAdoptionService.readAdopt(cpg));
         m.addAttribute("totalUser", adUserMapper.countUser());
         m.addAttribute("adoptUser", homeService.countAdopt());
         m.addAttribute("adoptAni", homeService.countAni());
+        m.addAttribute("hoadlist", homeService.hoadList());
+        m.addAttribute("hobolist",homeService.hoboList());
 
         return "views/admin/home";
+    }
+    @GetMapping("/error")
+    public String error() {
+        return "views/admin/error";
     }
 }

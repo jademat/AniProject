@@ -6,12 +6,13 @@ import org.springframework.stereotype.Service;
 import project.animalfoot.aniproject.domain.admin.adboard.Board;
 import project.animalfoot.aniproject.domain.admin.adboard.BoardDTO;
 import project.animalfoot.aniproject.domain.admin.adboard.BoardListDTO;
-import project.animalfoot.aniproject.domain.admin.adboard.NoticeListDTO;
 import project.animalfoot.aniproject.domain.admin.user.UserDTO;
 import project.animalfoot.aniproject.domain.admin.user.UserListDTO;
 import project.animalfoot.aniproject.repository.AdBoardRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -46,5 +47,26 @@ public class AdBoardServiceImpl implements AdBoardService {
             return false;
         }
 
+    }
+
+    @Override
+    public BoardListDTO findBoard(int cpg, String findtype, String findkey) {
+        int stnum = (cpg - 1) * pageSize;
+
+        Map<String,Object> params = new HashMap<>();
+        params.put("stnum",stnum);
+        params.put("pageSize",pageSize);
+        params.put("findtype",findtype);
+        params.put("findkey",findkey);
+
+        int totalItems = countfindBoard(params);
+        List<BoardDTO> boards = adBoardMapper.selectFindBoard(params);
+
+        return new BoardListDTO(cpg, totalItems, pageSize, boards);
+    }
+
+    @Override
+    public int countfindBoard(Map<String, Object> params) {
+        return adBoardMapper.countFindBoard(params);
     }
 }

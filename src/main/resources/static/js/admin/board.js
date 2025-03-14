@@ -1,3 +1,26 @@
+// 검색 이벤트
+let findbtn = document.querySelector("#findbtn");
+let findtype = document.querySelector("#findtype")
+let findkey = document.querySelector("#findkey")
+
+window.addEventListener('load', function () {
+    let storedFindType = sessionStorage.getItem('findtype');
+    if (storedFindType) {
+        findtype.value = storedFindType; // 저장된 값으로 설정
+    }
+});
+
+findbtn.addEventListener('click', (e) => {
+    if(findkey.value === ''){
+        alert('검색어를 입력해주세요.');
+    } else{
+        sessionStorage.setItem('findtype', findtype.value);
+        let params = `findtype=${findtype.value}&findkey=${findkey.value}`;
+        location.href = `/adboard/find?${params}`;
+    }
+});
+
+
 function BoardDetailModal(bd_no) {
     fetch(`/adboard/view/${bd_no}`)
         .then(response => response.json())

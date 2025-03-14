@@ -50,6 +50,7 @@ public class AdUserController {
         return ResponseEntity.ok(user);
     }
 
+
     @PostMapping("/delete/{uno}")
     public String delete(@PathVariable int uno) {
        boolean isdeleted = adUserService.deleteUser(uno);

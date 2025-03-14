@@ -12,8 +12,10 @@ import java.util.List;
 public interface AnimalRepository {   // animal 테이블의 모든 레코드 조회
 
     // animal 테이블의 모든 레코드 조회
-    @Select("SELECT * FROM animal")
-    List<AnimalDTO> findAllAdoptions();
+    // animal 테이블의 모든 레코드 조회
+    @Select("SELECT * FROM animal " +
+            "LIMIT #{stnum}, #{pageSize}")
+    List<AnimalDTO> findAllAdoptions(int stnum, int pageSize);
 
     // animal 테이블에서 동물 번호로 조회
     @Select("SELECT * FROM animal WHERE animal_no = #{animalNo}")
@@ -71,4 +73,8 @@ public interface AnimalRepository {   // animal 테이블의 모든 레코드 �
             "FROM animal_status " +
             "GROUP BY district")
     List<TransferredDTO> getTransferredDogsAndCats();
+
+
+    @Select("select count(animal_no) as cntbd from animal")
+    int countAnimal();
 }

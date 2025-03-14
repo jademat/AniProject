@@ -126,4 +126,9 @@ public class AnimalStatusController {
     public String location() {
         return "views/user/aboutus/location";
     }
+
+    @GetMapping("/aboutus/error404")
+    public String error() {
+        return "views/user/aboutus/error404";
+    }
 }

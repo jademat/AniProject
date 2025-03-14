@@ -1,57 +1,58 @@
 <!doctype html>
-<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layouts/user/layout.html}">
 <head>
-    <title>카카오페이 후원</title>
+    <title>후원하기</title>
 </head>
 
-<body>
 <div layout:fragment="content">
-    <div class="content">
-        <div class="card">
-            <div class="card-header">/user/
-                <h4>카카오페이 후원하기</h4>
-            </div>
-            <div class="card-body">
-                <h5 class="text-center mb-4">후원금을 입력하세요</h5>
+    <div class="container mt-5">
+        <h3 class="fw-bold">카카오페이로 일시 후원하기</h3>
+        <button id="donateBtn" class="btn btn-warning mt-3" onclick="donate()">💛 카카오페이로 후원하기</button>
 
-                <div class="donation-amount">
-                    <input type="number" id="donationAmount" placeholder="후원금액 입력" min="1000">
-                    <button id="payButton">후원하기</button>
+        <h4 class="mt-4 fw-bold">계좌이체로 일시후원하기</h4>
+
+        <div class="card p-4 mt-3" style="background-color: #E3F2FD;">
+            <h5 class="fw-bold">일시후원 계좌</h5>
+            <p>온라인 유기동물 보호센터 발바닥</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>우리은행</strong> 1005-001-646488</p>
+                    <p><strong>국민은행</strong> 043937-04-003118</p>
                 </div>
-
-                <!-- 카카오페이 결제 버튼 -->
-                <div id="kakaoPayButton"></div>
-
+                <div class="col-md-6">
+                    <p><strong>기업은행</strong> 025-075183-04-011</p>
+                    <p><strong>농협중앙회</strong> 301-0052-1096-81</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    // 카카오페이 SDK 초기화
-    Kakao.init('YOUR_KAKAO_APP_KEY');  // 여기에 실제 카카오 앱 키를 넣어야 합니다.
+<th:block layout:fragment="script">
+    <script>
+        function donate() {
 
-    // 후원 버튼 클릭 시 결제 요청
-    document.getElementById('payButton').addEventListener('click', function() {
-        var donationAmount = document.getElementById('donationAmount').value;
+            const order = { amount: 10000, orderId: 123456789, userId: 123456789 };
 
-        if (!donationAmount || donationAmount < 1000) {
-            alert("최소 후원 금액은 1000원입니다.");
-            return;
+            fetch('/kakaoPay/donate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(order)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.next_redirect_pc_url) {
+                        window.location.href = data.next_redirect_pc_url;
+                    } else {
+                        alert('결제 URL을 가져오지 못했습니다.');
+                    }
+                })
+                .catch(error => {
+                    alert('후원 처리 중 오류가 발생했습니다.');
+                });
         }
-
-        // 카카오페이 결제 API 호출 (여기서 실제 API 연동이 필요함)
-        Kakao.Pay.request({
-            pay_method: '카카오페이',
-            total_amount: donationAmount,
-            item_name: '후원금',
-            item_code: '12345', // 고유 아이템 코드
-            quantity: 1,
-            approval_url: 'https://your-domain.com/success',  // 결제 성공 후 리다이렉트될 URL
-            fail_url: 'https://your-domain.com/fail'           // 결제 실패 시 리다이렉트될 URL
-        });
-    });
-</script>
-</body>
+    </script>
+</th:block>
 </html>

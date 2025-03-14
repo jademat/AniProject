@@ -54,7 +54,15 @@
 
             <!-- 입양하기 버튼, 로그인된 사용자만 보이도록 조건 추가 -->
             <div class="text-center mt-4">
-                <a th:if="${userId != null}" th:href="@{/adoption/write/{animalNo}(animalNo=${adoption.animalNo})}" class="btn btn-primary">
+                <!-- dopt_apply가 0 일 때만 버튼을 활성화 -->
+                <a th:if="${userId != null and session.loginUser.getDopt_apply() lt 1}"
+                   th:href="@{/adoption/write/{animalNo}(animalNo=${adoption.animalNo})}" class="btn btn-primary">
+                    입양하기
+                </a>
+
+                <!-- dopt_apply가 0보다 클 때 버튼을 아예 렌더링하지 않음 -->
+                <a th:if="${userId != null and session.loginUser.getDopt_apply() gt 0}"
+                   class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true"  style="display: none;">
                     입양하기
                 </a>
             </div>

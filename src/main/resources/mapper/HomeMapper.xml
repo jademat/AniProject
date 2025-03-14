@@ -9,7 +9,7 @@
             join users u on a.uno = u.uno
             join animal an on a.animal_no = an.animal_no
             where ado_stat = 1
-            order by adono limit 10;
+            order by a.adono desc limit 10;
     </select>
 
     <select id="boardList" resultType="project.animalfoot.aniproject.domain.admin.adboard.HoBoardDTO">

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Update;
 import project.animalfoot.aniproject.domain.admin.adboard.Adopt;
 import project.animalfoot.aniproject.domain.admin.adboard.AdoptDTO;
 import project.animalfoot.aniproject.domain.admin.animal.Animal;
+import project.animalfoot.aniproject.domain.user.UserDTO;
 
 import java.util.List;
 

@@ -14,4 +14,7 @@ public interface AdoptionService {
 
     public void submitAdoption(AdoptDTO adoptDTO);
 
+    // users 테이블의 dopt_aply에 1
+    void updateDoptApplyStatus(int userId);
+
 }

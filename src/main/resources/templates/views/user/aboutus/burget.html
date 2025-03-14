@@ -21,16 +21,22 @@
             justify-content: space-around;
         }
 
-        .chart-container canvas {
-            width: 45% !important;
-            height: 400px !important;
-        }
+        /*.chart-container canvas {*/
+        /*    width: 45% !important;*/
+        /*    height: 400px !important;*/
+        /*}*/
 
         /* pie 차트의 사이즈를 조정하기 위한 스타일 */
         .pie {
             width: 100% !important;
             max-width: 400px !important; /* 최대 크기 */
-            height: 250px !important;  /* 원하는 높이 */
+            height: 500px !important;  /* 원하는 높이 */
+        }
+
+        .returnedBarChart, adoptedBarChart, euthanizedBarChart, transferredBarChart{
+            width: 100% !important;
+            max-width: 1000px !important;
+            text-align: center;
         }
 
         h1 {
@@ -82,25 +88,25 @@
         <!-- 5. 서울시 지역구별 파양 현황 -->
         <h2>5.서울시 지역구별 파양 현황</h2>
         <div class="chart-container bar-Chart">
-            <canvas id="returnedBarChart"></canvas>
+            <canvas id="returnedBarChart" class="returnedBarChart"></canvas>
         </div>
 
         <!-- 6. 서울시 지역구별 입양 현황 -->
         <h2>6.서울시 지역구별 입양 현황</h2>
         <div class="chart-container bar-Chart">
-            <canvas id="adoptedBarChart"></canvas>
+            <canvas id="adoptedBarChart" class="adoptedBarChart"></canvas>
         </div>
 
         <!-- 7. 서울시 지역구별 안락사 현황 -->
         <h2>7.서울시 지역구별 안락사 현황</h2>
         <div class="chart-container bar-Chart">
-            <canvas id="euthanizedBarChart"></canvas>
+            <canvas id="euthanizedBarChart" class="euthanizedBarChart"></canvas>
         </div>
 
         <!-- 8. 서울시 지역구별 이송 현황 -->
         <h2>8.서울시 지역구별 이송 현황</h2>
         <div class="chart-container bar-Chart">
-            <canvas id="transferredBarChart"></canvas>
+            <canvas id="transferredBarChart" class="transferredBarChart"></canvas>
         </div>
 
     </main>
@@ -138,6 +144,20 @@
         // 막대 그래프 공통 옵션//
         const barChartOptions = {
             plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    onClick: function (event, legendItem, legend) {
+                        const datasetIndex = legendItem.datasetIndex;
+                        const chart = legend.chart;
+                        const meta = chart.getDatasetMeta(datasetIndex);
+
+                        // 현재 hidden 상태를 명확하게 반전
+                        meta.hidden = !meta.hidden;
+
+                        chart.update();
+                    }
+                },
                 datalabels: {
                     display: false
                 }

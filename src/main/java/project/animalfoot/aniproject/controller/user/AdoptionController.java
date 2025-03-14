@@ -80,6 +80,9 @@ public class AdoptionController {
         adoptDTO.setUno(loginUser.getUno()); // 로그인한 사용자의 uno 저장
         adoptionService.submitAdoption(adoptDTO); // DB 저장
 
+        // 입양 신청 후 dopt_apply 값을 1로 변경
+        adoptionService.updateDoptApplyStatus(loginUser.getUno());
+
         redirectAttributes.addFlashAttribute("message","입양 신청이 완료되었습니다.");
         return "redirect:/adoption/list";
     }

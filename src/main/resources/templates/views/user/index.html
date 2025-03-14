@@ -1,254 +1,234 @@
 <!DOCTYPE html>
-<html lang="ko"  xmlns:th="http://www.thymeleaf.org"
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/user/layout}">
 
 <th:block layout:fragment="content">
-<body>
+    <head>
+        <style>
+            /* 아이콘 크기 설정 */
+            .fa-solid {
+                font-size: 60px;
+                color: #d0b079;
+                margin-bottom: 0px;
+            }
 
+            h3 {
+                font-weight: bold;
+            }
 
+            /* 캐러셀 크기 */
+            #carouselImageCaptions {
+                width: 80%;
+                height: 500px;
+                margin: 0 auto; /* 가운데 정렬 */
+            }
 
-<div class="preloader-wrapper">
-    <div class="preloader">
-    </div>
-</div>
+            /* 캐러셀 이미지 크기 조정 */
+            #carouselImageCaptions .carousel-inner img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; /* 이미지를 자르지 않고 비율 맞추기 */
+            }
 
-<div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasCart" aria-labelledby="My Cart">
-    <div class="offcanvas-header justify-content-center">
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <div class="order-md-last">
+            /* 텍스트 및 스타일 */
+            .display-3 {
+                margin-bottom: 0px;
+            }
 
-            <ul class="list-group mb-3">
-                <li class="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                        <h6 class="my-0">Grey Hoodie</h6>
-                        <small class="text-body-secondary">Brief description</small>
-                    </div>
-                    <span class="text-body-secondary">$12</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                        <h6 class="my-0">Dog Food</h6>
-                        <small class="text-body-secondary">Brief description</small>
-                    </div>
-                    <span class="text-body-secondary">$8</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                        <h6 class="my-0">Soft Toy</h6>
-                        <small class="text-body-secondary">Brief description</small>
-                    </div>
-                    <span class="text-body-secondary">$5</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between">
-                    <span class="fw-bold">Total (USD)</span>
-                    <strong>$20</strong>
-                </li>
-            </ul>
+            .family {
+                color: #FFFFFF;
+                font-size: 40px; /* 텍스트 크기 조정 */
+            }
 
-            <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+            .adoption-img {
+                max-width: 100%; /* 이미지를 반응형으로 조정 */
+                height: auto;
+                display: block;
+                margin: 0 auto; /* 가운데 정렬 */
+            }
+
+            /* 섹션 배경 색상 */
+            section {
+                margin-bottom: 50px; /* 섹션 간 간격 */
+            }
+
+            /* Adoption 섹션에서 제목과 이미지를 한 줄로 배치 */
+            .section-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .section-header > div {
+                flex: 1; /* 각 항목을 균등하게 배치 */
+            }
+
+            /* 캐러셀의 텍스트를 가운데 정렬 */
+            .carousel-caption {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+
+    <div class="preloader-wrapper">
+        <div class="preloader">
         </div>
     </div>
-</div>
 
-<div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasSearch"
-     aria-labelledby="Search">
-    <div class="offcanvas-header justify-content-center">
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasCart" aria-labelledby="My Cart">
     </div>
-    <div class="offcanvas-body">
 
-        <div class="order-md-last">
-            <h4 class="text-primary text-uppercase mb-3">
-                Search
-            </h4>
-            <div class="search-bar border rounded-2 border-dark-subtle">
-                <form id="search-form" class="text-center d-flex align-items-center" action="" method="">
-                    <input type="text" class="form-control border-0 bg-transparent" placeholder="Search Here" />
-                    <iconify-icon icon="tabler:search" class="fs-4 me-3"></iconify-icon>
-                </form>
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasSearch"
+         aria-labelledby="Search">
+        <div class="offcanvas-header justify-content-center">
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="order-md-last">
+                <h4 class="text-primary text-uppercase mb-3">
+                    Search
+                </h4>
+                <div class="search-bar border rounded-2 border-dark-subtle">
+                    <form id="search-form" class="text-center d-flex align-items-center" action="" method="">
+                        <input type="text" class="form-control border-0 bg-transparent" placeholder="Search Here" />
+                        <iconify-icon icon="tabler:search" class="fs-4 me-3"></iconify-icon>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-
-
-<section id="banner" style="background: #F9F3EC;">
-    <div class="container">
-        <div class="swiper main-swiper">
-            <div class="swiper-wrapper">
-
-                <div class="swiper-slide py-5">
-                    <div class="row banner-content align-items-center">
-                        <div class="img-wrapper col-md-5">
-                            <img src="/static/images/banner-img.png" class="img-fluid">
+    <section id="banner" style="background: #F9F3EC;">
+        <div class="container">
+            <div class="swiper main-swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide py-5">
+                        <div class="row banner-content align-items-center">
+                            <div class="img-wrapper col-md-5">
+                                <img src="/static/images/banner-img.png" class="img-fluid">
+                            </div>
+                            <div class="content-wrapper col-md-7 p-5 mb-5">
+                                <div class="secondary-font text-primary text-uppercase mb-4">Adopt, don't shop</div>
+                                <h2 class="banner-title display-1 fw-normal">사지말고, <br><span class="text-primary"> 입양해주세요!<br><br></span></h2>
+                                <a href="/adoption/process" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
+                                    Adoption Process
+                                    <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
+                                        <use xlink:href="#arrow-right"></use>
+                                    </svg></a>
+                            </div>
                         </div>
-                        <div class="content-wrapper col-md-7 p-5 mb-5">
-                            <div class="secondary-font text-primary text-uppercase mb-4">Adopt, don't shop</div>
-                            <h2 class="banner-title display-1 fw-normal">사지말고, <br><span class="text-primary"> 입양해주세요!<br><br>
-                    </span>
-                            </h2>
-                            <a href="/adoption/process" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
-                                Adoption Process
-                                <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
-                                    <use xlink:href="#arrow-right"></use>
-                                </svg></a>
+                    </div>
+                    <div class="swiper-slide py-5">
+                        <div class="row banner-content align-items-center">
+                            <div class="img-wrapper col-md-5">
+                                <img src="/static/images//banner-img3.png" class="img-fluid">
+                            </div>
+                            <div class="content-wrapper col-md-7 p-5 mb-5">
+                                <div class="secondary-font text-primary text-uppercase mb-4"> </div>
+                                <h2 class="banner-title display-1 fw-normal">유기동물을 <br><span class="text-primary">후원해주세요!<br><br></span></h2>
+                                <a href="/support/donate" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
+                                    Donation
+                                    <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
+                                        <use xlink:href="#arrow-right"></use>
+                                    </svg></a>
+                            </div>
                         </div>
-
                     </div>
                 </div>
-                <div class="swiper-slide py-5">
-                    <div class="row banner-content align-items-center">
-                        <div class="img-wrapper col-md-5">
-                            <img src="/static/images//banner-img3.png" class="img-fluid">
-                        </div>
-                        <div class="content-wrapper col-md-7 p-5 mb-5">
-                            <div class="secondary-font text-primary text-uppercase mb-4"> </div>
-                            <h2 class="banner-title display-1 fw-normal">유기동물을 <br><span class="text-primary">후원해주세요!<br><br>
-                    </span>
-                            </h2>
-                            <a href="/support/donate" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
-                                Donation
-                                <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
-                                    <use xlink:href="#arrow-right"></use>
-                                </svg></a>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="swiper-pagination mb-5"></div>
-
-        </div>
-    </div>
-</section>
-
-<section id="categories">
-    <div class="container my-3 py-5">
-        <div class="row my-5">
-            <div class="col text-center">
-                <a href="/board/faq/list" class="categories-item">
-                    <i class="fa-solid fa-question"></i>
-                    <h5>FAQs</h5>
-                </a>
-            </div>
-            <div class="col text-center">
-                <a href="/board/review/list" class="categories-item">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    <h5>입양 후기</h5>
-                </a>
-            </div>
-            <div class="col text-center">
-                <a href="/support/donate" class="categories-item">
-                    <i class="fa-solid fa-hand-holding-dollar"></i>
-                    <h5>후원하기</h5>
-                </a>
-            </div>
-            <div class="col text-center">
-                <a href="/user/aboutus/burget" class="categories-item">
-                    <i class="fa-solid fa-cat"></i>
-                    <i class="fa-solid fa-dog"></i>
-                    <h5>유기동물 현황</h5>
-                </a>
-            </div>
-            <div class="col text-center">
-                <a href="/support/financial" class="categories-item">
-                    <i class="fa-solid fa-money-bill-trend-up"></i>
-                    <h5>재정 현황</h5>
-                </a>
+                <div class="swiper-pagination mb-5"></div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-
-
-
-
-</section>
-
-<section id="hello" class="my-5">
-    <div class="container my-3 py-5">
-        <div class="section-header d-md-flex justify-content-between align-items-center">
-            <h2 class="display-3 fw-normal">Hello</h2>
+    <section id="categories">
+        <div class="container my-3 py-5">
             <div class="row my-5">
                 <div class="col text-center">
-                    <a href="/user/aboutus/hello" class="categories-item"> -> 바로가기
-                    <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
-                        <use xlink:href="#arrow-right"></use>
-                    </svg></a>
+                    <a href="/board/faq/list" class="categories-item">
+                        <i class="fa-solid fa-question"></i>
+                        <h3>FAQs</h3>
+                    </a>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-
-
-<section id="adoption" class="my-5 overflow-hidden">
-    <div class="container my-3 py-5">
-        <div class="section-header d-md-flex justify-content-between align-items-center">
-            <h2 class="display-3 fw-normal">Adoption</h2>
-            <div class="row my-5">
                 <div class="col text-center">
-                    <a href="/adoption/process" class="categories-item"> -> 바로가기
-                        <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
-                            <use xlink:href="#arrow-right"></use>
-                        </svg></a>
+                    <a href="/board/review/list" class="categories-item">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <h3>입양 후기</h3>
+                    </a>
                 </div>
-            </div>
-        </div>
-    </div>
-
-</section>
-
-
-
-<section id="donation" class="my-5">
-    <div class="container my-3 py-5">
-        <div class="section-header d-md-flex justify-content-between align-items-center">
-            <h2 class="display-3 fw-normal">Donation</h2>
-            <div class="row my-5">
                 <div class="col text-center">
-                    <a href="/support/donate" class="categories-item"> -> 바로가기
-                        <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
-                            <use xlink:href="#arrow-right"></use>
-                        </svg></a>
+                    <a href="/support/donate" class="categories-item">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                        <h3>후원하기</h3>
+                    </a>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-<section id="community" class="my-5">
-    <div class="container my-3 py-5">
-        <div class="section-header d-md-flex justify-content-between align-items-center">
-            <h2 class="display-3 fw-normal">Community</h2>
-            <div class="row my-5">
                 <div class="col text-center">
-                    <a href="/board/faq/list" class="categories-item"> -> 바로가기
-                        <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
-                            <use xlink:href="#arrow-right"></use>
-                        </svg></a>
+                    <a href="/user/aboutus/burget" class="categories-item">
+                        <i class="fa-solid fa-cat"></i>
+                        <i class="fa-solid fa-dog"></i>
+                        <h3>유기동물 현황</h3>
+                    </a>
+                </div>
+                <div class="col text-center">
+                    <a href="/support/financial" class="categories-item">
+                        <i class="fa-solid fa-money-check-dollar"></i>
+                        <h3>재정 현황</h3>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
+    <section id="hello" class="my-5">
+        <div class="container my-3 py-5">
+            <!-- 캐러셀 -->
+            <div id="carouselImageCaptions" class="carousel slide" data-bs-ride="carousel" style="width: 80%; height: 500px; margin: auto;">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="/board/review/list" class="categories-item">
+                            <img src="http://localhost/cdn/dogs2.jpg" class="d-block w-100" alt="First Slide">
+                        </a>
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5 class="family">사지말고 입양해주세요!</h5>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="http://localhost/cdn/cat2.jpg" class="d-block w-100" alt="Second Slide">
+                        <h5 class="family">주인의 사랑으로 바뀔 수 있어요!</h5>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="/board/review/list" class="categories-item">
+                            <img src="http://localhost/cdn/puppy2.jpg" class="d-block w-100" alt="Third Slide">
+                        </a>
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5 class="family">저의 가족이 되어주세요!</h5>
+                        </div>
+                    </div>
+                </div>
 
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselImageCaptions" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselImageCaptions" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section>
 
+    <section id="adoption" class="my-5 overflow-hidden">
+        <div class="container my-3 py-5">
+            <div>
+                <a href="/adoption/processt" class="categories-item">
+                    <img src="http://localhost/cdn/adoption3.jpg" class="adoption-img" alt="adoptProcess">
+                </a>
+            </div>
+        </div>
+    </section>
 
-
-</body>
+    </body>
 </th:block>
 </html>

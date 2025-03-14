@@ -29,4 +29,10 @@ public interface UserRepository {
     @Update("update users set userpwd = #{userpwd}, phone = #{phone}, addr = #{addr}, " +
             "detailaddr = #{detailaddr}, email = #{email} WHERE userid = #{userid}")
     int updateUser(UserDTO user);
+
+    // dopt_apply 상태 업데이트 메서드
+    @Update("UPDATE users SET dopt_apply = #{dopt_apply} WHERE uno = #{uno}")
+    int updateDoptApplyStatus(int uno, int doptApply);  // uno로 상태 변경
+
+
 }

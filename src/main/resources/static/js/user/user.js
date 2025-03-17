@@ -159,11 +159,18 @@ const submitEditFrm = async (frm) => {
         return; // 유효성 검사 실패 시 함수 종료
     }
 
-    // Web Crypto API로 비밀번호 암호화
-    frm.userpwd.value = await hashPassword(frm.userpwd.value);
+    // Web Crypto API로 비밀번호 암호화 (비밀번호가 입력된 경우에만)
+    if (frm.userpwd.value.trim() !== "") {
+        frm.userpwd.value = await hashPassword(frm.userpwd.value);
+    } else {
+        frm.userpwd.value = "";  // 비밀번호를 변경하지 않은 경우 빈 값으로 처리
+    }
 
     // 폼에 입력된 데이터를 formData 객체로 초기화
     const formData = new FormData(frm);
+    formData.forEach((value, key) => {
+        console.log(key, value);
+    });
 
     fetch('/user/user/edit', {
         method: 'POST',
@@ -174,16 +181,14 @@ const submitEditFrm = async (frm) => {
             location.href = 'myinfo';
         } else if (response.status === 400) {
             alert(await response.text());
-        }else {     // 회원정보 수정이 실패했다면
+        } else {  // 회원정보 수정이 실패했다면
             alert('회원정보 변경 실패했습니다!! 다시 시도 해주세요!');
         }
-
-    }) .catch(error => {
+    }).catch(error => {
         console.error('edit error:', error);
         alert('서버와 통신중 오류가 발생했습니다!! 관리자에게 문의하세요!');
     });
-} // submiteditFrm
-
+}
 
 // 입력 요소 유효성 검사
 const validEditInputs = (form) => {
@@ -196,7 +201,7 @@ const validEditInputs = (form) => {
     // 회원정보 수정 폼안의 모든 input 요소 수집
     const inputs = form.querySelectorAll('input');
 
-    /// 아이디, 이름 제외한 필드만 유효성 검사
+    // 아이디, 이름 제외한 필드만 유효성 검사
     const newPassword = inputs[2]; // 비밀번호 필드
     const confirmPassword = inputs[3]; // 비밀번호 확인 필드
     const phone = inputs[4]; // 전화번호
@@ -206,6 +211,7 @@ const validEditInputs = (form) => {
 
     // 비밀번호가 변경된 경우에만 유효성 검사
     if (newPassword.value.trim() !== "") {
+        hasChanges = true; // 비밀번호가 변경되었으면 변경사항 있음
         // 비밀번호 유효성 검사 (6자 이상, 영문 대소문자, 숫자, 특수문자 포함)
         if (!patterns[1].test(newPassword.value)) {
             displayErrorMessages(newPassword, editMessages[0]); // 비밀번호 형식 오류 메시지
@@ -223,24 +229,40 @@ const validEditInputs = (form) => {
     if (!patterns[4].test(phone.value)) {
         displayErrorMessages(phone, errorMessages[4]);
         isValid = false;
+    } else {
+        if (phone.value !== phone.defaultValue) {
+            hasChanges = true;
+        }
     }
 
     // 이메일 입력 여부 검사
     if (!patterns[6].test(email.value)) {
         displayErrorMessages(email, errorMessages[7]);
         isValid = false;
+    } else {
+        if (email.value !== email.defaultValue) {
+            hasChanges = true;
+        }
     }
 
     // 주소 입력 여부 검사
     if (!addr.value) {
         displayErrorMessages(addr, errorMessages[5]);
         isValid = false;
+    } else {
+        if (addr.value !== addr.defaultValue) {
+            hasChanges = true;
+        }
     }
 
     // 상세주소 입력 여부 검사
     if (!detailaddr.value) {
         displayErrorMessages(detailaddr, errorMessages[6]);
         isValid = false;
+    } else {
+        if (detailaddr.value !== detailaddr.defaultValue) {
+            hasChanges = true;
+        }
     }
 
     // 변경 사항이 없으면 알림
@@ -250,8 +272,8 @@ const validEditInputs = (form) => {
     }
 
     return isValid;
-
 }
+
 
 
 // 로그인 폼 유효성 검사

@@ -109,7 +109,7 @@ public class UserController {
 
     // 사용자 정보 수정 처리
     @PostMapping("/user/edit")
-    public String editOk(UserDTO user, String confirmUserpwd, HttpSession session) {
+    public String editOk(UserDTO user, String confirmUserpwd, HttpSession session, Model model) {
         log.info(" controller editok {}",user);
 
         UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
@@ -121,6 +121,14 @@ public class UserController {
         try {
             // 수정된 정보 업데이트
             userService.updateUser(user);
+
+            // 수정된 사용자 정보를 다시 화면에 전달
+            loginUser.setAddr(user.getAddr());  // 주소 업데이트
+            loginUser.setDetailaddr(user.getDetailaddr());  // 상세 주소 업데이트
+            loginUser.setPhone(user.getPhone());  // 전화번호 업데이트
+            loginUser.setEmail(user.getEmail());  // 이메일 업데이트
+
+            model.addAttribute("user", loginUser);  // 수정된 사용자 정보 전달
 
             return "redirect:/user/myinfo";  // 수정 완료 후 사용자 정보 페이지로 리다이렉트
         } catch (Exception e) {

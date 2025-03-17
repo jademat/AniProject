@@ -3,6 +3,7 @@ package project.animalfoot.aniproject.service.user;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import project.animalfoot.aniproject.domain.user.UserDTO;
 import project.animalfoot.aniproject.domain.user.UserLoginDTO;
 import project.animalfoot.aniproject.repository.UserRepository;
@@ -59,7 +60,7 @@ public class UserService {
         return findUser;
     }
 
-
+    @Transactional
     public void updateUser(UserDTO user) {
         log.info("service update user {} ", user);
 

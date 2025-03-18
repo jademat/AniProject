@@ -17,15 +17,12 @@
   * 동물복지지원센터
     * https://news.seoul.go.kr/env/pet
 
-### 프로젝트 요구사항 정의
-* 프로젝트 결과물이 제공하는 기능
-
-
 
 
 ### ERD 다이어그램
 
-![ERD 다이어그램](/static/images/admin/erd.png "ERD")
+![ERD 다이어그램](https://raw.githubusercontent.com/jademat/AniProject/develop/src/main/resources/static/images/admin/erd.png)
+
 
 
 ### 프로젝트 기술 스택
@@ -49,11 +46,5 @@
 #### 클라우드 및 배포
 - AWS (Amazon Web Services): 클라우드 서비스 활용
 - Amazon EC2: 서버 호스팅 및 애플리케이션 배포
-
-
-
-
-
-
 
 
